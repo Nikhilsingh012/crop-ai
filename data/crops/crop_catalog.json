@@ -1,0 +1,1800 @@
+[
+  {
+    "crop_id": "rice",
+    "canonical_name": "Rice",
+    "aliases": [
+      "paddy",
+      "dhan"
+    ],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "wheat",
+    "canonical_name": "Wheat",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "maize",
+    "canonical_name": "Maize",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "barley",
+    "canonical_name": "Barley",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sorghum",
+    "canonical_name": "Sorghum",
+    "aliases": [
+      "Jowar",
+      "jowar"
+    ],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pearl_millet",
+    "canonical_name": "Pearl Millet",
+    "aliases": [
+      "Bajra",
+      "bajra"
+    ],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "finger_millet",
+    "canonical_name": "Finger Millet",
+    "aliases": [
+      "Ragi",
+      "ragi"
+    ],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "foxtail_millet",
+    "canonical_name": "Foxtail Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "little_millet",
+    "canonical_name": "Little Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "kodo_millet",
+    "canonical_name": "Kodo Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "barnyard_millet",
+    "canonical_name": "Barnyard Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "proso_millet",
+    "canonical_name": "Proso Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "browntop_millet",
+    "canonical_name": "Browntop Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "oats",
+    "canonical_name": "Oats",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "rye",
+    "canonical_name": "Rye",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "triticale",
+    "canonical_name": "Triticale",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "cereal",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "chickpea",
+    "canonical_name": "Chickpea",
+    "aliases": [
+      "Chana",
+      "chana",
+      "gram"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pigeon_pea",
+    "canonical_name": "Pigeon Pea",
+    "aliases": [
+      "Arhar",
+      "Tur",
+      "arhar",
+      "tur",
+      "toor",
+      "red gram"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "green_gram",
+    "canonical_name": "Green Gram",
+    "aliases": [
+      "Moong",
+      "moong"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "black_gram",
+    "canonical_name": "Black Gram",
+    "aliases": [
+      "Urad",
+      "urad"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lentil",
+    "canonical_name": "Lentil",
+    "aliases": [
+      "Masoor"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "field_pea",
+    "canonical_name": "Field Pea",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "garden_pea",
+    "canonical_name": "Garden Pea",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cowpea",
+    "canonical_name": "Cowpea",
+    "aliases": [
+      "Lobia",
+      "lobia"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "horse_gram",
+    "canonical_name": "Horse Gram",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "moth_bean",
+    "canonical_name": "Moth Bean",
+    "aliases": [
+      "Matki",
+      "matki"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "kidney_bean",
+    "canonical_name": "Kidney Bean",
+    "aliases": [
+      "Rajma"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lablab_bean",
+    "canonical_name": "Lablab Bean",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "grass_pea",
+    "canonical_name": "Grass Pea",
+    "aliases": [
+      "Khesari"
+    ],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "faba_bean",
+    "canonical_name": "Faba Bean",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "french_bean",
+    "canonical_name": "French Bean",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "soybean",
+    "canonical_name": "Soybean",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "pulse",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "groundnut",
+    "canonical_name": "Groundnut",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "indian_mustard",
+    "canonical_name": "Indian Mustard",
+    "aliases": [
+      "mustard"
+    ],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "rapeseed",
+    "canonical_name": "Rapeseed",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sunflower",
+    "canonical_name": "Sunflower",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sesame",
+    "canonical_name": "Sesame",
+    "aliases": [
+      "Til",
+      "til"
+    ],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "linseed",
+    "canonical_name": "Linseed",
+    "aliases": [
+      "Alsi",
+      "alsi"
+    ],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "safflower",
+    "canonical_name": "Safflower",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "castor",
+    "canonical_name": "Castor",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "niger_seed",
+    "canonical_name": "Niger Seed",
+    "aliases": [
+      "Ramtil",
+      "ramtil"
+    ],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "oil_palm",
+    "canonical_name": "Oil Palm",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "flax",
+    "canonical_name": "Flax",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "camelina",
+    "canonical_name": "Camelina",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "oilseed",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cotton",
+    "canonical_name": "Cotton",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sugarcane",
+    "canonical_name": "Sugarcane",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "jute",
+    "canonical_name": "Jute",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mesta",
+    "canonical_name": "Mesta",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "tobacco",
+    "canonical_name": "Tobacco",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "industrial_hemp",
+    "canonical_name": "Industrial Hemp",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": [],
+    "availability_note": "Include only where permitted and agronomically appropriate; verify local requirements."
+  },
+  {
+    "crop_id": "kenaf",
+    "canonical_name": "Kenaf",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sisal",
+    "canonical_name": "Sisal",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "commercial",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "tomato",
+    "canonical_name": "Tomato",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "potato",
+    "canonical_name": "Potato",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sweet_potato",
+    "canonical_name": "Sweet Potato",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "onion",
+    "canonical_name": "Onion",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "garlic",
+    "canonical_name": "Garlic",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "brinjal",
+    "canonical_name": "Brinjal",
+    "aliases": [
+      "Eggplant",
+      "eggplant",
+      "baingan"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "okra",
+    "canonical_name": "Okra",
+    "aliases": [
+      "Bhindi",
+      "bhindi"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cabbage",
+    "canonical_name": "Cabbage",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cauliflower",
+    "canonical_name": "Cauliflower",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "broccoli",
+    "canonical_name": "Broccoli",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "knol_khol",
+    "canonical_name": "Knol-Khol",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "carrot",
+    "canonical_name": "Carrot",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "radish",
+    "canonical_name": "Radish",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "turnip",
+    "canonical_name": "Turnip",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "beetroot",
+    "canonical_name": "Beetroot",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "spinach",
+    "canonical_name": "Spinach",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "amaranth_leaves",
+    "canonical_name": "Amaranth Leaves",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fenugreek_leaves",
+    "canonical_name": "Fenugreek Leaves",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lettuce",
+    "canonical_name": "Lettuce",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "celery",
+    "canonical_name": "Celery",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "capsicum",
+    "canonical_name": "Capsicum",
+    "aliases": [
+      "Bell pepper",
+      "bell pepper",
+      "shimla mirch"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "green_chilli",
+    "canonical_name": "Green Chilli",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pumpkin",
+    "canonical_name": "Pumpkin",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "bottle_gourd",
+    "canonical_name": "Bottle Gourd",
+    "aliases": [
+      "lauki"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "bitter_gourd",
+    "canonical_name": "Bitter Gourd",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ridge_gourd",
+    "canonical_name": "Ridge Gourd",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sponge_gourd",
+    "canonical_name": "Sponge Gourd",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "snake_gourd",
+    "canonical_name": "Snake Gourd",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ash_gourd",
+    "canonical_name": "Ash Gourd",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pointed_gourd",
+    "canonical_name": "Pointed Gourd",
+    "aliases": [
+      "Parwal",
+      "parwal"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ivy_gourd",
+    "canonical_name": "Ivy Gourd",
+    "aliases": [
+      "Kundru",
+      "kundru"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cucumber",
+    "canonical_name": "Cucumber",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "muskmelon",
+    "canonical_name": "Muskmelon",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "watermelon",
+    "canonical_name": "Watermelon",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "zucchini",
+    "canonical_name": "Zucchini",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "drumstick",
+    "canonical_name": "Drumstick",
+    "aliases": [
+      "Moringa"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "taro",
+    "canonical_name": "Taro",
+    "aliases": [
+      "Arbi",
+      "arbi",
+      "colocasia"
+    ],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "elephant_foot_yam",
+    "canonical_name": "Elephant Foot Yam",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "greater_yam",
+    "canonical_name": "Greater Yam",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "tinda",
+    "canonical_name": "Tinda",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "chayote",
+    "canonical_name": "Chayote",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "brussels_sprouts",
+    "canonical_name": "Brussels Sprouts",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "asparagus",
+    "canonical_name": "Asparagus",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "leek",
+    "canonical_name": "Leek",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "parsley",
+    "canonical_name": "Parsley",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "coriander_leaves",
+    "canonical_name": "Coriander Leaves",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "spring_onion",
+    "canonical_name": "Spring Onion",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "vegetable",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mango",
+    "canonical_name": "Mango",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "banana",
+    "canonical_name": "Banana",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "guava",
+    "canonical_name": "Guava",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "papaya",
+    "canonical_name": "Papaya",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pomegranate",
+    "canonical_name": "Pomegranate",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "grapes",
+    "canonical_name": "Grapes",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "apple",
+    "canonical_name": "Apple",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pear",
+    "canonical_name": "Pear",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "peach",
+    "canonical_name": "Peach",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "plum",
+    "canonical_name": "Plum",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "apricot",
+    "canonical_name": "Apricot",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cherry",
+    "canonical_name": "Cherry",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "strawberry",
+    "canonical_name": "Strawberry",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "litchi",
+    "canonical_name": "Litchi",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "jackfruit",
+    "canonical_name": "Jackfruit",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "pineapple",
+    "canonical_name": "Pineapple",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "sapota",
+    "canonical_name": "Sapota",
+    "aliases": [
+      "Chikoo",
+      "chikoo"
+    ],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "custard_apple",
+    "canonical_name": "Custard Apple",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "aonla",
+    "canonical_name": "Aonla",
+    "aliases": [
+      "Indian gooseberry",
+      "indian gooseberry"
+    ],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ber",
+    "canonical_name": "Ber",
+    "aliases": [
+      "Indian jujube",
+      "indian jujube"
+    ],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "bael",
+    "canonical_name": "Bael",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "jamun",
+    "canonical_name": "Jamun",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fig",
+    "canonical_name": "Fig",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "dragon_fruit",
+    "canonical_name": "Dragon Fruit",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "kiwi",
+    "canonical_name": "Kiwi",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "avocado",
+    "canonical_name": "Avocado",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "passion_fruit",
+    "canonical_name": "Passion Fruit",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mulberry",
+    "canonical_name": "Mulberry",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "phalsa",
+    "canonical_name": "Phalsa",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "karonda",
+    "canonical_name": "Karonda",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "citrus",
+    "canonical_name": "Citrus",
+    "aliases": [
+      "Sweet orange",
+      "sweet orange"
+    ],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mandarin",
+    "canonical_name": "Mandarin",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lemon",
+    "canonical_name": "Lemon",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lime",
+    "canonical_name": "Lime",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mosambi",
+    "canonical_name": "Mosambi",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "coconut",
+    "canonical_name": "Coconut",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "arecanut",
+    "canonical_name": "Arecanut",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cashew",
+    "canonical_name": "Cashew",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "date_palm",
+    "canonical_name": "Date Palm",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "indian_olive",
+    "canonical_name": "Indian Olive",
+    "aliases": [
+      "regional olive crops"
+    ],
+    "scientific_name": null,
+    "category": "fruit",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "turmeric",
+    "canonical_name": "Turmeric",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ginger",
+    "canonical_name": "Ginger",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "black_pepper",
+    "canonical_name": "Black Pepper",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "small_cardamom",
+    "canonical_name": "Small Cardamom",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "large_cardamom",
+    "canonical_name": "Large Cardamom",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "coriander_seed",
+    "canonical_name": "Coriander Seed",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cumin",
+    "canonical_name": "Cumin",
+    "aliases": [
+      "Jeera",
+      "jeera"
+    ],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fennel",
+    "canonical_name": "Fennel",
+    "aliases": [
+      "Saunf",
+      "saunf"
+    ],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fenugreek_seed",
+    "canonical_name": "Fenugreek Seed",
+    "aliases": [
+      "methi"
+    ],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ajwain",
+    "canonical_name": "Ajwain",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "dry_chilli",
+    "canonical_name": "Dry Chilli",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "clove",
+    "canonical_name": "Clove",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cinnamon",
+    "canonical_name": "Cinnamon",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "nutmeg",
+    "canonical_name": "Nutmeg",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mace",
+    "canonical_name": "Mace",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "saffron",
+    "canonical_name": "Saffron",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "tamarind",
+    "canonical_name": "Tamarind",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "curry_leaf",
+    "canonical_name": "Curry Leaf",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "vanilla",
+    "canonical_name": "Vanilla",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "spice",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "tea",
+    "canonical_name": "Tea",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "coffee",
+    "canonical_name": "Coffee",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "rubber",
+    "canonical_name": "Rubber",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cocoa",
+    "canonical_name": "Cocoa",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "betel_vine",
+    "canonical_name": "Betel Vine",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lemongrass",
+    "canonical_name": "Lemongrass",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "citronella",
+    "canonical_name": "Citronella",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "vetiver",
+    "canonical_name": "Vetiver",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "mint",
+    "canonical_name": "Mint",
+    "aliases": [
+      "Mentha",
+      "mentha"
+    ],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "palmarosa",
+    "canonical_name": "Palmarosa",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "ashwagandha",
+    "canonical_name": "Ashwagandha",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "aloe_vera",
+    "canonical_name": "Aloe Vera",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "isabgol",
+    "canonical_name": "Isabgol",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "senna",
+    "canonical_name": "Senna",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "kalmegh",
+    "canonical_name": "Kalmegh",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "stevia",
+    "canonical_name": "Stevia",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "safed_musli",
+    "canonical_name": "Safed Musli",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "patchouli",
+    "canonical_name": "Patchouli",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "rose_for_essential_oil",
+    "canonical_name": "Rose For Essential Oil",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "geranium",
+    "canonical_name": "Geranium",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "plantation",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "berseem",
+    "canonical_name": "Berseem",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "lucerne",
+    "canonical_name": "Lucerne",
+    "aliases": [
+      "Alfalfa",
+      "alfalfa"
+    ],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "napier_grass",
+    "canonical_name": "Napier Grass",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fodder_sorghum",
+    "canonical_name": "Fodder Sorghum",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fodder_maize",
+    "canonical_name": "Fodder Maize",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "oat_fodder",
+    "canonical_name": "Oat Fodder",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "cowpea_fodder",
+    "canonical_name": "Cowpea Fodder",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "guinea_grass",
+    "canonical_name": "Guinea Grass",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "stylo",
+    "canonical_name": "Stylo",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  },
+  {
+    "crop_id": "fodder_pearl_millet",
+    "canonical_name": "Fodder Pearl Millet",
+    "aliases": [],
+    "scientific_name": null,
+    "category": "fodder",
+    "knowledge_status": "LIMITED",
+    "supported_risk_types": []
+  }
+]

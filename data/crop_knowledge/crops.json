@@ -1,0 +1,544 @@
+[
+  {
+    "crop": "rice",
+    "crop_family": "cereal",
+    "region": "India",
+    "optimal_temperature_c": [
+      20,
+      35
+    ],
+    "heat_threshold_c": 38,
+    "cold_threshold_c": 12,
+    "heavy_rain_mm": 50,
+    "waterlogging_sensitivity": 0.55,
+    "drought_sensitivity": 0.45,
+    "humidity_threshold": 82,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "germination": "Avoid prolonged flooding of seedbeds.",
+      "vegetative": "Monitor standing water and drainage.",
+      "flowering": "Heavy rain and wind can affect panicles.",
+      "harvest": "Dry weather supports harvest and storage."
+    },
+    "risks": [
+      "waterlogging",
+      "high_humidity",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Check field drainage and clear blocked channels.",
+      "Monitor standing water and crop lodging."
+    ],
+    "warning_signs": [
+      "Standing water beyond the crop's normal irrigation need",
+      "leaf spots or unusual yellowing"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "rice",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "wheat",
+    "crop_family": "cereal",
+    "region": "India",
+    "optimal_temperature_c": [
+      10,
+      25
+    ],
+    "heat_threshold_c": 30,
+    "cold_threshold_c": 4,
+    "heavy_rain_mm": 35,
+    "waterlogging_sensitivity": 0.7,
+    "drought_sensitivity": 0.6,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "germination": "Maintain even moisture without saturation.",
+      "flowering": "Heat during flowering can reduce grain set.",
+      "grain filling": "High temperatures can shorten grain filling.",
+      "harvest": "Rain near harvest can delay drying."
+    },
+    "risks": [
+      "heat",
+      "waterlogging",
+      "high_humidity"
+    ],
+    "preventive_actions": [
+      "Avoid unnecessary irrigation before rain.",
+      "Inspect low-lying areas after heavy rain."
+    ],
+    "warning_signs": [
+      "Lodging, yellowing, or premature drying"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "wheat",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "maize",
+    "crop_family": "cereal",
+    "region": "India",
+    "optimal_temperature_c": [
+      18,
+      32
+    ],
+    "heat_threshold_c": 36,
+    "cold_threshold_c": 10,
+    "heavy_rain_mm": 50,
+    "waterlogging_sensitivity": 0.7,
+    "drought_sensitivity": 0.65,
+    "humidity_threshold": 82,
+    "wind_threshold_kmh": 50,
+    "stages": {
+      "germination": "Prevent crusting and waterlogging.",
+      "flowering": "Heat and drought around tasseling are sensitive.",
+      "harvest": "Wet cobs need careful drying."
+    },
+    "risks": [
+      "waterlogging",
+      "heat",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Keep drainage channels open.",
+      "Monitor tasseling plants during hot, dry weather."
+    ],
+    "warning_signs": [
+      "Leaf rolling, lodging, or fungal spots"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "maize",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "potato",
+    "crop_family": "tuber",
+    "region": "India",
+    "optimal_temperature_c": [
+      15,
+      25
+    ],
+    "heat_threshold_c": 30,
+    "cold_threshold_c": 4,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.85,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "vegetative": "Cool, wet weather raises disease pressure.",
+      "tuber development": "Keep soil moisture even and avoid saturation.",
+      "harvest": "Rain can complicate lifting and storage."
+    },
+    "risks": [
+      "waterlogging",
+      "high_humidity",
+      "cold"
+    ],
+    "preventive_actions": [
+      "Improve drainage and avoid wet-field operations.",
+      "Inspect foliage after cool, humid periods."
+    ],
+    "warning_signs": [
+      "Dark leaf lesions, soft tubers, or standing water"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "potato",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "tomato",
+    "crop_family": "solanaceous",
+    "region": "India",
+    "optimal_temperature_c": [
+      18,
+      30
+    ],
+    "heat_threshold_c": 35,
+    "cold_threshold_c": 10,
+    "heavy_rain_mm": 25,
+    "waterlogging_sensitivity": 0.8,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 78,
+    "wind_threshold_kmh": 40,
+    "stages": {
+      "flowering": "Heat, rain, and humidity can affect flowers.",
+      "fruiting": "Frequent leaf wetness increases fungal risk.",
+      "harvest": "Rain can split fruit and delay picking."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "heat",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Improve air flow and avoid wetting foliage.",
+      "Move potted plants under cover before heavy rain."
+    ],
+    "warning_signs": [
+      "Leaf spots, flower drop, or fruit cracking"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "tomato",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "cotton",
+    "crop_family": "fiber",
+    "region": "India",
+    "optimal_temperature_c": [
+      21,
+      35
+    ],
+    "heat_threshold_c": 40,
+    "cold_threshold_c": 15,
+    "heavy_rain_mm": 50,
+    "waterlogging_sensitivity": 0.7,
+    "drought_sensitivity": 0.65,
+    "humidity_threshold": 82,
+    "wind_threshold_kmh": 50,
+    "stages": {
+      "flowering": "Rain and humidity can affect flowers and boll retention.",
+      "boll development": "Monitor boll rot risk in prolonged wetness.",
+      "harvest": "Rain reduces fibre quality."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Maintain drainage and scout flowers and bolls after rain."
+    ],
+    "warning_signs": [
+      "Boll discoloration, shedding, or waterlogged patches"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "cotton",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "sugarcane",
+    "crop_family": "grass",
+    "region": "India",
+    "optimal_temperature_c": [
+      20,
+      35
+    ],
+    "heat_threshold_c": 40,
+    "cold_threshold_c": 10,
+    "heavy_rain_mm": 70,
+    "waterlogging_sensitivity": 0.6,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 85,
+    "wind_threshold_kmh": 55,
+    "stages": {
+      "vegetative": "Even moisture supports establishment.",
+      "maturity": "Excess rain can delay harvest and reduce quality."
+    },
+    "risks": [
+      "waterlogging",
+      "wind",
+      "high_humidity"
+    ],
+    "preventive_actions": [
+      "Keep field drains clear and inspect for lodging."
+    ],
+    "warning_signs": [
+      "Lodging, stagnant water, or cane discoloration"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "sugarcane",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "mustard",
+    "crop_family": "oilseed",
+    "region": "India",
+    "optimal_temperature_c": [
+      10,
+      25
+    ],
+    "heat_threshold_c": 30,
+    "cold_threshold_c": 3,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.7,
+    "drought_sensitivity": 0.6,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 40,
+    "stages": {
+      "flowering": "Rain and heat can affect flowering and pollination.",
+      "harvest": "Rain near maturity can cause shattering and delay harvest."
+    },
+    "risks": [
+      "heat",
+      "waterlogging",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Avoid excess irrigation and inspect flowering plants after rain."
+    ],
+    "warning_signs": [
+      "Lodging, flower drop, or premature pods"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "knowledge_status": "LIMITED",
+    "crop_id": "indian_mustard",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "chickpea",
+    "crop_family": "pulse",
+    "region": "India",
+    "optimal_temperature_c": [
+      15,
+      30
+    ],
+    "heat_threshold_c": 35,
+    "cold_threshold_c": 5,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.75,
+    "drought_sensitivity": 0.65,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 40,
+    "stages": {
+      "flowering": "Rain and humidity can increase disease pressure.",
+      "pod filling": "Heat and dry soil can reduce pod filling."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "heat"
+    ],
+    "preventive_actions": [
+      "Keep drainage open and scout foliage after wet weather."
+    ],
+    "warning_signs": [
+      "Yellowing, leaf lesions, or poor pod set"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "chickpea",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "pigeon pea",
+    "crop_family": "pulse",
+    "region": "India",
+    "optimal_temperature_c": [
+      20,
+      35
+    ],
+    "heat_threshold_c": 38,
+    "cold_threshold_c": 10,
+    "heavy_rain_mm": 50,
+    "waterlogging_sensitivity": 0.65,
+    "drought_sensitivity": 0.6,
+    "humidity_threshold": 82,
+    "wind_threshold_kmh": 50,
+    "stages": {
+      "flowering": "Rain and cloudy weather may affect flowering.",
+      "pod filling": "Monitor moisture and pod damage."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Maintain drainage and support plants exposed to strong winds."
+    ],
+    "warning_signs": [
+      "Flower drop, lodging, or pod spots"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "pigeon_pea",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "groundnut",
+    "crop_family": "oilseed",
+    "region": "India",
+    "optimal_temperature_c": [
+      22,
+      30
+    ],
+    "heat_threshold_c": 36,
+    "cold_threshold_c": 12,
+    "heavy_rain_mm": 45,
+    "waterlogging_sensitivity": 0.8,
+    "drought_sensitivity": 0.6,
+    "humidity_threshold": 82,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "flowering": "Moisture supports pegging but saturation is harmful.",
+      "pod development": "Avoid prolonged waterlogging."
+    },
+    "risks": [
+      "waterlogging",
+      "high_humidity",
+      "heat"
+    ],
+    "preventive_actions": [
+      "Keep light soils drained and avoid excess irrigation."
+    ],
+    "warning_signs": [
+      "Yellowing, rotting pegs, or leaf spots"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "groundnut",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "onion",
+    "crop_family": "bulb",
+    "region": "India",
+    "optimal_temperature_c": [
+      13,
+      25
+    ],
+    "heat_threshold_c": 32,
+    "cold_threshold_c": 4,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.9,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 78,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "bulbing": "Wet foliage and saturated soil raise disease and bulb rot risk.",
+      "harvest": "Dry weather is preferred for curing."
+    },
+    "risks": [
+      "waterlogging",
+      "high_humidity",
+      "heat"
+    ],
+    "preventive_actions": [
+      "Use raised beds or clear drains; allow foliage to dry."
+    ],
+    "warning_signs": [
+      "Soft bulbs, leaf spots, or standing water"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "onion",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "chili",
+    "crop_family": "solanaceous",
+    "region": "India",
+    "optimal_temperature_c": [
+      18,
+      32
+    ],
+    "heat_threshold_c": 36,
+    "cold_threshold_c": 10,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.8,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 78,
+    "wind_threshold_kmh": 40,
+    "stages": {
+      "flowering": "Heat and rain can cause flower drop.",
+      "fruiting": "Humid weather can increase fruit and leaf disease risk."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "heat",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Improve air flow, drainage, and shelter from strong winds."
+    ],
+    "warning_signs": [
+      "Leaf spots, flower drop, or soft fruit"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default",
+    "crop_id": "green_chilli"
+  },
+  {
+    "crop": "brinjal",
+    "crop_family": "solanaceous",
+    "region": "India",
+    "optimal_temperature_c": [
+      22,
+      30
+    ],
+    "heat_threshold_c": 36,
+    "cold_threshold_c": 12,
+    "heavy_rain_mm": 30,
+    "waterlogging_sensitivity": 0.8,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 40,
+    "stages": {
+      "flowering": "Wet, humid weather may affect flowers and foliage.",
+      "fruiting": "Monitor fruit rot after frequent rain."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "heat"
+    ],
+    "preventive_actions": [
+      "Keep foliage dry where possible and maintain drainage."
+    ],
+    "warning_signs": [
+      "Leaf spots, fruit rot, or flower drop"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "brinjal",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  },
+  {
+    "crop": "okra",
+    "crop_family": "malvaceous",
+    "region": "India",
+    "optimal_temperature_c": [
+      24,
+      32
+    ],
+    "heat_threshold_c": 38,
+    "cold_threshold_c": 15,
+    "heavy_rain_mm": 35,
+    "waterlogging_sensitivity": 0.75,
+    "drought_sensitivity": 0.55,
+    "humidity_threshold": 80,
+    "wind_threshold_kmh": 45,
+    "stages": {
+      "flowering": "Rain and humidity can affect flowers and pollination.",
+      "fruiting": "Frequent wetness may increase disease risk."
+    },
+    "risks": [
+      "high_humidity",
+      "waterlogging",
+      "heat",
+      "wind"
+    ],
+    "preventive_actions": [
+      "Clear drainage and harvest pods regularly after wet weather."
+    ],
+    "warning_signs": [
+      "Leaf spots, flower drop, or soft pods"
+    ],
+    "source": "Project-configured heuristic defaults; no crop-specific source document is currently linked.",
+    "crop_id": "okra",
+    "knowledge_status": "LIMITED",
+    "threshold_evidence_status": "unverified_project_default"
+  }
+]

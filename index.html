@@ -433,6 +433,12 @@
     line-height: 1.6;
   }
 
+  .assistant-panel{ margin-top:28px; }
+  .assistant-form{ display:flex; gap:12px; }
+  .assistant-form input{ flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:7px; font-size:14px; }
+  .assistant-form button{ padding:12px 18px; background:var(--leaf-deep); color:var(--paper); border:0; border-radius:7px; font-weight:600; }
+  .assistant-answer{ margin:16px 0 0; padding:14px; background:#FAFAF4; border-left:3px solid var(--gold); color:var(--muted); font-size:14px; line-height:1.6; }
+
   @media (max-width: 880px){
     #login-view{ grid-template-columns: 1fr; }
     .login-visual{ min-height: 320px; padding: 32px; }
@@ -518,20 +524,20 @@
   <main class="app-main">
     <div class="app-intro">
       <h1>Upload a leaf photo</h1>
-      <p>Take a clear, well-lit photo of the affected leaf against a plain background, then upload it below for analysis.</p>
+      <p>Take a clear, well-lit photo of the affected leaf against a plain background. The local ML model identifies the crop and disease, while Gemini Vision adds symptoms, cure, and prevention guidance.</p>
     </div>
 
     <div class="workspace">
       <!-- Upload panel -->
       <section class="panel">
         <h3>Photo</h3>
-        <p class="panel-sub">JPG or PNG, up to 10MB.</p>
+        <p class="panel-sub">JPG, PNG, or WEBP, up to 10MB.</p>
 
         <div class="dropzone" id="dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
           <p>Drag a photo here, or click to browse</p>
           <p class="hint">One leaf per photo works best</p>
-          <input type="file" id="file-input" accept="image/png, image/jpeg" />
+          <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" />
         </div>
 
         <div class="preview-block hidden" id="preview-block">
@@ -565,6 +571,16 @@
         </div>
       </section>
     </div>
+
+    <section class="panel assistant-panel">
+      <h3>Ask the agriculture assistant</h3>
+      <p class="panel-sub">Ask about crop symptoms, soil, irrigation, or pest management.</p>
+      <form class="assistant-form" id="assistant-form">
+        <input id="assistant-question" type="text" placeholder="e.g. Why are my tomato leaves turning yellow?" />
+        <button type="submit">Ask</button>
+      </form>
+      <p id="assistant-answer" class="assistant-answer hidden"></p>
+    </section>
   </main>
 </div>
 
@@ -619,8 +635,12 @@
   var resultEmpty = document.getElementById('result-empty');
   var resultLoading = document.getElementById('result-loading');
   var resultContent = document.getElementById('result-content');
+  var assistantForm = document.getElementById('assistant-form');
+  var assistantQuestion = document.getElementById('assistant-question');
+  var assistantAnswer = document.getElementById('assistant-answer');
 
   var currentObjectUrl = null;
+  var selectedFile = null;
 
   dropzone.addEventListener('click', function(){ fileInput.click(); });
 
@@ -646,12 +666,13 @@
   });
 
   function handleFile(file){
-    if(!file.type.match('image/(png|jpeg)')){
-      alert('Please choose a JPG or PNG image.');
+    if(!file.type.match('image/(png|jpeg|webp)')){
+      alert('Please choose a JPG, PNG, or WEBP image.');
       return;
     }
     if(currentObjectUrl){ URL.revokeObjectURL(currentObjectUrl); }
     currentObjectUrl = URL.createObjectURL(file);
+    selectedFile = file;
 
     previewImg.src = currentObjectUrl;
     previewName.textContent = file.name;
@@ -668,6 +689,7 @@
 
   function resetUpload(){
     fileInput.value = '';
+    selectedFile = null;
     if(currentObjectUrl){ URL.revokeObjectURL(currentObjectUrl); currentObjectUrl = null; }
     previewBlock.classList.add('hidden');
     clearBtn.classList.add('hidden');
@@ -677,54 +699,65 @@
     resultContent.classList.add('hidden');
   }
 
-  /* ---------- Analyze ----------
-     This is a placeholder that simulates a model response so the
-     frontend flow is complete end-to-end. Replace runAnalysis() with
-     a real call to your ML backend, e.g.:
-
-     async function runAnalysis(file){
-       const formData = new FormData();
-       formData.append('image', file);
-       const res = await fetch('/api/analyze', { method:'POST', body: formData });
-       return await res.json(); // { disease, crop, confidence, healthy, recommendations }
-     }
-  ------------------------------------------------------------------ */
-
-  var sampleResults = [
-    { crop:'Tomato', disease:'Early Blight', healthy:false, confidence:0.91,
-      recommendations:['Remove and destroy affected leaves', 'Apply a copper-based fungicide', 'Avoid overhead watering', 'Rotate crops next season'] },
-    { crop:'Rice', disease:'Bacterial Leaf Blight', healthy:false, confidence:0.87,
-      recommendations:['Drain the field to reduce humidity', 'Use a resistant variety next sowing', 'Apply recommended bactericide', 'Avoid excess nitrogen fertilizer'] },
-    { crop:'Cotton', disease:'No disease detected', healthy:true, confidence:0.95,
-      recommendations:['Continue regular monitoring', 'Maintain current irrigation schedule', 'Re-check in 7–10 days'] },
-    { crop:'Wheat', disease:'Leaf Rust', healthy:false, confidence:0.83,
-      recommendations:['Apply a triazole fungicide promptly', 'Monitor neighboring fields for spread', 'Consider a rust-resistant variety next season'] }
-  ];
-
-  analyzeBtn.addEventListener('click', function(){
+  analyzeBtn.addEventListener('click', async function(){
     resultEmpty.classList.add('hidden');
     resultContent.classList.add('hidden');
     resultLoading.classList.remove('hidden');
     analyzeBtn.disabled = true;
 
-    // Simulated latency — swap this block for the real API call above.
-    setTimeout(function(){
-      var r = sampleResults[Math.floor(Math.random() * sampleResults.length)];
+    var r;
+    try{
+      var formData = new FormData();
+      formData.append('image', selectedFile);
+      var response = await fetch('/api/predict', { method:'POST', body:formData });
+      if(!response.ok){ throw new Error('Prediction request failed'); }
+      r = await response.json();
+    }catch(error){
+      resultLoading.classList.add('hidden');
+      resultContent.innerHTML = '<div class="result-note">The prediction service is unavailable. Please try again or consult a local agriculture expert.</div>';
+      resultContent.classList.remove('hidden');
+      analyzeBtn.disabled = false;
+      return;
+    }
+
       renderResult(r);
       resultLoading.classList.add('hidden');
       resultContent.classList.remove('hidden');
       analyzeBtn.disabled = false;
-    }, 1400);
+  });
+
+  assistantForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var question = assistantQuestion.value.trim();
+    if(!question){ return; }
+    assistantAnswer.textContent = 'Thinking...';
+    assistantAnswer.classList.remove('hidden');
+    try{
+      var response = await fetch('/api/chat', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({message:question})
+      });
+      var data = await response.json();
+      if(!response.ok){ throw new Error(data.error || 'Assistant request failed'); }
+      assistantAnswer.textContent = data.answer;
+    }catch(error){
+      assistantAnswer.textContent = 'The assistant API is offline. Include the crop, location, growth stage, and visible symptoms when you consult an agriculture expert.';
+    }
   });
 
   function renderResult(r){
-    var pct = Math.round(r.confidence * 100);
+    var pct = Number.isFinite(Number(r.confidence)) ? Math.round(Number(r.confidence) * 100) : 0;
     var statusClass = r.healthy ? 'healthy' : 'disease';
     var statusLabel = r.healthy ? 'Healthy' : 'Disease detected';
 
-    var recs = r.recommendations.map(function(item){
+    var recs = (r.recommendations || []).map(function(item){
       return '<li>' + item + '</li>';
     }).join('');
+    var symptoms = Array.isArray(r.symptoms) ? r.symptoms.join(', ') : (r.symptoms || '');
+    var details = '';
+    if(symptoms){ details += '<p><strong>Symptoms:</strong> ' + symptoms + '</p>'; }
+    if(r.treatment){ details += '<p><strong>Cure:</strong> ' + r.treatment + '</p>'; }
+    if(r.prevention){ details += '<p><strong>Prevention:</strong> ' + r.prevention + '</p>'; }
 
     resultContent.innerHTML =
       '<span class="result-status ' + statusClass + '"><span class="dot"></span>' + statusLabel + '</span>' +
@@ -738,7 +771,8 @@
         '<h4>Recommended action</h4>' +
         '<ul>' + recs + '</ul>' +
       '</div>' +
-      '<div class="result-note">This result is generated by a placeholder — connect your trained model\'s API to replace runAnalysis() with real predictions.</div>';
+      (details ? '<div class="recommend-block"><h4>Vision analysis</h4>' + details + '</div>' : '') +
+      '<div class="result-note">Model status: ' + (r.model_status || 'connected') + '. Use this result as decision support and confirm treatment with a local agriculture expert.</div>';
   }
 
 })();
