@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Close-up of healthy crop leaves</title>
+  <desc id="desc">Bold green leaves with lime veins and dew, lit by a soft warm glow.</desc>
+  <defs>
+    <radialGradient id="bg" cx=".28" cy=".18" r=".9">
+      <stop offset="0" stop-color="#3f6b44"/>
+      <stop offset=".52" stop-color="#25462f"/>
+      <stop offset="1" stop-color="#10251a"/>
+    </radialGradient>
+    <linearGradient id="leafA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b7d98b"/>
+      <stop offset=".5" stop-color="#6fa15f"/>
+      <stop offset="1" stop-color="#356742"/>
+    </linearGradient>
+    <linearGradient id="leafB" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d6ed9d"/>
+      <stop offset=".55" stop-color="#88b96d"/>
+      <stop offset="1" stop-color="#4b7d4b"/>
+    </linearGradient>
+    <linearGradient id="leafC" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#426f45"/>
+      <stop offset="1" stop-color="#1c3a25"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#f6ecb4" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#f6ecb4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="blur"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <circle cx="720" cy="150" r="310" fill="url(#glow)"/>
+  <circle cx="735" cy="155" r="62" fill="#f0dfa2" opacity=".55" filter="url(#blur)"/>
+
+  <g opacity=".22" fill="none" stroke="#d7e9b6" stroke-width="2">
+    <path d="M120 720c90-160 200-280 360-380"/>
+    <path d="M80 790c110-180 250-310 430-410"/>
+  </g>
+
+  <g transform="translate(120 470) rotate(-24)">
+    <path d="M0 0C120-150 360-170 520 0 360 170 120 150 0 0Z" fill="url(#leafA)"/>
+    <path d="M0 0C180-18 360-18 520 0" stroke="#dff0bc" stroke-width="7" fill="none" opacity=".8"/>
+    <g stroke="#d8ebb6" stroke-width="3" opacity=".55">
+      <path d="M120-36c40-44 84-72 130-92"/>
+      <path d="M220-30c34-40 70-62 108-80"/>
+      <path d="M120 36c40 44 84 72 130 92"/>
+      <path d="M220 30c34 40 70 62 108 80"/>
+    </g>
+  </g>
+
+  <g transform="translate(420 650) rotate(18)">
+    <path d="M0 0C100-140 310-160 450-10 310 140 100 120 0 0Z" fill="url(#leafB)" opacity=".92"/>
+    <path d="M0 0C150-16 300-16 450-10" stroke="#f0f6c8" stroke-width="6" fill="none" opacity=".65"/>
+  </g>
+
+  <g transform="translate(95 120) rotate(12)">
+    <path d="M0 0C70-120 230-150 360-30 230 110 70 80 0 0Z" fill="url(#leafC)" opacity=".9"/>
+    <path d="M0 0C110-14 220-18 360-30" stroke="#b6d38d" stroke-width="4" fill="none" opacity=".45"/>
+  </g>
+
+  <g fill="#eaf6c6" opacity=".75">
+    <circle cx="292" cy="404" r="9"/>
+    <circle cx="331" cy="428" r="5"/>
+    <circle cx="586" cy="585" r="7"/>
+    <circle cx="634" cy="612" r="4"/>
+    <circle cx="206" cy="224" r="5"/>
+  </g>
+
+  <g fill="#17301f" opacity=".55">
+    <path d="M0 800c140-44 280-56 420-30 160 30 320 30 480-14v144H0Z"/>
+  </g>
+
+  <rect width="900" height="900" filter="url(#grain)" opacity=".55"/>
+</svg>
