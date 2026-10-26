@@ -55,17 +55,17 @@ After the service is created, go to **Settings → Environment** and add all of 
 ```
 FLASK_SECRET_KEY=replace-with-a-random-secret-of-at-least-32-characters
 DATABASE_URL=postgresql://postgres:password@internal-db-address:5432/crop_ai
-DATA_GOV_IN_API_KEY=579b464db66ec23bdd000001a49705a12d4e41fb5a68da65d7e8f7e2
+DATA_GOV_IN_API_KEY=your-data-gov-in-key
 DATA_GOV_IN_MANDI_RESOURCE_ID=9ef84268-d588-465a-a308-a864a43d0070
 DATA_GOV_IN_BASE_URL=https://api.data.gov.in/resource
-GEMINI_API_KEY=AQ.Ab8RN6Jr-UAJ6IF1wQikfs_SyFy23GQgoEnN6RqTiwgMz_4DOA
+GEMINI_API_KEY=your-gemini-api-key
 GEMINI_MODEL=gemini-3.6-flash
 WEATHER_API_URL=https://api.openweathermap.org/data/2.5/forecast
-WEATHER_API_KEY=655dbbf0ff1491deedcbec2ad444d070
+WEATHER_API_KEY=your-openweather-key
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_USERNAME=nikhilkrsingh2004@gmail.com
-SMTP_PASSWORD=Nikhil@123
+SMTP_PASSWORD=your-smtp-password
 SMTP_FROM=nikhilkrsingh2004@gmail.com
 ```
 
@@ -110,17 +110,17 @@ Your project already has `Dockerfile` and `docker-compose.yml`, making Docker de
 ```
 DATABASE_URL=postgresql://postgres:NIKHILSINGH100@localhost:5432/crop_ai
 FLASK_SECRET_KEY=replace-with-a-random-secret-of-at-least-32-characters
-DATA_GOV_IN_API_KEY=579b464db66ec23bdd000001a49705a12d4e41fb5a68da65d7e8f7e2
+DATA_GOV_IN_API_KEY=your-data-gov-in-key
 DATA_GOV_IN_MANDI_RESOURCE_ID=9ef84268-d588-465a-a308-a864a43d0070
 DATA_GOV_IN_BASE_URL=https://api.data.gov.in/resource
-GEMINI_API_KEY=AQ.Ab8RN6Jr-UAJ6IF1wQikfs_SyFy23GQgoEnN6RqTiwgMz_4DOA
+GEMINI_API_KEY=your-gemini-api-key
 GEMINI_MODEL=gemini-3.6-flash
 WEATHER_API_URL=https://api.openweathermap.org/data/2.5/forecast
-WEATHER_API_KEY=655dbbf0ff1491deedcbec2ad444d070
+WEATHER_API_KEY=your-openweather-key
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_USERNAME=nikhilkrsingh2004@gmail.com
-SMTP_PASSWORD=Nikhil@123
+SMTP_PASSWORD=your-smtp-password
 SMTP_FROM=nikhilkrsingh2004@gmail.com
 ```
 
