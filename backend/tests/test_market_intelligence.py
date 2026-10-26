@@ -28,35 +28,24 @@ class Response:
 
 
 class MarketDataTests(unittest.TestCase):
-    def test_requests_client_uses_configured_resource_and_filters(self):
-        class RequestsResponse:
-            status_code = 200
+    def test_default_client_uses_configured_resource_and_filters(self):
+        calls = []
 
-            def raise_for_status(self):
-                return None
+        def opener(req, timeout):
+            calls.append((req.full_url, timeout))
+            return Response({"total": 1, "records": [record()]})
 
-            def json(self):
-                return {"total": 1, "records": [record()]}
-
-        with patch.dict(os.environ, {"DATA_GOV_IN_BASE_URL": "https://api.example.test/resource", "DATA_GOV_IN_MANDI_RESOURCE_ID": "resource-test"}), patch("services.market_data.requests.get", return_value=RequestsResponse()) as get:
-            result = fetch_records("server-key-test", filters={"state": "Maharashtra"}, max_records=1, opener=None)
+        with patch.dict(os.environ, {"DATA_GOV_IN_BASE_URL": "https://api.example.test/resource", "DATA_GOV_IN_MANDI_RESOURCE_ID": "resource-test"}), patch("services.market_data.urlopen", opener):
+            result = fetch_records("server-key-test", filters={"state": "Maharashtra"}, max_records=1)
         self.assertEqual(len(result), 1)
-        self.assertEqual(get.call_args.args[0], "https://api.example.test/resource/resource-test")
-        self.assertEqual(get.call_args.kwargs["params"]["filters[state]"], "Maharashtra")
+        self.assertIn("https://api.example.test/resource/resource-test", calls[0][0])
+        self.assertIn("filters%5Bstate%5D=Maharashtra", calls[0][0])
+        self.assertNotIn("server-key-test", str([item for item in result]))
 
-    def test_requests_client_rejects_malformed_payload(self):
-        class RequestsResponse:
-            status_code = 200
-
-            def raise_for_status(self):
-                return None
-
-            def json(self):
-                return {"total": 1}
-
-        with patch("services.market_data.requests.get", return_value=RequestsResponse()), patch("services.market_data.time.sleep"):
+    def test_client_rejects_malformed_payload(self):
+        with patch("services.market_data.urlopen", lambda req, timeout: Response({"total": 1})), patch("services.market_data.time.sleep"):
             with self.assertRaises(MarketDataError):
-                fetch_records("server-key-test", max_records=1, opener=None)
+                fetch_records("server-key-test", max_records=1)
 
     def test_normalizes_source_fields_and_date(self):
         item = normalize_record(record())
@@ -85,10 +74,25 @@ class MarketDataTests(unittest.TestCase):
         self.assertEqual(item["freshness"], "stale")
 
     def test_provider_failure_is_not_fabricated(self):
-        with self.assertRaises(MarketDataError): fetch_records(api_key="")
+        with patch.dict(os.environ, {"DATA_GOV_IN_API_KEY": "fallback-test-key"}):
+            for missing_key in ("", "   "):
+                with self.subTest(api_key=repr(missing_key)), self.assertRaisesRegex(MarketDataError, "Configure DATA_GOV_IN_API_KEY") as raised:
+                    fetch_records(api_key=missing_key)
+                self.assertNotIn("fallback-test-key", str(raised.exception))
+        with patch.dict(os.environ, {"DATA_GOV_IN_API_KEY": ""}):
+            with self.assertRaisesRegex(MarketDataError, "Configure DATA_GOV_IN_API_KEY"):
+                fetch_records(api_key=None)
         with patch("services.market_data.time.sleep"):
             with self.assertRaises(MarketDataError):
                 fetch_records(api_key="configured", opener=lambda *args, **kwargs: (_ for _ in ()).throw(URLError("offline")))
+
+    def test_omitted_key_uses_configured_environment_key_and_accepts_empty_provider_result(self):
+        with patch.dict(os.environ, {"DATA_GOV_IN_API_KEY": "configured-test-key"}), \
+                patch("services.market_data._provider_config", return_value=("https://api.example.test/resource", "test-resource")), \
+                patch("services.market_data._request_page", return_value={"total": 0, "records": []}) as request_page:
+            result = fetch_records(api_key=None, max_records=1)
+        self.assertEqual(result, [])
+        self.assertEqual(request_page.call_args.args[0], "configured-test-key")
 
     def test_forecast_requires_history_and_uses_chronological_holdout(self):
         short = [{"observed_on":date(2026,1,1)+timedelta(days=i),"modal_price":100+i} for i in range(30)]

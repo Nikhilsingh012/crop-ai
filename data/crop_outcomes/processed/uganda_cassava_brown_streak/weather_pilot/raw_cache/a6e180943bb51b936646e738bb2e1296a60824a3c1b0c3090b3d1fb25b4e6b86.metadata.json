@@ -1,0 +1,6 @@
+{
+  "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=31.20966&latitude=2.4348&start=20080912&end=20080912&format=JSON&time-standard=LST",
+  "retrieved_at_utc": "2026-10-25T08:18:18.848700+00:00",
+  "http_status": 200,
+  "cache_key_sha256": "a6e180943bb51b936646e738bb2e1296a60824a3c1b0c3090b3d1fb25b4e6b86"
+}

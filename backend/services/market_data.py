@@ -5,7 +5,6 @@ import time
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from hashlib import md5
-import requests
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -90,39 +89,34 @@ def _request_page(api_key, offset, limit, filters=None, opener=None, base_url=No
         if value:
             params[f"filters[{key}]"] = value
     base_url, resource_id = (base_url, resource_id) if base_url and resource_id else _provider_config()
-    url = f"{base_url}/{resource_id}"
+    url = f"{base_url}/{resource_id}?" + urlencode(params)
+    # data.gov.in is frequently slow and occasionally resets TLS connections
+    # from Python's requests/urllib3 stack. urllib's standard HTTP client has
+    # proven reliable here, so it is the default transport for both live API
+    # queries and scheduled ingestion.
+    transport = opener or urlopen
     for attempt in range(3):
         try:
-            if opener is not None:
-                request_url = url + "?" + urlencode(params)
-                req = Request(request_url, headers={"Accept": "application/json", "User-Agent": "CropAI-Mandi/1.0"})
-                with opener(req, timeout=15) as response:
-                    payload = json.loads(response.read().decode("utf-8"))
-            else:
-                response = requests.get(url, params=params, headers={"Accept": "application/json", "User-Agent": "CropAI-Mandi/1.0"}, timeout=(5, 15))
-                if response.status_code in (401, 403):
-                    raise MarketDataError("data.gov.in rejected the configured API credentials")
-                if response.status_code == 429 or response.status_code >= 500:
-                    response.raise_for_status()
-                response.raise_for_status()
-                payload = response.json()
+            request = Request(url, headers={"Accept": "application/json", "User-Agent": "CropAI-Mandi/1.0"})
+            with transport(request, timeout=45) as response:
+                payload = json.loads(response.read().decode("utf-8"))
             if not isinstance(payload, dict) or not isinstance(payload.get("records"), list):
                 raise MarketDataError("data.gov.in returned an unexpected response")
             return payload
         except HTTPError as exc:
+            if exc.code in (401, 403):
+                raise MarketDataError("data.gov.in rejected the configured API credentials") from None
             if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
-                if exc.code in (401, 403):
-                    raise MarketDataError("data.gov.in rejected the configured API credentials")
-                raise MarketDataError(f"data.gov.in request failed (HTTP {exc.code})")
-        except (requests.Timeout, TimeoutError) as exc:
+                raise MarketDataError(f"data.gov.in request failed (HTTP {exc.code})") from None
+        except (TimeoutError, URLError) as exc:
+            timed_out = isinstance(exc, TimeoutError) or isinstance(getattr(exc, "reason", None), TimeoutError)
             if attempt == 2:
-                raise MarketDataError("data.gov.in request timed out; check outbound HTTPS access from the backend host") from None
-        except (requests.ConnectionError, URLError) as exc:
+                if timed_out:
+                    raise MarketDataError("data.gov.in request timed out; check outbound HTTPS access from the backend host") from None
+                raise MarketDataError("Could not connect to data.gov.in; check DNS, proxy, firewall, and outbound HTTPS access") from None
+        except OSError:
             if attempt == 2:
                 raise MarketDataError("Could not connect to data.gov.in; check DNS, proxy, firewall, and outbound HTTPS access") from None
-        except requests.RequestException as exc:
-            if attempt == 2:
-                raise MarketDataError("data.gov.in request failed; inspect the HTTP status and backend network configuration") from None
         except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
             if attempt == 2:
                 raise MarketDataError("data.gov.in returned an invalid JSON response") from None
@@ -130,8 +124,10 @@ def _request_page(api_key, offset, limit, filters=None, opener=None, base_url=No
             time.sleep(0.25 * (2 ** attempt))
 
 
-def fetch_records(api_key=None, filters=None, max_records=10000, opener=urlopen):
-    key = api_key or os.getenv("DATA_GOV_IN_API_KEY", "").strip()
+def fetch_records(api_key=None, filters=None, max_records=10000, opener=None):
+    # `None` means use backend configuration. An explicitly supplied empty key
+    # is a caller error and must not silently fall back to another credential.
+    key = os.getenv("DATA_GOV_IN_API_KEY", "").strip() if api_key is None else str(api_key).strip()
     if not key:
         raise MarketDataError("Configure DATA_GOV_IN_API_KEY on the backend to fetch official mandi data")
     if max_records < 1 or max_records > 100000:
@@ -141,7 +137,7 @@ def fetch_records(api_key=None, filters=None, max_records=10000, opener=urlopen)
     fetched_at = datetime.now(timezone.utc)
     while offset < max_records and (total is None or offset < total):
         limit = min(PAGE_SIZE, max_records - offset)
-        payload = _request_page(key, offset, limit, filters, None if opener is urlopen else opener, base_url, resource_id)
+        payload = _request_page(key, offset, limit, filters, opener, base_url, resource_id)
         try:
             total = int(payload.get("total", offset + len(payload["records"])))
         except (ValueError, TypeError):

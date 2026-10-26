@@ -1,9 +1,28 @@
 import os
+import urllib.error
 import time
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from datetime import datetime, timezone
+
+from services.weather import forecast_weather
 
 _CACHE = {}
+
+
+class WeatherProviderError(RuntimeError):
+    """Safe provider failure that does not expose request URLs or credentials."""
+
+    def __init__(self, status, message):
+        super().__init__(message)
+        self.provider_status = status
+        self.provider_error = message
+
+
+def _provider_failure(error):
+    if isinstance(error, urllib.error.HTTPError):
+        return f"Weather provider returned HTTP {error.code}."
+    if isinstance(error, TimeoutError) or (isinstance(error, urllib.error.URLError) and isinstance(error.reason, TimeoutError)):
+        return "Weather provider request timed out."
+    return f"Weather provider request failed ({type(error).__name__})."
 
 
 def _demo(latitude, longitude):
@@ -11,14 +30,7 @@ def _demo(latitude, longitude):
 
 
 def _fetch(latitude, longitude):
-    query = urlencode({"latitude":latitude,"longitude":longitude,"current":"temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m","daily":"precipitation_sum,temperature_2m_max,temperature_2m_min,precipitation_probability_max","forecast_days":7,"timezone":"auto"})
-    with urlopen(Request(f"https://api.open-meteo.com/v1/forecast?{query}", headers={"Accept":"application/json"}), timeout=8) as response:
-        payload = __import__("json").loads(response.read().decode("utf-8"))
-    current, daily = payload.get("current", {}), payload.get("daily", {})
-    forecast = []
-    for index, date in enumerate(daily.get("time", [])):
-        forecast.append({"date":date,"rainfall":(daily.get("precipitation_sum", [0])[index] or 0),"temperature_max":daily.get("temperature_2m_max", [None])[index],"temperature_min":daily.get("temperature_2m_min", [None])[index],"precipitation_probability":daily.get("precipitation_probability_max", [0])[index]})
-    return {"provider":"open-meteo","latitude":latitude,"longitude":longitude,"timezone":payload.get("timezone"),"temperature":current.get("temperature_2m"),"humidity":current.get("relative_humidity_2m"),"rainfall":current.get("precipitation"),"wind_speed":current.get("wind_speed_10m"),"weather_condition":current.get("weather_code"),"precipitation_probability":max((item.get("precipitation_probability", 0) or 0) for item in forecast) if forecast else 0,"forecast":forecast}
+    return forecast_weather(latitude, longitude)
 
 
 def get_weather(latitude, longitude, force=False):
@@ -26,10 +38,22 @@ def get_weather(latitude, longitude, force=False):
     ttl = int(os.getenv("WEATHER_FORECAST_CACHE_TTL_SECONDS", "3600"))
     cached = _CACHE.get(key)
     if cached and not force and time.time() - cached["at"] < ttl:
-        return {**cached["data"], "cache": "hit"}
+        return {**cached["data"], "cache": "hit", "cache_age_seconds": max(0, int(time.time() - cached["at"])), "provider_status": "cached", "freshness_status": "fresh", "stale": False}
     if os.getenv("DEMO_WEATHER_MODE", "false").lower() == "true":
         data = _demo(*key)
+        provider_status = "demo"
     else:
-        data = _fetch(*key)
+        try:
+            data = _fetch(*key)
+            provider_status = "live"
+        except Exception as error:
+            message = _provider_failure(error)
+            if cached:
+                age = max(0, int(time.time() - cached["at"]))
+                status = error.code if isinstance(error, urllib.error.HTTPError) else None
+                return {**cached["data"], "cache": "stale_fallback", "cache_age_seconds": age, "provider_status": "stale_fallback", "freshness_status": "stale", "provider_http_status": status, "provider_error": message, "stale": True}
+            status = error.code if isinstance(error, urllib.error.HTTPError) else None
+            raise WeatherProviderError(status, message) from error
+    data = {**data, "retrieved_at": datetime.now(timezone.utc).isoformat(), "provider_status": provider_status, "freshness_status": "fresh", "stale": False}
     _CACHE[key] = {"at": time.time(), "data": data}
-    return {**data, "cache": "miss"}
+    return {**data, "cache": "miss", "cache_age_seconds": 0, "stale": False}

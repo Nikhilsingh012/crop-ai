@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, jsonify, request
 from authz import current_user_id
 
@@ -26,6 +28,16 @@ def chat():
     if not isinstance(supplied_diagnosis, dict):
         return jsonify({"error": "diagnosis_context must be an object."}), 400
     diagnosis_context = {key: str(supplied_diagnosis[key])[:500] for key in ("crop", "disease", "symptoms", "model_status") if supplied_diagnosis.get(key) is not None}
+    supplied_conversation = payload.get("conversation", [])
+    if not isinstance(supplied_conversation, list):
+        return jsonify({"error": "conversation must be a list of recent messages."}), 400
+    conversation = []
+    for item in supplied_conversation[-8:]:
+        if not isinstance(item, dict) or item.get("role") not in {"user", "assistant"}:
+            continue
+        content = item.get("content")
+        if isinstance(content, str) and content.strip():
+            conversation.append({"role": item["role"], "content": content.strip()[:1200]})
     normalized_question = f" {normalize_text(message)} "
     crop_matches = {}
     for item in load_catalog():
@@ -44,13 +56,15 @@ def chat():
             evidence = []
     if len(crop_matches) > 1:
         evidence = []
-    fallback = "I could not find verified source material for a crop-specific answer. Share the crop and symptoms, or check with your local agriculture extension office."
+    if not os.getenv("GEMINI_API_KEY", "").strip():
+        return jsonify({"error": "Gemini is not configured on the backend. Set GEMINI_API_KEY in the project .env and restart the server."}), 503
     try:
-        answer = answer_question(message, evidence=evidence, language=language, diagnosis_context=diagnosis_context) or fallback
-        source = "gemini" if answer != fallback else "starter-agriculture-assistant"
-    except Exception:
-        answer = fallback
-        source = "starter-agriculture-assistant"
+        answer = answer_question(message, evidence=evidence, language=language, diagnosis_context=diagnosis_context, conversation=conversation)
+        if not answer:
+            return jsonify({"error": "Gemini returned no answer. Please try again."}), 503
+        source = "gemini"
+    except RuntimeError as error:
+        return jsonify({"error": str(error)}), 503
     try:
         record = save_chat(message, answer, source, user_id=user_id)
     except Exception:

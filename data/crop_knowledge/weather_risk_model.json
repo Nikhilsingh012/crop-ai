@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "name": "Kheti Lens Crop Weather Risk Model",
+  "version": "1.0.0",
+  "updated_at": "2026-10-26",
+  "method": "deterministic agronomic suitability heuristic",
+  "is_probability": false,
+  "disclaimer": "Estimated weather-related risk for this crop at this location. It is a transparent agronomic heuristic built from crop tolerances and the local forecast, not a probability of crop loss, a disease diagnosis, or a substitute for field scouting and official advisories.",
+  "score_scale": {
+    "minimum": 0,
+    "maximum": 100,
+    "unit": "percent",
+    "formula": "overall = round(0.65 * weighted_hazard_exposure + 0.35 * peak_hazard_exposure + compound_boost)",
+    "bands": [
+      { "level": "LOW", "tone": "low", "minimum": 0, "maximum": 29, "label": "Low estimated risk", "alert": false },
+      { "level": "MODERATE", "tone": "moderate", "minimum": 30, "maximum": 59, "label": "Moderate estimated risk", "alert": true },
+      { "level": "HIGH", "tone": "high", "minimum": 60, "maximum": 100, "label": "High estimated risk", "alert": true }
+    ]
+  },
+  "weights": {
+    "heat": 0.24,
+    "cold": 0.17,
+    "rain": 0.18,
+    "dry": 0.14,
+    "humidity": 0.17,
+    "wind": 0.1
+  },
+  "hazard_labels": {
+    "heat": "Heat stress",
+    "cold": "Cold / frost stress",
+    "rain": "Excess rain / waterlogging",
+    "dry": "Dry spell / moisture deficit",
+    "humidity": "Humidity-driven disease weather",
+    "wind": "Wind / lodging"
+  },
+  "hazard_actions": {
+    "heat": [
+      "Irrigate in the early morning or evening and keep soil covered to reduce heat load.",
+      "Delay fertiliser or spray operations to cooler hours and check for wilting or leaf scorch."
+    ],
+    "cold": [
+      "Protect sensitive stages with light evening irrigation, mulch, or a crop cover where practical.",
+      "Avoid late-evening irrigation before a cold night and check young plants for frost injury."
+    ],
+    "rain": [
+      "Clear field drains and check low-lying patches before the next rain spell.",
+      "Avoid unnecessary irrigation and inspect roots and stems for waterlogging stress after heavy rain."
+    ],
+    "dry": [
+      "Check soil moisture below the surface before the next irrigation and prioritise the most sensitive stage.",
+      "Mulch or conserve moisture where possible; avoid stressing flowering and fruit-setting plants."
+    ],
+    "humidity": [
+      "Improve air movement around the canopy and avoid overhead irrigation while humidity stays high.",
+      "Scout lower and inner leaves for early spots, blight, or mildew; confirm symptoms before any spray."
+    ],
+    "wind": [
+      "Stake or support tall plants and check trellises, nets, and shade structures before gusty weather.",
+      "Avoid spraying during windy hours and inspect stems for lodging or breakage after the wind event."
+    ]
+  },
+  "stage_multipliers": {
+    "heat": { "germination": 1.05, "seedling": 1.1, "vegetative": 1.0, "tuber_initiation": 1.15, "flowering": 1.3, "fruiting": 1.25, "grain_filling": 1.25, "maturity": 1.1, "harvest": 1.05 },
+    "cold": { "germination": 1.2, "seedling": 1.3, "vegetative": 1.1, "tuber_initiation": 1.15, "flowering": 1.35, "fruiting": 1.3, "grain_filling": 1.15, "maturity": 1.05, "harvest": 1.0 },
+    "rain": { "germination": 1.15, "seedling": 1.2, "vegetative": 1.1, "tuber_initiation": 1.15, "flowering": 1.25, "fruiting": 1.2, "grain_filling": 1.1, "maturity": 1.15, "harvest": 1.3 },
+    "dry": { "germination": 1.2, "seedling": 1.25, "vegetative": 1.05, "tuber_initiation": 1.2, "flowering": 1.3, "fruiting": 1.25, "grain_filling": 1.2, "maturity": 0.95, "harvest": 0.9 },
+    "humidity": { "germination": 1.1, "seedling": 1.15, "vegetative": 1.1, "tuber_initiation": 1.1, "flowering": 1.2, "fruiting": 1.2, "grain_filling": 1.1, "maturity": 1.0, "harvest": 1.05 },
+    "wind": { "germination": 0.9, "seedling": 1.0, "vegetative": 1.0, "tuber_initiation": 1.0, "flowering": 1.25, "fruiting": 1.2, "grain_filling": 1.15, "maturity": 1.05, "harvest": 1.15 }
+  },
+  "category_profiles": {
+    "cereal": { "optimal_temperature_c": [15, 30], "heat_threshold_c": 35, "cold_threshold_c": 5, "heavy_rain_mm": 45, "waterlogging_sensitivity": 0.55, "drought_sensitivity": 0.55, "humidity_threshold": 82, "wind_threshold_kmh": 45, "weekly_water_need_mm": 20, "risks": ["high_humidity", "waterlogging", "heat"] },
+    "pulse": { "optimal_temperature_c": [15, 28], "heat_threshold_c": 33, "cold_threshold_c": 4, "heavy_rain_mm": 35, "waterlogging_sensitivity": 0.75, "drought_sensitivity": 0.7, "humidity_threshold": 80, "wind_threshold_kmh": 40, "weekly_water_need_mm": 16, "risks": ["waterlogging", "high_humidity", "heat"] },
+    "oilseed": { "optimal_temperature_c": [12, 28], "heat_threshold_c": 33, "cold_threshold_c": 3, "heavy_rain_mm": 35, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.65, "humidity_threshold": 78, "wind_threshold_kmh": 45, "weekly_water_need_mm": 16, "risks": ["waterlogging", "high_humidity", "wind"] },
+    "vegetable": { "optimal_temperature_c": [15, 28], "heat_threshold_c": 34, "cold_threshold_c": 5, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.82, "drought_sensitivity": 0.6, "humidity_threshold": 80, "wind_threshold_kmh": 38, "weekly_water_need_mm": 22, "risks": ["high_humidity", "waterlogging", "heat"] },
+    "fruit": { "optimal_temperature_c": [18, 32], "heat_threshold_c": 38, "cold_threshold_c": 7, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.6, "humidity_threshold": 82, "wind_threshold_kmh": 45, "weekly_water_need_mm": 28, "risks": ["wind", "high_humidity", "waterlogging"] },
+    "plantation": { "optimal_temperature_c": [20, 34], "heat_threshold_c": 38, "cold_threshold_c": 10, "heavy_rain_mm": 60, "waterlogging_sensitivity": 0.6, "drought_sensitivity": 0.5, "humidity_threshold": 85, "wind_threshold_kmh": 50, "weekly_water_need_mm": 32, "risks": ["wind", "high_humidity", "waterlogging"] },
+    "spice": { "optimal_temperature_c": [18, 32], "heat_threshold_c": 36, "cold_threshold_c": 8, "heavy_rain_mm": 40, "waterlogging_sensitivity": 0.75, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 40, "weekly_water_need_mm": 20, "risks": ["waterlogging", "high_humidity", "heat"] },
+    "fodder": { "optimal_temperature_c": [15, 32], "heat_threshold_c": 38, "cold_threshold_c": 4, "heavy_rain_mm": 45, "waterlogging_sensitivity": 0.5, "drought_sensitivity": 0.6, "humidity_threshold": 85, "wind_threshold_kmh": 45, "weekly_water_need_mm": 22, "risks": ["waterlogging", "high_humidity", "wind"] },
+    "commercial": { "optimal_temperature_c": [18, 32], "heat_threshold_c": 38, "cold_threshold_c": 8, "heavy_rain_mm": 45, "waterlogging_sensitivity": 0.65, "drought_sensitivity": 0.6, "humidity_threshold": 82, "wind_threshold_kmh": 45, "weekly_water_need_mm": 24, "risks": ["waterlogging", "high_humidity", "wind"] },
+    "generic": { "optimal_temperature_c": [15, 30], "heat_threshold_c": 35, "cold_threshold_c": 5, "heavy_rain_mm": 40, "waterlogging_sensitivity": 0.65, "drought_sensitivity": 0.6, "humidity_threshold": 80, "wind_threshold_kmh": 42, "weekly_water_need_mm": 22, "risks": ["waterlogging", "high_humidity", "heat"] }
+  },
+  "crop_overrides": {
+    "carrot": { "optimal_temperature_c": [15, 22], "heat_threshold_c": 30, "cold_threshold_c": 4, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.8, "drought_sensitivity": 0.55, "humidity_threshold": 78, "wind_threshold_kmh": 40, "weekly_water_need_mm": 20, "risks": ["heat", "waterlogging", "high_humidity"] },
+    "spinach": { "optimal_temperature_c": [10, 24], "heat_threshold_c": 28, "cold_threshold_c": 2, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.75, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 35, "weekly_water_need_mm": 20, "risks": ["heat", "high_humidity", "waterlogging"] },
+    "cabbage": { "optimal_temperature_c": [10, 24], "heat_threshold_c": 28, "cold_threshold_c": 2, "heavy_rain_mm": 35, "waterlogging_sensitivity": 0.75, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 38, "weekly_water_need_mm": 22, "risks": ["heat", "high_humidity", "waterlogging"] },
+    "cauliflower": { "optimal_temperature_c": [12, 25], "heat_threshold_c": 30, "cold_threshold_c": 4, "heavy_rain_mm": 35, "waterlogging_sensitivity": 0.78, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 38, "weekly_water_need_mm": 22, "risks": ["heat", "high_humidity", "waterlogging"] },
+    "cucumber": { "optimal_temperature_c": [18, 30], "heat_threshold_c": 35, "cold_threshold_c": 10, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.82, "drought_sensitivity": 0.65, "humidity_threshold": 82, "wind_threshold_kmh": 35, "weekly_water_need_mm": 24, "risks": ["high_humidity", "waterlogging", "heat"] },
+    "lentil": { "optimal_temperature_c": [15, 27], "heat_threshold_c": 32, "cold_threshold_c": 3, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.8, "drought_sensitivity": 0.65, "humidity_threshold": 78, "wind_threshold_kmh": 38, "weekly_water_need_mm": 15, "risks": ["waterlogging", "high_humidity", "heat"] },
+    "soybean": { "optimal_temperature_c": [18, 30], "heat_threshold_c": 35, "cold_threshold_c": 8, "heavy_rain_mm": 40, "waterlogging_sensitivity": 0.75, "drought_sensitivity": 0.65, "humidity_threshold": 80, "wind_threshold_kmh": 40, "weekly_water_need_mm": 20, "risks": ["waterlogging", "high_humidity", "heat"] },
+    "banana": { "optimal_temperature_c": [22, 35], "heat_threshold_c": 38, "cold_threshold_c": 12, "heavy_rain_mm": 60, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 50, "weekly_water_need_mm": 30, "risks": ["wind", "waterlogging", "high_humidity"] },
+    "mango": { "optimal_temperature_c": [24, 35], "heat_threshold_c": 40, "cold_threshold_c": 10, "heavy_rain_mm": 55, "waterlogging_sensitivity": 0.6, "drought_sensitivity": 0.6, "humidity_threshold": 80, "wind_threshold_kmh": 50, "weekly_water_need_mm": 26, "risks": ["wind", "high_humidity", "waterlogging"] },
+    "apple": { "optimal_temperature_c": [15, 24], "heat_threshold_c": 30, "cold_threshold_c": 2, "heavy_rain_mm": 45, "waterlogging_sensitivity": 0.65, "drought_sensitivity": 0.5, "humidity_threshold": 78, "wind_threshold_kmh": 40, "weekly_water_need_mm": 24, "risks": ["heat", "high_humidity", "wind"] },
+    "grapes": { "optimal_temperature_c": [18, 30], "heat_threshold_c": 35, "cold_threshold_c": 8, "heavy_rain_mm": 40, "waterlogging_sensitivity": 0.65, "drought_sensitivity": 0.55, "humidity_threshold": 75, "wind_threshold_kmh": 40, "weekly_water_need_mm": 24, "risks": ["high_humidity", "waterlogging", "wind"] },
+    "tea": { "optimal_temperature_c": [18, 29], "heat_threshold_c": 32, "cold_threshold_c": 8, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.65, "drought_sensitivity": 0.5, "humidity_threshold": 82, "wind_threshold_kmh": 40, "weekly_water_need_mm": 28, "risks": ["waterlogging", "high_humidity", "heat"] },
+    "coffee": { "optimal_temperature_c": [18, 28], "heat_threshold_c": 32, "cold_threshold_c": 8, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.6, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 40, "weekly_water_need_mm": 28, "risks": ["waterlogging", "high_humidity", "wind"] },
+    "coconut": { "optimal_temperature_c": [22, 34], "heat_threshold_c": 37, "cold_threshold_c": 15, "heavy_rain_mm": 60, "waterlogging_sensitivity": 0.55, "drought_sensitivity": 0.5, "humidity_threshold": 78, "wind_threshold_kmh": 55, "weekly_water_need_mm": 30, "risks": ["wind", "drought", "waterlogging"] },
+    "sugarcane": { "optimal_temperature_c": [20, 35], "heat_threshold_c": 40, "cold_threshold_c": 10, "heavy_rain_mm": 70, "waterlogging_sensitivity": 0.6, "drought_sensitivity": 0.55, "humidity_threshold": 85, "wind_threshold_kmh": 55, "weekly_water_need_mm": 32, "risks": ["waterlogging", "wind", "high_humidity"] },
+    "potato": { "optimal_temperature_c": [15, 25], "heat_threshold_c": 30, "cold_threshold_c": 4, "heavy_rain_mm": 30, "waterlogging_sensitivity": 0.85, "drought_sensitivity": 0.55, "humidity_threshold": 80, "wind_threshold_kmh": 45, "weekly_water_need_mm": 22, "risks": ["waterlogging", "high_humidity", "cold"] },
+    "tomato": { "optimal_temperature_c": [18, 30], "heat_threshold_c": 35, "cold_threshold_c": 10, "heavy_rain_mm": 25, "waterlogging_sensitivity": 0.8, "drought_sensitivity": 0.55, "humidity_threshold": 78, "wind_threshold_kmh": 40, "weekly_water_need_mm": 24, "risks": ["high_humidity", "waterlogging", "heat", "wind"] },
+    "wheat": { "optimal_temperature_c": [10, 25], "heat_threshold_c": 30, "cold_threshold_c": 4, "heavy_rain_mm": 35, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.6, "humidity_threshold": 80, "wind_threshold_kmh": 45, "weekly_water_need_mm": 20, "risks": ["heat", "waterlogging", "high_humidity"] },
+    "rice": { "optimal_temperature_c": [20, 35], "heat_threshold_c": 38, "cold_threshold_c": 12, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.55, "drought_sensitivity": 0.45, "humidity_threshold": 82, "wind_threshold_kmh": 45, "weekly_water_need_mm": 30, "risks": ["waterlogging", "high_humidity", "wind"] },
+    "maize": { "optimal_temperature_c": [18, 32], "heat_threshold_c": 36, "cold_threshold_c": 10, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.65, "humidity_threshold": 82, "wind_threshold_kmh": 50, "weekly_water_need_mm": 24, "risks": ["waterlogging", "heat", "wind"] },
+    "cotton": { "optimal_temperature_c": [21, 35], "heat_threshold_c": 40, "cold_threshold_c": 15, "heavy_rain_mm": 50, "waterlogging_sensitivity": 0.7, "drought_sensitivity": 0.65, "humidity_threshold": 82, "wind_threshold_kmh": 50, "weekly_water_need_mm": 26, "risks": ["high_humidity", "waterlogging", "wind"] }
+  }
+}

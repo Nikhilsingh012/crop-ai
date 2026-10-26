@@ -1,5 +1,12 @@
 import os
 import secrets
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+except ModuleNotFoundError:
+    pass
 
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS

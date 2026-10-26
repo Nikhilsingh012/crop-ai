@@ -1,0 +1,653 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-25",
+  "score_scale": {
+    "name": "rule_window_weather_exposure_index",
+    "minimum": 0,
+    "maximum": 100,
+    "is_probability": false,
+    "formula": "round_half_up(100 * exposed observations / valid observations in that verified rule's assessment window)",
+    "boundaries": {
+      "0": "No valid observations in the rule window met the rule condition.",
+      "100": "Every valid observation in the rule window met the rule condition.",
+      "intermediate": "Rounded share of rule-window observations meeting the condition; no LOW/MODERATE/HIGH categories are assigned."
+    },
+    "scope": "Per verified deterministic rule only; do not sum, average, or take a maximum across hazard families.",
+    "note": "A descriptive weather-exposure share, not a probability, disease forecast, or estimate of crop damage. Different rules use different observation units and windows, so their indices are not a crop-wide comparative score. The top-level risk_score remains null for these deterministic indicators."
+  },
+  "required_rule_fields": [
+    "crop_id",
+    "scientific_name",
+    "hazard_type",
+    "growth_stage",
+    "region",
+    "weather_parameter",
+    "unit",
+    "threshold",
+    "operator",
+    "evaluator",
+    "index_bands",
+    "source_url",
+    "publication_title",
+    "publication_date",
+    "verification_status",
+    "last_reviewed"
+  ],
+  "rules": [
+    {
+      "rule_id": "rice_flowering_heat_exposure_35c_india_2019",
+      "crop_id": "rice",
+      "scientific_name": "Oryza sativa L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": "flowering",
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "operator": "gt",
+      "threshold": 35,
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://epubs.icar.org.in/index.php/IJAgS/article/download/86981/35562/222711",
+      "publication_title": "Climate change impacts on rice (Oryza sativa) productivity and strategies for its sustainable management",
+      "publication_date": "2019-02",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "Rice floret development is described as extremely sensitive to temperature above 35 Ã‚Â°C.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Review the current district IMD agromet advisory and confirm any crop intervention with a local KVK or agricultural university."
+      ],
+      "limitations": [
+        "The source describes heat sensitivity during floret development; a farmer-entered flowering stage does not identify the exact anthesis hour.",
+        "The forecast is 2 m air temperature, not panicle or spikelet temperature.",
+        "Heat response differs by ecotype, cultivar, water status and exposure timing; this index is weather exposure only and does not predict sterility or yield loss."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "ICAR review supports rice floret sensitivity above 35 C but does not define a 48-hour exposure requirement; exact anthesis timing is unrepresented.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "potato_tuber_initiation_warm_nights_20c_icar",
+      "crop_id": "potato",
+      "scientific_name": "Solanum tuberosum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "tuber initiation",
+        "tuberization"
+      ],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 20,
+      "operator": "gt",
+      "evaluator": "night_hourly_threshold_exposure",
+      "source_url": "https://www.icar.gov.in/sites/default/files/2022-09/Rabi-Agro-Advisory-2021-22_0.pdf",
+      "publication_title": "ICAR Rabi Agro-Advisory for Farmers 2021-22",
+      "publication_date": "2021",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "ICAR states potato tuberization is highest around 20Ã‚Â°C day and 14Ã‚Â°C night, and night temperature should not be above 20Ã‚Â°C.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check soil moisture and the current district IMD advisory; confirm crop-specific action with a local KVK or horticulture officer."
+      ],
+      "limitations": [
+        "Uses forecast 2 m air temperature at night as a proxy for crop-level night temperature.",
+        "The source gives a production temperature range, not a calibrated short-term damage probability; this is an exposure index only.",
+        "Variety, soil moisture, planting date and local microclimate affect response."
+      ],
+      "source_validation_status": "invalid_claim",
+      "source_validation_note": "Cited ICAR Rabi advisory does not support the quoted 20 C day/14 C night tuberization claim; another ICAR article reports night temperatures above 22 C hamper development, without the claimed short forecast duration.",
+      "citation_status": "claim_mismatch"
+    },
+    {
+      "rule_id": "tomato_reproductive_heat_35c_indian_research",
+      "crop_id": "tomato",
+      "scientific_name": "Solanum lycopersicum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "flowering",
+        "fruiting"
+      ],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 35,
+      "operator": "gt",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7889828/",
+      "publication_title": "High temperature induced changes in quality and yield parameters of tomato (Solanum lycopersicum L.) and similarity coefficients among genotypes using SSR markers",
+      "publication_date": "2021",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The ICAR-IIVR study reports temperatures above 35Ã‚Â°C reduce tomato fruit set and delay normal fruit colour development; it also documents genotype differences.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check irrigation and the current district IMD advisory; get local advice before applying any treatment."
+      ],
+      "limitations": [
+        "Forecast 2 m temperature is not flower or canopy temperature.",
+        "Heat tolerance varies substantially by cultivar and duration; this index reports forecast exposure, not predicted fruit loss."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "The Kerala Agricultural University study used 36 +/- 2 C from flower initiation to maturity for 45 days; it does not validate a 48-hour threshold exposure index at 35 C.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "onion_extreme_heat_42c_icar_dogr",
+      "crop_id": "onion",
+      "scientific_name": "Allium cepa L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": "all",
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 42,
+      "operator": "gte",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://www.dogr.res.in/images/AnnualReport/AnnualReport2023.pdf",
+      "publication_title": "ICAR-Directorate of Onion and Garlic Research Annual Report 2023",
+      "publication_date": "2023",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The ICAR-DOGR annual report states that 42Ã‚Â°C and beyond are damaging for onion crop growth and development.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Treat this as an extreme-heat watch; check the IMD district advisory and contact a local KVK for field-specific advice."
+      ],
+      "limitations": [
+        "Extreme-heat trigger is not a cultivar-specific threshold or calibrated yield-loss model.",
+        "Forecast air temperature may differ from crop canopy temperature."
+      ],
+      "source_validation_status": "promising_incomplete",
+      "source_validation_note": "ICAR-DOGR tested 45-day-old Bhima Shakti and Bhima Kiran plants at 42 C for 24 hours, but explicitly states the study should be repeated; current all-stage, 48-hour rule overgeneralizes.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "wheat_terminal_heat_above_34c_nw_india",
+      "crop_id": "wheat",
+      "scientific_name": "Triticum aestivum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "grain filling",
+        "maturity"
+      ],
+      "region": [
+        "Haryana",
+        "Punjab",
+        "Uttar Pradesh",
+        "Rajasthan",
+        "Delhi"
+      ],
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 34,
+      "operator": "gte",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://csisa.org/wp-content/uploads/sites/2/2014/06/CSISA-Bulletin-CSSRI.pdf",
+      "publication_title": "ICAR-CSSRI Technical Bulletin CSSRI/Karnal/2015/4: Terminal heat effect in wheat",
+      "publication_date": "2015",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The ICAR-CSSRI bulletin describes terminal heat after anthesis in north-western India and reports detrimental effects beyond 34Ã‚Â°C during terminal heat.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check the current IMD district advisory and consult local KVK guidance; avoid making irrigation or input changes from this forecast index alone."
+      ],
+      "limitations": [
+        "Terminal heat effects depend on exposure duration, sowing date, cultivar and crop stage.",
+        "The 2 m hourly forecast is not canopy temperature; index is exposure only, not yield-loss probability."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "The CSSRI bulletin supports terminal heat beyond 34 C during ripening in NW India, but says effects depend on canopy temperature and number of stress days; it does not validate this 48-hour 2 m air-temperature index.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "lentil_reproductive_heat_above_30c_iipr",
+      "crop_id": "lentil",
+      "scientific_name": "Lens culinaris Medik.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "flowering",
+        "grain filling"
+      ],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 30,
+      "operator": "gt",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://www.icar-iipr.org.in/csciences/",
+      "publication_title": "ICAR-Indian Institute of Pulses Research: Crop Sciences",
+      "publication_date": "undated; accessed 2026-10-15",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "ICAR-IIPR reports lentil reproductive and grain-filling traits are severely affected when temperature rises beyond 30Ã‚Â°C.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check the current IMD district advisory and consult a local pulses specialist or KVK for field-specific advice."
+      ],
+      "limitations": [
+        "The source summarizes crop research, not an operational forecast calibration.",
+        "Cultivar and exact reproductive stage alter heat sensitivity; this is temperature exposure only."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "ICAR-IIPR reports lentil traits severely affected above 30 C, but does not specify exposure duration or validate a 48-hour 2 m forecast index.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "pea_reproductive_heat_32c_iivr",
+      "crop_id": "field_pea",
+      "scientific_name": "Pisum sativum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "flowering",
+        "fruiting"
+      ],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 32,
+      "operator": "gte",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9887200/",
+      "publication_title": "Heat stress tolerance in peas (Pisum sativum L.): Current status and way forward",
+      "publication_date": "2023",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The review documents heat sensitivity at temperatures of 32Ã‚Â°C or higher in vegetable pea reproductive development, with clear genotypic differences.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check the current IMD district advisory and consult local KVK guidance."
+      ],
+      "limitations": [
+        "Review evidence combines studies and does not define a field-calibrated forecast injury threshold.",
+        "Response varies by genotype, duration and crop stage; this index is exposure only."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "The review reports 32 C or above for three or more days can negatively affect reproductive processes; the current forecast window is 48 hours, and the review notes inconsistent thresholds.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "garden_pea_reproductive_heat_32c_iivr",
+      "crop_id": "garden_pea",
+      "scientific_name": "Pisum sativum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": [
+        "flowering",
+        "fruiting"
+      ],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 32,
+      "operator": "gte",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9887200/",
+      "publication_title": "Heat stress tolerance in peas (Pisum sativum L.): Current status and way forward",
+      "publication_date": "2023",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The review documents heat sensitivity at temperatures of 32Ã‚Â°C or higher in vegetable pea reproductive development, with clear genotypic differences.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check the current IMD district advisory and consult local KVK guidance."
+      ],
+      "limitations": [
+        "Review evidence combines studies and does not define a field-calibrated forecast injury threshold.",
+        "Response varies by genotype, duration and crop stage; this index is exposure only."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "The review reports 32 C or above for three or more days can negatively affect reproductive processes; the current forecast window is 48 hours, and the review notes inconsistent thresholds.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "spinach_heat_growth_suppression_35c",
+      "crop_id": "spinach",
+      "scientific_name": "Spinacia oleracea L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": "vegetative",
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 35,
+      "operator": "gte",
+      "evaluator": "hourly_threshold_exposure",
+      "source_url": "https://www.publish.csiro.au/cp/pdf/CP22192",
+      "publication_title": "Silicon-mediated improvement of biomass yield and physio-biochemical attributes in heat-stressed spinach",
+      "publication_date": "2023",
+      "last_reviewed": "2026-10-15",
+      "verification_status": "provisional",
+      "evidence_excerpt": "The study reports spinach growth is suppressed at 35Ã‚Â°C and evaluates heat-stressed Desi Palak.",
+      "index_bands": [
+        {
+          "minimum": 0,
+          "maximum": 0,
+          "label": "LOW"
+        },
+        {
+          "minimum": 1,
+          "maximum": 10,
+          "label": "MODERATE"
+        },
+        {
+          "minimum": 11,
+          "maximum": 25,
+          "label": "HIGH"
+        },
+        {
+          "minimum": 26,
+          "maximum": 100,
+          "label": "VERY_HIGH"
+        }
+      ],
+      "recommended_actions": [
+        "Check soil moisture and the current local advisory; confirm any protective action with a local horticulture adviser."
+      ],
+      "limitations": [
+        "Evidence is cultivar- and experiment-specific; forecast 2 m air temperature may not equal leaf temperature.",
+        "This index reports exposure and does not predict biomass loss or bolting."
+      ],
+      "source_validation_status": "incomplete_evidence",
+      "source_validation_note": "The cited study is a Pakistan glasshouse experiment on Desi Palak and cites prior work for suppression at 35 C; it does not validate a 48-hour India-wide forecast threshold.",
+      "citation_status": "valid_authoritative"
+    },
+    {
+      "rule_id": "wheat_grain_filling_daily_tmax_above_30c_imd_kalp",
+      "crop_id": "wheat",
+      "scientific_name": "Triticum aestivum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": ["grain filling", "grain fill"],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "daily_field": "temperature_max",
+      "unit": "deg C",
+      "threshold": 30,
+      "operator": "gt",
+      "evaluator": "daily_max_threshold_indicator",
+      "forecast_window_days": 5,
+      "minimum_samples": 5,
+      "source_url": "https://mausam.imd.gov.in/imd_latest/contents/agromet/kalp/kalp.pdf",
+      "publication_title": "KALP (Krishi Advisory based on Location-specific Weather Prediction) Operational Manual",
+      "publication_date": "undated; accessed 2026-10-22",
+      "last_reviewed": "2026-10-22",
+      "verification_status": "verified",
+      "source_validation_status": "verified",
+      "citation_status": "valid_authoritative",
+      "evidence_excerpt": "KALP Forecast/Likely Impact table, p. 9: Tmax > 30Â°C during grain filling stage of wheat.",
+      "source_validation_note": "The IMD KALP example directly compares forecast daily Tmax with >30 C for wheat at grain filling. This rule reports the daily exposure indicator only; it is not a calibrated damage probability.",
+      "recommended_actions": ["Check soil moisture and the current IMD district agromet advisory before taking crop-protection action."],
+      "limitations": ["The source is an IMD advisory threshold example, not a probability model or quantified yield-loss calibration.", "The indicator uses gridded 2 m daily Tmax as a forecast proxy and reports only whether the published threshold is crossed." ]
+    },
+    {
+      "rule_id": "potato_tuberization_daily_tmin_at_or_above_20c_icar_cpri",
+      "crop_id": "potato",
+      "scientific_name": "Solanum tuberosum L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": ["tuberization", "tuber initiation"],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 20,
+      "operator": "gte",
+      "daily_field": "temperature_min",
+      "evaluator": "daily_min_temperature_condition_indicator",
+      "forecast_window_days": 2,
+      "minimum_samples": 2,
+      "source_url": "https://www.icar.gov.in/sites/default/files/2022-06/IH-November-December-2019.pdf",
+      "publication_title": "Potato at a Glance, Indian Horticulture (ICAR-CPRI)",
+      "publication_date": "2019-11/12",
+      "last_reviewed": "2026-10-22",
+      "verification_status": "verified",
+      "source_validation_status": "verified",
+      "citation_status": "valid_authoritative",
+      "evidence_excerpt": "Climate and soil requirement: Optimum temperature: 18â€“22Â°C (< 20Â°C night temp. for tuberization).",
+      "source_validation_note": "The national ICAR-CPRI fact sheet states the tuberization night-temperature condition as below 20Â°C. The evaluator flags forecast nighttime samples at or above 20Â°C as outside that stated condition only; it does not infer crop damage.",
+      "recommended_actions": ["Check the current local IMD advisory and discuss field-specific measures with a local horticulture adviser."],
+      "limitations": ["The source gives a preferred tuberization temperature condition, not a damage probability or exposure-duration response.", "The two consecutive future calendar-day Tmin forecasts are the application reporting horizon, not a duration validated by the source.", "Forecast daily minimum 2 m air temperature is a proxy for the source's nighttime temperature condition and may differ from temperature within the crop canopy or soil around tubers."]
+    },
+    {
+      "rule_id": "rice_flowering_hourly_temperature_above_35c_icar_review",
+      "crop_id": "rice",
+      "scientific_name": "Oryza sativa L.",
+      "hazard_type": "HEAT_STRESS",
+      "growth_stage": ["flowering", "anthesis"],
+      "region": "India",
+      "weather_parameter": "temperature_2m",
+      "unit": "deg C",
+      "threshold": 35,
+      "operator": "gt",
+      "evaluator": "hourly_temperature_condition_indicator",
+      "window_hours": 48,
+      "minimum_samples": 48,
+      "source_url": "https://epubs.icar.org.in/index.php/IJAgS/article/download/86981/35562/222711",
+      "publication_title": "Climate change impacts on rice (Oryza sativa) productivity and strategies for its sustainable management",
+      "publication_date": "2019-02",
+      "last_reviewed": "2026-10-22",
+      "verification_status": "verified",
+      "source_validation_status": "verified",
+      "citation_status": "valid_authoritative",
+      "evidence_excerpt": "Printed p. 4 (journal p. 173): development of florets is extremely sensitive to temperature higher than 35Â°C. Printed p. 7: anthesis was observed as the most sensitive stage to high temperature; heading and flowering appeared to be the most sensitive stages.",
+      "source_validation_note": "The ICAR ePubs review states the >35Â°C rice floret sensitivity condition and identifies anthesis/flowering as sensitive stages. This rule requires 48 consecutive hourly timestamps anchored to the first full hour after forecast issuance and detects hourly 2 m forecast temperature strictly above the threshold; the 48-hour window is the application's reporting window, not a source-validated damaging duration.",
+      "limitations": ["This is a deterministic forecast exposure flag, not confirmed floret injury, sterility, yield loss, or a calibrated probability.", "The source does not specify a damaging exposure duration; the app reports the timestamp(s) of hourly forecasts above 35Â°C within its 48-hour window.", "Open-Meteo 2 m air temperature is a proxy and is not panicle or floret temperature; cultivar, ecotype, water status and precise anthesis timing are not represented.", "The source is an India-authored review summarizing cited studies; local cultivar and field performance may need validation."]
+    }
+  ],
+  "coverage_note": "The nine prior heat source records remain provisional. Separate verified weather-condition indicators are executable for wheat grain-filling Tmax, potato tuberization nighttime temperature, and rice flowering hourly temperature exposure. These are deterministic forecast conditions, not probabilities of crop damage. See data/crop_knowledge/risk_rule_evidence.md and data/crop_knowledge/jhulsacast_source_audit.md for source limitations.",
+  "hazards_without_verified_rules": [
+    "EXCESS_RAINFALL",
+    "COLD_FROST",
+    "DRY_SPELL",
+    "DISEASE_FAVOURABLE_WEATHER",
+    "SEVERE_WEATHER"
+  ],
+  "references": [
+    {
+      "title": "KALP (Krishi Advisory based on Location-specific Weather Prediction) Operational Manual",
+      "source": "India Meteorological Department",
+      "source_url": "https://mausam.imd.gov.in/imd_latest/contents/agromet/kalp/kalp.pdf",
+      "publication_date": "undated; accessed 2026-10-22",
+      "use": "Verified deterministic wheat grain-filling daily Tmax indicator: strictly above 30 deg C in the five-day forecast window; not a calibrated damage probability."
+    },
+    {
+      "title": "Potato at a Glance",
+      "source": "ICAR-Central Potato Research Institute / Indian Horticulture",
+      "source_url": "https://www.icar.gov.in/sites/default/files/2022-06/IH-November-December-2019.pdf",
+      "publication_date": "2019-11/12",
+      "use": "Potato tuberization preferred night temperature condition (<20Â°C); application flags daily minimum forecast temperature at or above 20Â°C only and makes no damage prediction."
+    },
+    {
+      "title": "Climate change impacts on rice (Oryza sativa) productivity and strategies for its sustainable management",
+      "source": "Indian Journal of Agricultural Sciences / ICAR ePubs; Punjab Agricultural University and ICAR-IARI authors",
+      "source_url": "https://epubs.icar.org.in/index.php/IJAgS/article/download/86981/35562/222711",
+      "publication_date": "2019-02",
+      "use": "Rice flowering heat exposure trigger (>35 Ã‚Â°C) only; limitations on exact stage timing, cultivar response and air-temperature proxy are returned with each assessment."
+    },
+    {
+      "title": "Agromet Advisory Services: current district bulletins",
+      "source": "India Meteorological Department",
+      "source_url": "https://mausam.imd.gov.in/responsive/agromet_adv_ser_district_current_en.php",
+      "use": "Farmer-facing link to current location-specific official advisories; not automatically parsed or treated as a crop threshold."
+    },
+    {
+      "title": "Current State Agromet Bulletins",
+      "source": "India Meteorological Department",
+      "source_url": "https://mausam.imd.gov.in/imd_latest/contents/agromet/advisory/englishstate_current.php",
+      "use": "Official bulletin directory; no numeric rules are extracted from it."
+    },
+    {
+      "title": "Forecasting Standard Operating Procedure",
+      "source": "India Meteorological Department",
+      "source_url": "https://mausam.imd.gov.in/imd_latest/contents/pdf/forecasting_sop.pdf",
+      "use": "Rainfall category context only; not used as a crop-specific risk threshold."
+    }
+  ],
+  "unverified_legacy_rules_note": "data/crop_knowledge/crops.json contains project heuristic defaults marked unverified_project_default. The risk engine must ignore their numeric thresholds until individually sourced and reviewed."
+}
+

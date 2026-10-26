@@ -1,0 +1,335 @@
+{
+  "audit_date": "2026-10-25",
+  "read_only": true,
+  "source_folder": "data/crop_outcomes/source_files/uganda_cassava_brown_streak",
+  "source_files": {
+    "DATASET_A.csv": {
+      "bytes": 15918245,
+      "sha256": "cb52ad29717331da97b4cbbd6ce10996ebd34cc0f6a99dfa21043e29585ef6b7"
+    },
+    "DATASET_B.csv": {
+      "bytes": 515649,
+      "sha256": "e150c0abb6410a6df69ce779b5280fcfc48a9d3ff76a5e60dcd639eaa7951bcd"
+    },
+    "DATASET_C.csv": {
+      "bytes": 1143719,
+      "sha256": "9cf4d058e89896fd397091aa60f972e57e10dd69f1562e737cb63c0d98e4451c"
+    },
+    "LEGEND_CBSD_DATA.xlsx": {
+      "bytes": 11531,
+      "sha256": "3f74cbead2aa32043a873d499fe112a9b8baed6b0d6b4145ce23488e1cdd0d25"
+    }
+  },
+  "parsing": {
+    "csv_reader": "Python csv.DictReader, utf-8-sig, newline-aware and quote-aware",
+    "missing_markers": [
+      "empty string",
+      "NA",
+      "N/A",
+      "NaN",
+      "nan",
+      "NULL",
+      "null",
+      "-",
+      "--"
+    ],
+    "date_formats_tried_in_order": [
+      "%m/%d/%Y",
+      "%Y-%m-%d",
+      "%Y/%m/%d",
+      "%m/%d/%y"
+    ],
+    "date_format_evidence": "Unambiguous month/day/year values include 9/30/2011 in Dataset A and 8/27/2008 in Dataset C."
+  },
+  "datasets": {
+    "DATASET_A.csv": {
+      "rows": 126599,
+      "columns": [
+        "id",
+        "plant_id",
+        "date",
+        "time",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "county",
+        "district",
+        "subregion",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "intercrop",
+        "variety_sampled",
+        "cbsd_foliar_presence",
+        "cbsd_foliar_severity",
+        "cbsd_in_other_varieties",
+        "adult_whitefly_count"
+      ],
+      "date_rows_nonmissing_and_parsed": 121439,
+      "date_rows_missing": 5160,
+      "date_range": "2004-07-27 through 2017-07-08",
+      "date_year_conflicts": 1,
+      "date_year_conflict_example": {
+        "date": "7/20/2016",
+        "year": "2015"
+      },
+      "coordinate_rows": 126599,
+      "unique_coordinate_pairs": 4187,
+      "latitude_range": [
+        -0.9941667,
+        3.74194
+      ],
+      "longitude_range": [
+        29.7349,
+        34.75756
+      ],
+      "invalid_global_coordinate_count": 0,
+      "missing": {
+        "cbsd_foliar_presence": 25209,
+        "cbsd_foliar_severity": 25209
+      },
+      "presence_counts": {
+        "1_yes": 21309,
+        "0_no": 80081,
+        "missing": 25209
+      },
+      "severity_counts": {
+        "1": 80081,
+        "2": 14127,
+        "3": 6818,
+        "4": 346,
+        "5": 18,
+        "missing": 25209
+      }
+    },
+    "DATASET_B.csv": {
+      "rows": 4956,
+      "columns": [
+        "id",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "sub_county",
+        "district",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "variety_sampled",
+        "variety_2",
+        "variety_3",
+        "variety_4",
+        "cbsd_foliar_incidence",
+        "cbsd_foliar_severity_mean",
+        "adult_whitefly_mean"
+      ],
+      "date_column": null,
+      "year_range": "2004?2017 (year only)",
+      "coordinate_rows": 4956,
+      "unique_coordinate_pairs": 4941,
+      "latitude_range": [
+        -0.98744,
+        3.81916
+      ],
+      "longitude_range": [
+        29.7349,
+        34.78899
+      ],
+      "invalid_global_coordinate_count": 0,
+      "missing": {
+        "cbsd_foliar_incidence": 0,
+        "cbsd_foliar_severity_mean": 2850
+      },
+      "incidence_observed_summary": {
+        "n": 4956,
+        "min": 0,
+        "q1_nearest_rank": 0,
+        "median_nearest_rank": 0,
+        "mean": 24.0881288674,
+        "q3_nearest_rank": 43.3,
+        "max": 100,
+        "zero_count": 2850,
+        "greater_than_1_count": 2106
+      },
+      "severity_mean_summary": {
+        "n": 2106,
+        "missing": 2850,
+        "min": 2,
+        "q1_nearest_rank": 2,
+        "median_nearest_rank": 2.1,
+        "mean": 2.2852801519,
+        "q3_nearest_rank": 2.5,
+        "max": 4
+      }
+    },
+    "DATASET_C.csv": {
+      "rows": 7627,
+      "columns": [
+        "id",
+        "date",
+        "time",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "county",
+        "district",
+        "subregion",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "intercrop",
+        "variety_sampled",
+        "variety_2",
+        "variety_3",
+        "variety_4",
+        "cbsd_foliar_incidence",
+        "cbsd_foliar_severity_mean",
+        "cbsd_in_other_varieties",
+        "adult_whitefly_mean",
+        "matched",
+        "data_origin",
+        "dbB_id",
+        "dbA_id"
+      ],
+      "exact_duplicate_rows": 1,
+      "duplicate_ids": {
+        "30218": 2,
+        "31448": 2,
+        "31706": 2,
+        "31824": 2,
+        "34064": 2
+      },
+      "date_rows_nonmissing_and_parsed": 4048,
+      "date_rows_missing": 3579,
+      "date_range": "2004-07-27 through 2017-07-08",
+      "date_year_conflicts": 0,
+      "rows_with_date_and_coordinates": 4048,
+      "coordinate_rows": 7627,
+      "unique_coordinate_pairs": 7581,
+      "latitude_range": [
+        -0.9941667,
+        3.81916
+      ],
+      "longitude_range": [
+        29.7349,
+        34.78899
+      ],
+      "invalid_global_coordinate_count": 0,
+      "missing": {
+        "cbsd_foliar_incidence": 0,
+        "cbsd_foliar_severity_mean": 0,
+        "matched": 0,
+        "data_origin": 0,
+        "dbA_id": 3407,
+        "dbB_id": 2671
+      },
+      "matched_counts": {
+        "YES": 1549,
+        "NO": 6078
+      },
+      "matched_proportions": {
+        "YES": 0.20309427035531663,
+        "NO": 0.7969057296446833
+      },
+      "data_origin_counts": {
+        "dbA": 4220,
+        "dbB": 3407
+      },
+      "data_origin_proportions": {
+        "dbA": 0.5532974957388226,
+        "dbB": 0.4467025042611774
+      },
+      "origin_by_matched": {
+        "dbA": {
+          "YES": 1549,
+          "NO": 2671
+        },
+        "dbB": {
+          "YES": 0,
+          "NO": 3407
+        }
+      },
+      "incidence_summary": {
+        "n": 7627,
+        "min": 0,
+        "q1_nearest_rank": 0,
+        "median_nearest_rank": 0,
+        "mean": 0.2019566623,
+        "q3_nearest_rank": 0.267,
+        "max": 1,
+        "zero_count": 4793,
+        "greater_than_1_count": 0
+      },
+      "severity_mean_summary": {
+        "n": 7627,
+        "min": 1,
+        "q1_nearest_rank": 1,
+        "median_nearest_rank": 1,
+        "mean": 1.4832403696,
+        "q3_nearest_rank": 2,
+        "max": 4.5,
+        "value_1_count": 4793,
+        "greater_than_1_count": 2834
+      }
+    }
+  },
+  "linkage": {
+    "A_unique_field_ids": 4220,
+    "A_plant_rows_per_field": {
+      "29": 1,
+      "30": 4219
+    },
+    "C_rows_linked_by_dbA_id_to_A": 4220,
+    "nonempty_C_dbA_id_not_found_in_A": 0,
+    "C_A_incidence_comparisons_complete": 3273,
+    "C_A_incidence_matches": 3273,
+    "C_A_incidence_mismatches": 0,
+    "C_A_conditional_severity_comparisons_complete": 1365,
+    "C_A_conditional_severity_matches": 1365,
+    "C_A_conditional_severity_mismatches": 0,
+    "C_dbB_ids_found_in_B": 4956,
+    "C_B_incidence_pairs": 4956,
+    "C_equals_B_raw": 2813,
+    "C_equals_B_div_100": 4520,
+    "C_B_neither_relation": 436,
+    "interpretation": "Use documented dbA_id/dbB_id linkage. A is plant-level, clustered within field id. C has 4,220 dbA-origin records and 3,407 dbB-origin records. B/C incidence scale inconsistency is unresolved; do not normalize or combine without source clarification."
+  },
+  "weather_match": {
+    "cassava_C_date_range": "2004-07-27 through 2017-07-08",
+    "C_rows_with_date_and_coordinates": 4048,
+    "weather_source": "Open-Meteo Historical Forecast API output already stored in this project; historical forecast, not observed weather or reanalysis.",
+    "stored_weather_run": "data/historical_weather/2022-01-01_2026-10-20_20261022T190549",
+    "weather_period": "2022-01-01 through 2026-10-20",
+    "hourly_rows": 42096,
+    "requested_coordinate": {
+      "latitude": 28.4744,
+      "longitude": 77.504
+    },
+    "returned_coordinate": {
+      "latitude": 28.50615,
+      "longitude": 77.50853
+    },
+    "temporal_overlap": false,
+    "spatial_overlap": false,
+    "reason": "Cassava observations end in 2017 and lie within latitude -0.9941667..3.81916, longitude 29.7349..34.78899; stored weather begins in 2022 at a Delhi-region point near 28.50615, 77.50853."
+  },
+  "recommended_next_step": "Acquire a documented historical gridded weather product covering Uganda and 2004?2017, preserving station/grid provenance and coordinate resolution. Match Dataset A/C field coordinates to the appropriate grid and pre-observation exposure windows; assess alternate descriptive windows and missing weather. Validate biological windows and any thresholds from cassava/CBSD literature before use.",
+  "legend_definitions": {
+    "A.cbsd_foliar_presence": "CBSD foliar symptoms presence; 0=NO, 1=YES.",
+    "A.cbsd_foliar_severity": "Recorded foliar severity symptoms on ordinal scale [1?5].",
+    "C/B.cbsd_foliar_incidence": "Ratio of infected plants in the field (number infected / number sampled).",
+    "C/B.cbsd_foliar_severity_mean": "Conditional mean of recorded foliar severity symptoms on 30 plants in the field. 1=no disease observed in sampled plants; 2?5=conditional mean of ordinal disease symptom severity scores >1 on scale 2?5.",
+    "C.matched": "Overlapping record between dataset A or B identified? [YES/NO]. The legend does not define the validation procedure.",
+    "C.data_origin": "Origin of field survey data record (dataset A or dataset B).",
+    "C.dbA_id_dbB_id": "Corresponding field ID in DATASET_A / DATASET_B.",
+    "validation_limit": "The legend does not define a validation status/grade, nor does it describe an independent validation protocol."
+  }
+}

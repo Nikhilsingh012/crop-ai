@@ -1,0 +1,43 @@
+# JHULSACAST source and input audit
+
+Reviewed 2026-10-22 for the proposed initial potato late-blight assessment. Decision: **do not implement an automated JHULSACAST warning yet**. The complete ten-page article is accessible inside the 67-page Krishikosh volume, and its model definitions conflict internally. Applying one interpretation would silently select among published criteria.
+
+## Source and applicability
+
+- Publication: B.P. Singh, Islam Ahmad, V.C. Sharma and G.S. Shekhawat, “JHULSACAST: A computerized forecast of potato late blight in western Uttar Pradesh,” *Journal of the Indian Potato Association* 27(1–2), pages 25–34 (2000). [IndianJournals record](https://indianjournals.com/article/pj-27-1and2-004) and [complete Krishikosh volume, article at printed pp. 25–34](https://krishikosh.egranth.ac.in/server/api/core/bitstreams/d635cad4-77ea-4ecf-bfdc-dd36955efd3b/content).
+- Abstract, printed p. 25: the models were developed from nine years of weather data at the Central Potato Research Institute campus, Modipuram, and “specifically developed for predicting late blight in western Uttar Pradesh.” This is the only geographic scope used here; no transfer to all Uttar Pradesh or India is assumed.
+- Methods, printed p. 26: susceptible Kufri Chandramukhi and Kufri Bahar trap nurseries were planted between 15 and 20 October; temperature/RH were recorded below canopy level. From 1991–92, artificially inoculated infected tubers were planted to ensure inoculum (printed pp. 26–27). Thus operational prediction context included susceptible trap plants and an ensured pathogen source; CropAI has neither cultivar/planting-date nor inoculum information.
+- Methods, printed p. 27: temperature and RH are hourly; rainfall is daily. The original interface consumed these measurements from an automatic weather station.
+- Program description, printed p. 27: the software “would decide which of the two models will be operationalized,” but the paper does not specify a deterministic year-classification algorithm. It says rainy and non-rainy conditions were observed, then gives measurable rain of 0.1–0.5 mm for two consecutive days as one rainy-model criterion. The article does not clearly define whether this criterion selects a model/year, is part of a triggering rule after selecting the model, or how to classify a whole crop year before those days occur.
+
+## Criteria as printed, and internal conflict
+
+1. **Abstract, printed p. 25:** rainy-year model: measurable rain **0.1–0.5 mm** for at least **two consecutive days**, 5-day moving **RH >85% for ≥50 hours**, and 5-day moving temperature **7.2–26.6°C for ≥105 hours**. Non-rainy-year model: 7-day moving **RH >85% for ≥60 hours** and temperature **7.2–26.6°C for ≥120 hours**. It then says if “any of the above conditions prevail for 7-consecutive days,” blight would appear within 10 days.
+2. **Results, printed p. 32:** one 7-day condition (RH >85% for ≥50 hours and temperature 7.2–26.6°C for ≥105 hours) is reported to predict 7/9 years, failing in the two rainy years. The alternative rainy criterion is reported as 5-day RH >85% for ≥60 hours, temperature in range for ≥120 hours, plus 0.1–0.5 mm rain on two consecutive days; it forecast correctly in three of nine years. This differs from the abstract's rainy thresholds/windows and from its non-rainy RH threshold.
+3. **Discussion, printed p. 33:** rainy model is stated as measurable rain 0.1–0.5 mm for two consecutive days, 5-day RH >85% for ≥50 hours, and 5-day temperature 7.2–26.6°C for ≥120 hours. This disagrees with the abstract's 105 temperature hours and the Results' 60 RH hours. Non-rainy criteria there are 7-day RH >85% for ≥60 hours and temperature in range for ≥120 hours.
+4. **Warning semantics:** the abstract says conditions must “prevail for 7-consecutive days”; the program description (printed p. 27) says when either model's conditions are fulfilled, the software warns of disease appearance within 7–10 days. The paper does not explain how these statements combine, whether each daily evaluation must meet a rolling-window criterion for seven days, or the forecast issue date relative to that warning.
+
+These differences are material. The 50/60-hour RH and 105/120-hour temperature alternatives cannot be merged, averaged, or selected based on which one seems more plausible. The classification of rainy versus non-rainy model is also not operationally defined well enough to choose thresholds from forecast data without guessing.
+
+## Weather-feed compatibility
+
+The existing Open-Meteo integration requests hourly precipitation, 2 m temperature and 2 m RH, plus daily precipitation sums. The JHULSACAST weather fields and units are broadly compatible: temperature in °C, RH in %, and rainfall in mm. However, the model used observed hourly temperature/RH and daily rainfall at below-canopy/observatory context, while Open-Meteo gives gridded forecast estimates at standard 2 m height; the match is approximate and should be disclosed if the model is later implemented.
+
+A read-only live request to Open-Meteo for 28.98°N, 77.71°E with `forecast_days=7`, `forecast_hours=169`, hourly `precipitation,temperature_2m,relative_humidity_2m`, and `timezone=Asia/Kolkata` returned 169 hourly timestamps from `2026-10-22T14:00` through `2026-10-29T14:00`. Fields and units were `precipitation` mm, `temperature_2m` °C, `relative_humidity_2m` %, `time` ISO 8601. This demonstrates one live location response can supply a seven-day hourly series. It does not establish data completeness for all model/location/time combinations or provide observed weather history.
+
+CropAI's normal provider request currently sets `forecast_hours=49` and `past_hours=0`; the crop-risk route retains the next 48 future hourly records and the evaluator truncates its view to 48. Expanding that request is feasible but insufficient. To calculate seven consecutive daily decisions over rolling 5- or 7-day windows requires more context than a single seven-day forecast (and the paper does not clarify that interpretation); daily rainfall also needs correct local-day aggregation and complete consecutive dates. CropAI has no historical weather series to seed the windows, no named rainy-year classification, and no model-variant selector from the original program.
+
+## Smallest changes needed before implementation
+
+1. Obtain the original FoxPro program/user manual, a correction/erratum, or author/CPRI confirmation resolving the exact production thresholds, rolling-window calculation, seven-consecutive-days rule, and the rainy/non-rainy model selection algorithm.
+2. Establish whether the original model can validly consume gridded 2 m forecasts in place of its below-canopy station measurements and how missing hours/days are treated.
+3. If the warning is confirmed to require seven consecutive daily evaluations of moving windows, provide enough historical plus forecast inputs to reproduce those windows, or obtain confirmation that a single completed 5/7-day window is itself the trigger.
+4. Preserve the documented western Uttar Pradesh scope and explicitly describe output as a model-generated warning for expected initial disease appearance, not observed disease or an infection probability. Its 1997–2000 three-season validation is not evidence of current local performance; local validation remains appropriate.
+
+Until these source/model ambiguities are resolved, no JHULSACAST rule is executable. The existing nine provisional heat rules remain unchanged.
+
+## Punjab JHULSACAST lead: full-text verification status
+
+The [IndianJournals article page](https://indianjournals.com/article/pj-39-2-008) identifies Arora, Ahmad and Singh (2012), *Potato Journal* 39(2), pages 173–176, and exposes an abstract stating that Punjab weather from 1997–2012 was used to calibrate the model. The abstract's proposed seven-day moving conditions are RH ≥85% for ≥90 hours together with temperature 7.2–26.6°C for ≥115 hours, predicting appearance within ten days after the conditions are satisfied. This is a geographically distinct Punjab model, not the western-UP model.
+
+The publication page does not expose the complete four-page paper or its methods/results/tables in the accessible content, and independent searches did not locate an authoritative full-text copy. A 2020 secondary review repeats the threshold but is not a substitute for the requested complete-paper verification. Therefore the exact calculation, local validation result, observation setup, and any other conditions cannot be checked from the complete source; this model remains unavailable. Obtain the full article from the journal, authors, or CPRI to resolve this blocker before implementation.

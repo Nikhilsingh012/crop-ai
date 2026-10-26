@@ -1,0 +1,1109 @@
+{
+  "audit_date": "2026-10-25",
+  "read_only": true,
+  "source_files": {
+    "DATASET_A.csv": {
+      "bytes": 15918245,
+      "sha256": "cb52ad29717331da97b4cbbd6ce10996ebd34cc0f6a99dfa21043e29585ef6b7"
+    },
+    "DATASET_B.csv": {
+      "bytes": 515649,
+      "sha256": "e150c0abb6410a6df69ce779b5280fcfc48a9d3ff76a5e60dcd639eaa7951bcd"
+    },
+    "DATASET_C.csv": {
+      "bytes": 1143719,
+      "sha256": "9cf4d058e89896fd397091aa60f972e57e10dd69f1562e737cb63c0d98e4451c"
+    }
+  },
+  "parsing": {
+    "method": "Python csv.DictReader with UTF-8 BOM and quoted-field support",
+    "missing_markers": [
+      "",
+      "-",
+      "--",
+      "N/A",
+      "NA",
+      "NULL",
+      "NaN",
+      "nan",
+      "null"
+    ],
+    "date_formats": [
+      "%m/%d/%Y",
+      "%Y-%m-%d",
+      "%Y/%m/%d",
+      "%m/%d/%y"
+    ],
+    "date_policy": "Only actual parseable dates are eligible; year-only Dataset B records are not assigned dates."
+  },
+  "datasets": {
+    "DATASET_A.csv": {
+      "rows": 126599,
+      "columns": [
+        "id",
+        "plant_id",
+        "date",
+        "time",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "county",
+        "district",
+        "subregion",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "intercrop",
+        "variety_sampled",
+        "cbsd_foliar_presence",
+        "cbsd_foliar_severity",
+        "cbsd_in_other_varieties",
+        "adult_whitefly_count"
+      ],
+      "observation_unit": "plant-level rows nested in field ID",
+      "date_column": "date",
+      "latitude_column": "latitude",
+      "longitude_column": "longitude",
+      "id_column": "id",
+      "year_column": "year",
+      "date_valid_count": 121439,
+      "date_missing_count": 5160,
+      "date_unparseable_nonmissing_count": 0,
+      "date_range": [
+        "2004-07-27",
+        "2017-07-08"
+      ],
+      "date_formats_observed": {
+        "%m/%d/%Y": 121439
+      },
+      "year_column_counts": {
+        "2004": 18000,
+        "2005": 14280,
+        "2006": 9000,
+        "2007": 7590,
+        "2008": 5670,
+        "2009": 3150,
+        "2010": 15420,
+        "2011": 6000,
+        "2013": 18180,
+        "2014": 6000,
+        "2015": 11219,
+        "2017": 12090
+      },
+      "date_year_conflict_count": 1,
+      "date_year_conflict_examples": [
+        {
+          "date": "2016-07-20",
+          "year": "2015",
+          "id": "2015079"
+        }
+      ],
+      "valid_coordinate_count": 126599,
+      "invalid_or_missing_coordinate_count": 0,
+      "geographic_coverage": {
+        "valid_coordinate_rows": 126599,
+        "unique_coordinate_pairs_all_rows": 4187,
+        "latitude_min": -0.9941667,
+        "latitude_max": 3.74194,
+        "longitude_min": 29.7349,
+        "longitude_max": 34.75756,
+        "distinct_districts": 90,
+        "distinct_regions": 4,
+        "distinct_villages": 3392
+      },
+      "weather_eligible_geographic_coverage": {
+        "unique_location_date_pairs": 4018,
+        "unique_coordinates": 4015,
+        "latitude_min": -0.9941667,
+        "latitude_max": 3.74194,
+        "longitude_min": 29.7349,
+        "longitude_max": 34.75756,
+        "distinct_districts": 89,
+        "distinct_regions": 4
+      },
+      "weather_eligible_rows": 121439,
+      "weather_eligible_unique_ids": 4048,
+      "weather_eligible_unique_location_dates": 4018,
+      "weather_eligible_unique_locations": 4015,
+      "eligible_year_counts_by_row": {
+        "2004": 18000,
+        "2005": 14280,
+        "2006": 9000,
+        "2007": 7590,
+        "2008": 5670,
+        "2009": 3150,
+        "2010": 12420,
+        "2011": 6000,
+        "2013": 18180,
+        "2014": 3840,
+        "2015": 11218,
+        "2016": 1,
+        "2017": 12090
+      },
+      "exact_duplicate_rows": 0,
+      "duplicate_plant_id_field_keys": 0,
+      "repeated_id_group_count": 4220,
+      "repeated_id_rows": 126599,
+      "repeated_id_examples": {
+        "10000": 30,
+        "10001": 30,
+        "10002": 30,
+        "10003": 30,
+        "10004": 30,
+        "10005": 30,
+        "10006": 30,
+        "10007": 30,
+        "10008": 30,
+        "10009": 30,
+        "10010": 30,
+        "10011": 30,
+        "10012": 30,
+        "10013": 30,
+        "10014": 30,
+        "10015": 30,
+        "10016": 30,
+        "10017": 30,
+        "10018": 30,
+        "10019": 30
+      },
+      "field_id_count": 4220,
+      "weather_eligible_field_visit_records": 4048,
+      "field_id_conflicting_eligible_date_coordinate_groups": 3,
+      "field_id_conflict_examples": [
+        {
+          "id": "2015173",
+          "eligible_signatures": [
+            [
+              "2015-07-16",
+              0.91425,
+              33.15658
+            ],
+            [
+              "2015-07-17",
+              0.91425,
+              33.15658
+            ]
+          ]
+        },
+        {
+          "id": "2015046",
+          "eligible_signatures": [
+            [
+              "2015-07-18",
+              0.47354,
+              33.51292
+            ],
+            [
+              "2015-07-19",
+              0.47354,
+              33.51292
+            ]
+          ]
+        },
+        {
+          "id": "2015079",
+          "eligible_signatures": [
+            [
+              "2015-07-20",
+              0.54952,
+              32.63587
+            ],
+            [
+              "2016-07-20",
+              0.54952,
+              32.63587
+            ]
+          ]
+        }
+      ],
+      "field_level_unique_location_dates": 4018,
+      "missing_key_counts": {
+        "id": 0,
+        "date": 5160,
+        "year": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "cbsd_foliar_presence": 25209,
+        "cbsd_foliar_severity": 25209
+      },
+      "disease_label_availability": {
+        "cbsd_foliar_presence": {
+          "nonmissing": 101390,
+          "missing": 25209,
+          "value_counts": {
+            "1": 21309,
+            "0": 80081,
+            "<missing>": 25209
+          }
+        },
+        "cbsd_foliar_severity": {
+          "nonmissing": 101390,
+          "missing": 25209,
+          "value_counts": {
+            "2": 14127,
+            "1": 80081,
+            "3": 6818,
+            "4": 346,
+            "<missing>": 25209,
+            "5": 18
+          }
+        }
+      },
+      "origin_counts": {},
+      "matched_counts": {}
+    },
+    "DATASET_B.csv": {
+      "rows": 4956,
+      "columns": [
+        "id",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "sub_county",
+        "district",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "variety_sampled",
+        "variety_2",
+        "variety_3",
+        "variety_4",
+        "cbsd_foliar_incidence",
+        "cbsd_foliar_severity_mean",
+        "adult_whitefly_mean"
+      ],
+      "observation_unit": "field-level survey summary; year only",
+      "date_column": null,
+      "latitude_column": "latitude",
+      "longitude_column": "longitude",
+      "id_column": "id",
+      "year_column": "year",
+      "date_valid_count": 0,
+      "date_missing_count": 4956,
+      "date_unparseable_nonmissing_count": 0,
+      "date_range": null,
+      "date_formats_observed": {},
+      "year_column_counts": {
+        "2008": 474,
+        "2009": 390,
+        "2010": 698,
+        "2011": 752,
+        "2012": 545,
+        "2013": 1066,
+        "2014": 1031
+      },
+      "date_year_conflict_count": 0,
+      "date_year_conflict_examples": [],
+      "valid_coordinate_count": 4956,
+      "invalid_or_missing_coordinate_count": 0,
+      "geographic_coverage": {
+        "valid_coordinate_rows": 4956,
+        "unique_coordinate_pairs_all_rows": 4941,
+        "latitude_min": -0.98744,
+        "latitude_max": 3.81916,
+        "longitude_min": 29.7349,
+        "longitude_max": 34.78899,
+        "distinct_districts": 63,
+        "distinct_regions": 6,
+        "distinct_villages": 3965
+      },
+      "weather_eligible_geographic_coverage": {},
+      "weather_eligible_rows": 0,
+      "weather_eligible_unique_ids": 0,
+      "weather_eligible_unique_location_dates": 0,
+      "weather_eligible_unique_locations": 0,
+      "eligible_year_counts_by_row": {},
+      "exact_duplicate_rows": 0,
+      "duplicate_plant_id_field_keys": 0,
+      "repeated_id_group_count": 0,
+      "repeated_id_rows": 0,
+      "repeated_id_examples": {},
+      "field_id_count": 4956,
+      "weather_eligible_field_visit_records": 0,
+      "field_id_conflicting_eligible_date_coordinate_groups": 0,
+      "field_id_conflict_examples": [],
+      "field_level_unique_location_dates": 0,
+      "missing_key_counts": {
+        "id": 0,
+        "year": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "cbsd_foliar_incidence": 0,
+        "cbsd_foliar_severity_mean": 2850
+      },
+      "disease_label_availability": {
+        "cbsd_foliar_incidence": {
+          "nonmissing": 4956,
+          "missing": 0,
+          "value_counts": {
+            "0": 2850,
+            "30": 57,
+            "10": 76,
+            "46.7": 45,
+            "33.3": 53,
+            "23.3": 61,
+            "100": 438,
+            "6.7": 108,
+            "3.3": 130,
+            "16.7": 81,
+            "80": 56,
+            "60": 42,
+            "40": 37,
+            "73.3": 41,
+            "90": 64,
+            "86.7": 59,
+            "53.3": 39,
+            "63.3": 43,
+            "36.7": 54,
+            "76.7": 40,
+            "70": 42,
+            "66.7": 43,
+            "93.3": 71,
+            "96.7": 93,
+            "13.3": 78,
+            "26.7": 55,
+            "20": 59,
+            "50": 37,
+            "43.3": 40,
+            "83.3": 29,
+            "56.7": 30,
+            "33.33333333": 1,
+            "53.33333333": 1,
+            "66.66666667": 2,
+            "76.66666667": 1
+          }
+        },
+        "cbsd_foliar_severity_mean": {
+          "nonmissing": 2106,
+          "missing": 2850,
+          "value_counts": {
+            "<missing>": 2850,
+            "2.1": 168,
+            "2": 981,
+            "2.3": 136,
+            "2.5": 107,
+            "2.7": 88,
+            "2.2": 111,
+            "2.8": 90,
+            "2.9": 65,
+            "3.6": 1,
+            "4": 8,
+            "2.4": 123,
+            "3": 104,
+            "3.7": 5,
+            "2.6": 78,
+            "3.1": 23,
+            "3.2": 7,
+            "3.3": 5,
+            "3.5": 3,
+            "3.8": 1,
+            "3.4": 2
+          }
+        }
+      },
+      "origin_counts": {},
+      "matched_counts": {}
+    },
+    "DATASET_C.csv": {
+      "rows": 7627,
+      "columns": [
+        "id",
+        "date",
+        "time",
+        "year",
+        "longitude",
+        "latitude",
+        "village",
+        "county",
+        "district",
+        "subregion",
+        "region",
+        "altitude_masl",
+        "crop_age_months",
+        "field_size_m2",
+        "num_neighbouring_fields",
+        "intercrop",
+        "variety_sampled",
+        "variety_2",
+        "variety_3",
+        "variety_4",
+        "cbsd_foliar_incidence",
+        "cbsd_foliar_severity_mean",
+        "cbsd_in_other_varieties",
+        "adult_whitefly_mean",
+        "matched",
+        "data_origin",
+        "dbB_id",
+        "dbA_id"
+      ],
+      "observation_unit": "field-level aggregated record",
+      "date_column": "date",
+      "latitude_column": "latitude",
+      "longitude_column": "longitude",
+      "id_column": "id",
+      "year_column": "year",
+      "date_valid_count": 4048,
+      "date_missing_count": 3579,
+      "date_unparseable_nonmissing_count": 0,
+      "date_range": [
+        "2004-07-27",
+        "2017-07-08"
+      ],
+      "date_formats_observed": {
+        "%m/%d/%Y": 4048
+      },
+      "year_column_counts": {
+        "2004": 600,
+        "2005": 476,
+        "2006": 300,
+        "2007": 253,
+        "2008": 487,
+        "2009": 393,
+        "2010": 733,
+        "2011": 755,
+        "2012": 545,
+        "2013": 1250,
+        "2014": 1058,
+        "2015": 374,
+        "2017": 403
+      },
+      "date_year_conflict_count": 0,
+      "date_year_conflict_examples": [],
+      "valid_coordinate_count": 7627,
+      "invalid_or_missing_coordinate_count": 0,
+      "geographic_coverage": {
+        "valid_coordinate_rows": 7627,
+        "unique_coordinate_pairs_all_rows": 7581,
+        "latitude_min": -0.9941667,
+        "latitude_max": 3.81916,
+        "longitude_min": 29.7349,
+        "longitude_max": 34.78899,
+        "distinct_districts": 95,
+        "distinct_regions": 4,
+        "distinct_villages": 5548
+      },
+      "weather_eligible_geographic_coverage": {
+        "unique_location_date_pairs": 4015,
+        "unique_coordinates": 4015,
+        "latitude_min": -0.9941667,
+        "latitude_max": 3.74194,
+        "longitude_min": 29.7349,
+        "longitude_max": 34.75756,
+        "distinct_districts": 88,
+        "distinct_regions": 4
+      },
+      "weather_eligible_rows": 4048,
+      "weather_eligible_unique_ids": 4048,
+      "weather_eligible_unique_location_dates": 4015,
+      "weather_eligible_unique_locations": 4015,
+      "eligible_year_counts_by_row": {
+        "2004": 600,
+        "2005": 476,
+        "2006": 300,
+        "2007": 253,
+        "2008": 189,
+        "2009": 105,
+        "2010": 414,
+        "2011": 200,
+        "2013": 606,
+        "2014": 128,
+        "2015": 374,
+        "2017": 403
+      },
+      "exact_duplicate_rows": 1,
+      "duplicate_plant_id_field_keys": 0,
+      "repeated_id_group_count": 5,
+      "repeated_id_rows": 10,
+      "repeated_id_examples": {
+        "30218": 2,
+        "31448": 2,
+        "31706": 2,
+        "31824": 2,
+        "34064": 2
+      },
+      "field_id_count": 7622,
+      "weather_eligible_field_visit_records": 4048,
+      "field_id_conflicting_eligible_date_coordinate_groups": 0,
+      "field_id_conflict_examples": [],
+      "field_level_unique_location_dates": 4015,
+      "missing_key_counts": {
+        "id": 0,
+        "date": 3579,
+        "year": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "cbsd_foliar_incidence": 0,
+        "cbsd_foliar_severity_mean": 0,
+        "matched": 0,
+        "data_origin": 0
+      },
+      "disease_label_availability": {
+        "cbsd_foliar_incidence": {
+          "nonmissing": 7627,
+          "missing": 0,
+          "value_counts": {
+            "0": 4793,
+            "0.3": 71,
+            "0.1": 114,
+            "0.466666667": 34,
+            "0.333333333": 33,
+            "0.066666667": 85,
+            "1": 546,
+            "0.033333333": 126,
+            "0.166666667": 49,
+            "0.766666667": 27,
+            "0.233333333": 32,
+            "0.6": 59,
+            "0.153846154": 1,
+            "0.4": 56,
+            "0.633333333": 26,
+            "0.9": 86,
+            "0.8": 68,
+            "0.7": 57,
+            "0.666666667": 26,
+            "0.133333333": 53,
+            "0.2": 72,
+            "0.533333333": 20,
+            "0.866666667": 31,
+            "0.266666667": 30,
+            "0.933333333": 38,
+            "0.966666667": 61,
+            "0.433333333": 21,
+            "0.733333333": 25,
+            "0.566666667": 26,
+            "0.366666667": 34,
+            "0.655172414": 1,
+            "0.24137931": 2,
+            "0.833333333": 21,
+            "0.5": 56,
+            "0.034482759": 3,
+            "0.862068966": 1,
+            "0.730769231": 1,
+            "0.75862069": 1,
+            "0.47826087": 1,
+            "0.344827586": 1,
+            "0.275862069": 2,
+            "0.068965517": 2,
+            "0.724137931": 1,
+            "0.551724138": 1,
+            "0.310344828": 3,
+            "0.321428571": 1,
+            "0.103448276": 1,
+            "0.137931034": 1,
+            "0.931034483": 1,
+            "0.962962963": 1,
+            "0.733": 29,
+            "0.167": 56,
+            "0.867": 39,
+            "0.067": 78,
+            "0.533": 29,
+            "0.367": 32,
+            "0.767": 26,
+            "0.933": 47,
+            "0.967": 61,
+            "0.467": 30,
+            "0.133": 63,
+            "0.267": 41,
+            "0.633": 22,
+            "0.333": 38,
+            "0.667": 32,
+            "0.433": 30,
+            "0.833": 19,
+            "0.233": 47,
+            "0.033": 88,
+            "0.567": 18
+          }
+        },
+        "cbsd_foliar_severity_mean": {
+          "nonmissing": 7627,
+          "missing": 0,
+          "value_counts": {
+            "1": 4793,
+            "2.111111111": 7,
+            "2": 1246,
+            "2.285714286": 7,
+            "2.5": 105,
+            "2.7": 58,
+            "2.2": 84,
+            "2.565217391": 1,
+            "2.8": 65,
+            "2.888888889": 2,
+            "2.333333333": 33,
+            "2.357142857": 4,
+            "2.526315789": 2,
+            "2.6": 57,
+            "3.1": 19,
+            "2.633333333": 7,
+            "2.703703704": 3,
+            "2.777777778": 5,
+            "2.583333333": 1,
+            "2.375": 9,
+            "2.428571429": 6,
+            "2.05": 5,
+            "2.25": 32,
+            "2.4": 99,
+            "2.130434783": 1,
+            "2.3125": 2,
+            "2.423076923": 1,
+            "2.416666667": 2,
+            "2.222222222": 8,
+            "2.4375": 2,
+            "2.928571429": 1,
+            "2.137931034": 7,
+            "2.291666667": 2,
+            "2.277777778": 3,
+            "2.275862069": 2,
+            "2.466666667": 8,
+            "2.259259259": 1,
+            "2.55": 1,
+            "2.142857143": 14,
+            "2.095238095": 2,
+            "2.076923077": 4,
+            "3": 150,
+            "2.318181818": 1,
+            "2.058823529": 1,
+            "2.166666667": 14,
+            "2.833333333": 7,
+            "2.533333333": 5,
+            "2.272727273": 8,
+            "2.1": 128,
+            "2.9": 46,
+            "2.529411765": 3,
+            "2.071428571": 5,
+            "2.263157895": 2,
+            "2.409090909": 2,
+            "2.923076923": 4,
+            "2.866666667": 4,
+            "2.235294118": 4,
+            "2.842105263": 4,
+            "2.310344828": 1,
+            "2.620689655": 2,
+            "3.125": 1,
+            "2.666666667": 22,
+            "2.3": 89,
+            "2.655172414": 1,
+            "2.851851852": 2,
+            "2.470588235": 3,
+            "2.545454545": 6,
+            "2.692307692": 2,
+            "3.066666667": 4,
+            "2.464285714": 1,
+            "2.56": 1,
+            "2.642857143": 1,
+            "2.392857143": 1,
+            "2.538461538": 2,
+            "2.75862069": 4,
+            "2.933333333": 5,
+            "2.733333333": 10,
+            "2.518518519": 1,
+            "2.566666667": 8,
+            "2.636363636": 1,
+            "2.785714286": 3,
+            "2.555555556": 4,
+            "2.964285714": 1,
+            "2.181818182": 6,
+            "2.48": 1,
+            "2.44": 3,
+            "2.608695652": 1,
+            "2.814814815": 1,
+            "2.32": 1,
+            "2.827586207": 1,
+            "2.766666667": 3,
+            "2.916666667": 4,
+            "2.571428571": 9,
+            "2.826086957": 3,
+            "2.125": 7,
+            "2.433333333": 6,
+            "2.363636364": 3,
+            "3.034482759": 2,
+            "2.586206897": 4,
+            "2.966666667": 4,
+            "2.227272727": 2,
+            "2.115384615": 4,
+            "2.45": 1,
+            "2.368421053": 2,
+            "2.178571429": 3,
+            "2.266666667": 8,
+            "2.736842105": 1,
+            "2.421052632": 1,
+            "2.764705882": 2,
+            "2.296296296": 1,
+            "2.689655172": 1,
+            "2.625": 4,
+            "2.958333333": 1,
+            "2.9375": 1,
+            "2.684210526": 1,
+            "2.863636364": 1,
+            "2.714285714": 4,
+            "2.954545455": 1,
+            "2.083333333": 4,
+            "2.961538462": 1,
+            "2.913043478": 1,
+            "2.434782609": 1,
+            "3.133333333": 1,
+            "2.96": 1,
+            "2.769230769": 4,
+            "3.033333333": 2,
+            "2.321428571": 2,
+            "2.19047619": 3,
+            "2.384615385": 3,
+            "2.038461538": 4,
+            "2.192307692": 1,
+            "2.133333333": 11,
+            "2.148148148": 2,
+            "2.15": 1,
+            "2.233333333": 3,
+            "2.034482759": 5,
+            "2.952380952": 2,
+            "2.033333333": 12,
+            "2.517241379": 4,
+            "2.210526316": 2,
+            "2.117647059": 2,
+            "2.476190476": 1,
+            "2.846153846": 1,
+            "2.857142857": 2,
+            "2.75": 11,
+            "2.761904762": 1,
+            "2.260869565": 1,
+            "2.791666667": 2,
+            "2.965517241": 1,
+            "2.482758621": 1,
+            "2.909090909": 2,
+            "2.411764706": 2,
+            "4": 20,
+            "2.84": 1,
+            "2.588235294": 1,
+            "2.366666667": 8,
+            "2.875": 3,
+            "2.068965517": 2,
+            "2.185185185": 2,
+            "2.090909091": 1,
+            "2.066666667": 5,
+            "2.615384615": 2,
+            "2.444444444": 3,
+            "2.037037037": 3,
+            "2.294117647": 2,
+            "2.652173913": 1,
+            "2.074074074": 4,
+            "2.12": 1,
+            "2.172413793": 1,
+            "2.238095238": 1,
+            "2.176470588": 1,
+            "2.04": 2,
+            "2.055555556": 3,
+            "2.0625": 1,
+            "2.206896552": 1,
+            "2.941176471": 1,
+            "2.8125": 1,
+            "3.04": 1,
+            "2.214285714": 2,
+            "2.107142857": 1,
+            "2.230769231": 2,
+            "2.173913043": 1,
+            "2.461538462": 1,
+            "2.818181818": 1,
+            "3.076923077": 1,
+            "3.6": 3,
+            "3.103448276": 1,
+            "2.307692308": 2,
+            "3.25": 1,
+            "3.166666667": 1,
+            "2.047619048": 4,
+            "2.37037037": 2,
+            "2.1875": 1,
+            "2.380952381": 1,
+            "2.904761905": 1,
+            "2.944444444": 1,
+            "2.16": 1,
+            "2.103448276": 2,
+            "3.75": 1,
+            "2.590909091": 1,
+            "2.052631579": 1,
+            "2.043478261": 2,
+            "2.041666667": 1,
+            "3.111111111": 1,
+            "2.896551724": 1,
+            "2.413793103": 1,
+            "3.444444444": 1,
+            "2.388888889": 1,
+            "2.578947368": 1,
+            "2.772727273": 1,
+            "2.592592593": 1,
+            "2.208333333": 1,
+            "2.52173913": 1,
+            "2.086956522": 1,
+            "2.576923077": 1,
+            "2.931034483": 1,
+            "3.666666667": 1,
+            "3.137931034": 1,
+            "3.5": 4,
+            "2.85": 1,
+            "4.5": 1,
+            "2.730769231": 1,
+            "2.045454545": 1,
+            "2.782608696": 1,
+            "2.217391304": 1,
+            "3.05": 1,
+            "2.153846154": 1,
+            "3.333333333": 1,
+            "2.869565217": 1,
+            "3.7": 5,
+            "3.2": 7,
+            "3.3": 5,
+            "3.8": 1,
+            "3.4": 2
+          }
+        },
+        "matched": {
+          "nonmissing": 7627,
+          "missing": 0,
+          "value_counts": {
+            "YES": 1549,
+            "NO": 6078
+          }
+        },
+        "data_origin": {
+          "nonmissing": 7627,
+          "missing": 0,
+          "value_counts": {
+            "dbA": 4220,
+            "dbB": 3407
+          }
+        }
+      },
+      "origin_counts": {
+        "dbA": 4220,
+        "dbB": 3407
+      },
+      "matched_counts": {
+        "YES": 1549,
+        "NO": 6078
+      }
+    }
+  },
+  "linkage": {
+    "C_nonmissing_dbA_id_rows": 4220,
+    "C_dbA_id_rows_linking_to_A": 4220,
+    "C_nonmissing_dbB_id_rows": 4956,
+    "C_dbB_id_rows_linking_to_B": 4956,
+    "C_dated_rows_by_data_origin": {
+      "dbA": 4048
+    },
+    "dated_C_dbA_link_signature_comparison_counts": {
+      "exact_date_and_coordinate_match": 4037,
+      "same_date_coordinate_differs": 11
+    },
+    "dated_C_dbA_link_mismatch_examples": [
+      {
+        "dbA_id": "11631",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.775717,
+        "C_longitude": 31.25002,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.46543,
+            31.25166667
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11628",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.776733,
+        "C_longitude": 31.20302,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.46604,
+            31.20301667
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11635",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.780783,
+        "C_longitude": 31.06135,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.46847,
+            31.06151667
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11629",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.783567,
+        "C_longitude": 31.15155,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.47014,
+            31.15155
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11633",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.787433,
+        "C_longitude": 31.36455,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.47246,
+            31.36455
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11632",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.792483,
+        "C_longitude": 31.29398,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.47549,
+            31.29398333
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11630",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.822867,
+        "C_longitude": 31.37695,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.49372,
+            31.37695
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11636",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.855417,
+        "C_longitude": 30.99587,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.51325,
+            30.99586667
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11627",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.8617,
+        "C_longitude": 31.40605,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.51702,
+            31.40605
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11625",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.90835,
+        "C_longitude": 31.42355,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.54501,
+            31.42355
+          ]
+        ]
+      },
+      {
+        "dbA_id": "11626",
+        "C_date": "2014-12-29",
+        "C_latitude": 0.9567,
+        "C_longitude": 31.42813,
+        "A_signatures": [
+          [
+            "2014-12-29",
+            0.57402,
+            31.42813333
+          ]
+        ]
+      }
+    ],
+    "A_C_field_linkage_coverage": {
+      "A_date_eligible_field_ids": 4048,
+      "A_date_eligible_date_coordinate_signatures": 4051,
+      "A_eligible_field_ids_linked_to_any_C_dbA_id": 4048,
+      "A_eligible_field_ids_linked_to_date_bearing_C_dbA_id": 4048,
+      "A_eligible_field_ids_not_linked_to_C_dbA_id": 0
+    },
+    "combined_A_field_and_C_unique_location_date_request_keys": 4029,
+    "A_C_exact_location_date_key_intersection": 4004,
+    "linkage_policy": "A/C overlap is identified only through C.dbA_id to A.id; C/B through C.dbB_id to B.id. Coordinates and year alone are not used to merge disease records."
+  },
+  "request_feasibility": {
+    "C_eligible_rows": 4048,
+    "C_unique_location_date_pairs_exact_date_calls": 4015,
+    "C_unique_exact_coordinate_locations": 4015,
+    "one_range_request_per_coordinate_if_batched": 4015,
+    "inclusive_daily_values_returned_if_each_coordinate_uses_min_to_max_date_range": 4015,
+    "estimated_daily_values_exact_date_calls": 4015,
+    "combined_A_field_and_C_unique_location_date_pairs": 4029,
+    "combined_A_C_unique_exact_coordinates": 4026,
+    "combined_A_C_one_range_request_per_coordinate": 4026,
+    "combined_A_C_daily_values_if_min_to_max_ranges": 4394,
+    "pilot_observed_raw_json_mean_bytes_per_single_day_response": 1082.4,
+    "estimated_raw_json_bytes_exact_C_location_date_calls": 4345836,
+    "estimated_matched_csv_bytes_for_C_eligible_rows_using_pilot_row_size": 1446351,
+    "estimated_matched_csv_bytes_for_A_eligible_plant_rows_using_pilot_row_size": 43390155,
+    "estimated_metadata_bytes_using_pilot_request_metadata_per_request": 4698353,
+    "pilot_size_basis": {
+      "pilot_input_rows": 10,
+      "pilot_matched_rows": 10,
+      "pilot_cache_raw_json_count": 10,
+      "pilot_weather_match_bytes": 3573,
+      "pilot_raw_json_total_bytes": 10824,
+      "pilot_raw_json_mean_bytes": 1082.4,
+      "pilot_input_sha256": "041c116ceafc11790634579b63405e5f2fe71716e45a0b678998c01459e0b967",
+      "pilot_output_sha256": "586a1961f1368b91224f39153398ba0974fe3a637d343d48d2e50c478bb70b17",
+      "pilot_status_counts": {
+        "matched": 10
+      },
+      "pilot_quality_pass": true,
+      "pilot_cache_hits_on_current_run": 10
+    },
+    "full_download_performed": false,
+    "recommendation": "Do not issue one synchronous request per observation. First approve a cell/location batching design. Group exact repeated locations and cache each exact request; obtain/record provider-returned source coordinates before any source-grid deduplication. Batch date ranges only where added daily rows are acceptable and bounded; inspect output size and service rate guidance before scaling."
+  },
+  "exclusions": {
+    "Dataset_A_rows_without_valid_date": 5160,
+    "Dataset_A_rows_without_valid_coordinates": 0,
+    "Dataset_B_rows_excluded_year_only_no_exact_date": 4956,
+    "Dataset_C_rows_without_valid_date": 3579,
+    "Dataset_C_rows_without_valid_coordinates": 0,
+    "Dataset_C_duplicate_id_groups": 5,
+    "Dataset_C_exact_duplicate_rows": 1
+  },
+  "limitations": [
+    "Dataset A rows are plants nested within field IDs; weather requests should be based on field visits, not plant rows.",
+    "Dataset B has year but no exact date and is excluded from date-specific weather matching.",
+    "C.matched indicates a detected overlapping record, not independent disease validation.",
+    "Dataset B and C incidence scales remain inconsistent and are not combined or rescaled.",
+    "NASA POWER weather is source-grid meteorology, not exact field measurement; returned source grid and coordinate handling must be retained.",
+    "Exact date/location weather association does not establish causality or predictive accuracy."
+  ]
+}

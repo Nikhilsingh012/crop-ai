@@ -1,0 +1,40 @@
+{
+  "dataset_doi": "10.6084/m9.figshare.11302982",
+  "paper_url": "https://www.nature.com/articles/s41597-019-0334-9",
+  "repository": "Figshare",
+  "checked_date": "2026-10-25",
+  "status": "blocked_before_file_listing",
+  "attempted_request": {
+    "url": "https://api.figshare.com/v2/articles?resource_doi=10.6084%2Fm9.figshare.11302982",
+    "method": "GET",
+    "result": "Unable to connect to the remote server",
+    "http_status": null
+  },
+  "alternative_attempts": [
+    {
+      "source": "Official PMC paper HTML, data citation link 24",
+      "paper_html_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6920376/",
+      "linked_doi": "https://doi.org/10.6084/m9.figshare.9273536.v1",
+      "redirect_target": "https://figshare.com/articles/Cassava_brown_streak_disease_annual_field_survey_data_from_2004_to_2017_in_Uganda/9273536/1",
+      "result": "Failed to fetch DOI; redirected URL was reported as not safe to open (non-retryable)"
+    },
+    {
+      "source": "Official Figshare landing page via browser-accessible page",
+      "url": "https://figshare.com/articles/Cassava_brown_streak_disease_annual_field_survey_data_from_2004_to_2017_in_Uganda/9273536/1",
+      "result": "URL is not accessible via this tool"
+    }
+  ],
+  "files": [],
+  "paper_verified_metadata": {
+    "files_described": [
+      "DATASET_A.csv",
+      "DATASET_B.csv",
+      "DATASET_C.csv",
+      "LEGEND_CBSD_DATA.xlsx"
+    ],
+    "paper_reported_license": "CC-BY-4.0",
+    "figshare_item_doi": "10.6084/m9.figshare.9273536.v1",
+    "data_metadata_doi": "10.6084/m9.figshare.11302982"
+  },
+  "notes": "The earlier official Figshare API request and the targeted official landing-page route both failed. No file listing, downloadable URLs, file sizes, hashes, or local file contents were retrieved. The four filenames and CC-BY-4.0 are paper-reported, not verified from repository metadata in this attempt. No dataset files were created or downloaded."
+}

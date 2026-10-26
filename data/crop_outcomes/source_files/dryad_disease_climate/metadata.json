@@ -1,0 +1,78 @@
+{
+  "dataset_doi": "10.5061/dryad.p8cz8wb0h",
+  "dataset_title": "Data from: Impacts of weather anomalies and climate on plant disease",
+  "metadata_checked_date": "2026-10-23",
+  "metadata_api_url": "https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.p8cz8wb0h",
+  "file_list_api_url": "https://datadryad.org/api/v2/versions/335245/files",
+  "version_download_url": "https://datadryad.org/api/v2/versions/335245/download",
+  "version_id": 335245,
+  "version_number": 6,
+  "license": "CC0-1.0",
+  "license_url": "https://spdx.org/licenses/CC0-1.0.html",
+  "files": [
+    {
+      "id": 3732552,
+      "original_filename": "ELE_-_climate_and_plant_disease_code_and_data.zip",
+      "size_bytes": 972423,
+      "mime_type": "application/zip",
+      "sha256": "d45ad7fad5a7874b3a75f97744541f78103da060c8ddf6e65ad98bd8c594abc2",
+      "official_download_url": "https://datadryad.org/api/v2/files/3732552/download",
+      "landing_page_file_url": "https://datadryad.org/downloads/file_stream/3732552",
+      "download_status": "not_downloaded",
+      "attempts": [
+        {
+          "url": "https://datadryad.org/downloads/file_stream/3732552",
+          "http_status": 403,
+          "result": "Forbidden"
+        },
+        {
+          "url": "https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.p8cz8wb0h/download",
+          "http_status": 401,
+          "result": "Unauthorized"
+        },
+        {
+          "url": "https://datadryad.org/api/v2/files/3732552/download",
+          "http_status": 401,
+          "result": "Unauthorized"
+        },
+        {
+          "url": "https://datadryad.org/downloads/file_stream/3732552",
+          "http_status": 403,
+          "result": "Forbidden; normal landing-page file link"
+        },
+        {
+          "url": "https://datadryad.org/api/v2/files/3732552/download",
+          "http_status": 401,
+          "result": "Unauthorized; documented individual-file API download"
+        }
+      ],
+      "download_date": null,
+      "local_file": null
+    },
+    {
+      "id": 3732554,
+      "original_filename": "README.md",
+      "size_bytes": 2981,
+      "mime_type": "text/markdown",
+      "sha256": "4ceac198a35e0dd676eb407f198717bdaa5a5eb5f9f2770d9121782ac89a6990",
+      "official_download_url": "https://datadryad.org/api/v2/files/3732554/download",
+      "landing_page_file_url": "https://datadryad.org/downloads/file_stream/3732554",
+      "download_status": "not_downloaded",
+      "attempts": [
+        {
+          "url": "https://datadryad.org/downloads/file_stream/3732554",
+          "http_status": 403,
+          "result": "Forbidden; normal landing-page README link"
+        },
+        {
+          "url": "https://datadryad.org/api/v2/files/3732554/download",
+          "http_status": 401,
+          "result": "Unauthorized; documented individual-file API download"
+        }
+      ],
+      "download_date": null,
+      "local_file": null
+    }
+  ],
+  "notes": "API metadata and file listing were retrieved successfully. The version metadata exposes a version-specific download URL, but it was not requested after the two ZIP download attempts. Reported sizes and digests are Dryad API metadata; no original files were downloaded or locally verified. No authentication or access control was bypassed. The public dataset page embeds a README summary, but the original README file itself was not downloaded."
+}

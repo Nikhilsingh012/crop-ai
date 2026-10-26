@@ -19,45 +19,27 @@ def predict_disease():
 
     try:
         image_bytes = validate_image(image)
-        ml_result = predict(image_bytes, filename=image.filename)
-        result = dict(ml_result)
-        result["ml_prediction"] = {
-            "crop": ml_result.get("crop"),
-            "disease": ml_result.get("disease"),
-            "confidence": ml_result.get("confidence", 0),
-            "model_status": ml_result.get("model_status"),
-        }
-
-        if os.getenv("GEMINI_API_KEY"):
-            try:
-                vision_result = diagnose_image(image_bytes, model_result=ml_result, mime_type=image.mimetype)
-            except RuntimeError as error:
-                vision_result = None
-                result["vision_error"] = str(error)
-            if vision_result:
-                vision_confidence = vision_result.get("confidence", ml_result.get("confidence", 0))
-                try:
-                    vision_confidence = round(float(vision_confidence), 4)
-                except (TypeError, ValueError):
-                    vision_confidence = ml_result.get("confidence", 0)
-                result.update({
-                    "crop": ml_result.get("crop") if ml_result.get("model_status") == "checkpoint" else vision_result.get("crop", ml_result.get("crop")),
-                    "disease": ml_result.get("disease") if ml_result.get("model_status") == "checkpoint" else vision_result.get("disease", ml_result.get("disease")),
-                    "confidence": ml_result.get("confidence", 0) if ml_result.get("model_status") == "checkpoint" else vision_confidence,
-                    "healthy": str(result.get("disease", "")).lower() in {"healthy", "normal"},
-                    "symptoms": vision_result.get("symptoms", []),
-                    "possible_cause": vision_result.get("possible_cause", ""),
-                    "prevention": vision_result.get("prevention", ""),
-                    "treatment": vision_result.get("treatment", ""),
-                    "recommended_action": vision_result.get("recommended_action", ""),
-                    "agreement": vision_result.get("agreement"),
-                    "vision_analysis": vision_result,
-                    "model_status": "ml+gemini-vision",
-                    "recommendations": [vision_result.get("recommended_action") or "Confirm uncertain cases with a local agriculture expert."],
-                })
-        if result.get("model_status") != "ml+gemini-vision":
+        if os.getenv("GEMINI_API_KEY", "").strip():
+            vision_result = diagnose_image(image_bytes, mime_type=image.mimetype or "image/jpeg")
+            crop_name = vision_result["crop_name"]
+            disease_name = vision_result["disease_name"]
+            cure = vision_result["cure"]
+            result = {
+                "crop": crop_name,
+                "crop_name": crop_name,
+                "disease": disease_name,
+                "disease_name": disease_name,
+                "treatment": cure,
+                "cure": cure,
+                "healthy": disease_name.casefold() in {"healthy", "no disease", "no disease visible", "no visible disease detected"},
+                "confidence": None,
+                "model_status": "gemini-vision",
+                "recommendations": [cure],
+            }
+        else:
+            result = predict(image_bytes, filename=image.filename)
             result["recommendations"] = result.get("recommendations", []) + [
-                "Gemini Vision is not configured; add GEMINI_API_KEY for symptoms, cure, and prevention guidance."
+                "Gemini Vision is not configured. Add GEMINI_API_KEY to the project .env and restart the backend."
             ]
         try:
             result["scan"] = save_scan(result, filename=image.filename, user_id=current_user_id())

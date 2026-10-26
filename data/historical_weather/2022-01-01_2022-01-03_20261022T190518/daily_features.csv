@@ -1,0 +1,4 @@
+﻿date,hourly_rows,valid_temperature_hours,daily_min_temperature_2m,daily_max_temperature_2m,rainfall_mm,valid_rainfall_hours,night_hours_definition_local,nighttime_temperature_mean_2m,nighttime_temperature_min_2m,nighttime_temperature_max_2m,nighttime_valid_hours,hot_day_threshold_c,consecutive_hot_days,dry_day_rainfall_threshold_mm,dry_spell_days,rolling_3_day_rainfall_mm,rolling_7_day_rainfall_mm
+2022-01-01,24,24,5.5,18.2,0.0,24,00:00-05:59 and 20:00-23:59,7.470000000000001,5.9,10.3,10,,,,,,
+2022-01-02,24,24,6.6,18.8,0.0,24,00:00-05:59 and 20:00-23:59,8.58,7.0,11.8,10,,,,,,
+2022-01-03,24,24,6.9,20.2,0.0,24,00:00-05:59 and 20:00-23:59,8.61,6.9,11.4,10,,,,,0.0,

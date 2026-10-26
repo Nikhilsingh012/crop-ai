@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Indian farmland at golden hour</title>
+  <desc id="desc">Layered crop fields, a low sun, and young crop rows illustrated in warm earth and green tones.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe3bb"/>
+      <stop offset=".55" stop-color="#f9d8ae"/>
+      <stop offset="1" stop-color="#f1e2ba"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff7d8" stop-opacity=".95"/>
+      <stop offset=".55" stop-color="#ffe6a8" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#ffe6a8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b7a86d"/>
+      <stop offset="1" stop-color="#9a955f"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7d9256"/>
+      <stop offset="1" stop-color="#617c46"/>
+    </linearGradient>
+    <linearGradient id="fieldNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5d8448"/>
+      <stop offset="1" stop-color="#315735"/>
+    </linearGradient>
+    <linearGradient id="fieldWarm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d4b25f"/>
+      <stop offset=".6" stop-color="#b7974c"/>
+      <stop offset="1" stop-color="#8d7a3e"/>
+    </linearGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".12"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="862" cy="250" r="270" fill="url(#sunGlow)"/>
+  <circle cx="862" cy="250" r="86" fill="#fff0bf"/>
+  <circle cx="862" cy="250" r="86" fill="#ffdf92" opacity=".55"/>
+
+  <g opacity=".55" fill="none" stroke="#8a8052" stroke-width="3" stroke-linecap="round">
+    <path d="M210 168c22-16 44-16 66 0"/>
+    <path d="M300 128c16-12 33-12 49 0"/>
+    <path d="M150 230c14-10 29-10 43 0"/>
+  </g>
+
+  <path d="M0 430c120-58 230-84 350-48 130 39 220 12 328-24 150-50 300-42 522 38v132H0Z" fill="url(#hillFar)" opacity=".85"/>
+  <path d="M0 486c150-54 286-70 408-28 118 40 216 24 330-12 146-47 286-30 462 30v118H0Z" fill="url(#hillMid)"/>
+
+  <path d="M0 540c160-18 322-6 470 24 172 34 366 18 520-18 82-19 148-20 210-8v194H0Z" fill="url(#fieldWarm)"/>
+  <g stroke="#7a6734" stroke-width="2" opacity=".38">
+    <path d="M-40 620c220-34 460-22 720 16 180 26 370 8 560-34"/>
+    <path d="M-40 668c230-30 470-16 722 22 184 27 380 4 560-42"/>
+    <path d="M-40 720c240-26 486-10 736 28 180 28 366 8 546-34"/>
+    <path d="M-40 778c250-24 500-6 750 30 176 26 354 10 530-24"/>
+  </g>
+
+  <path d="M0 706c184-58 362-78 540-44 198 38 398 44 660-24v262H0Z" fill="url(#fieldNear)"/>
+  <path d="M0 790c210-46 424-48 646-6 190 35 376 30 554-16v132H0Z" fill="#2a4b2f"/>
+
+  <g fill="#1f3f28">
+    <g transform="translate(120 748)">
+      <path d="M0 152C2 96 12 52 34 8" stroke="#1f3f28" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M18 92c-30-8-44-26-50-52 26 2 44 16 50 52Z"/>
+      <path d="M23 68c28-6 44-22 52-48-28 0-46 14-52 48Z"/>
+      <path d="M30 36c-22-6-32-20-36-40 20 1 33 12 36 40Z"/>
+    </g>
+    <g transform="translate(240 770) scale(1.12)">
+      <path d="M0 132C2 84 10 46 28 8" stroke="#1f3f28" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M14 80c-26-8-38-24-42-46 22 2 38 14 42 46Z"/>
+      <path d="M19 58c24-6 38-20 44-42-24 0-40 12-44 42Z"/>
+    </g>
+    <g transform="translate(920 760) scale(1.2)">
+      <path d="M0 130C2 82 10 44 28 6" stroke="#1f3f28" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M14 78c-26-8-38-24-42-46 22 2 38 14 42 46Z"/>
+      <path d="M19 56c24-6 38-20 44-42-24 0-40 12-44 42Z"/>
+      <path d="M24 30c-18-6-28-18-30-34 18 1 28 10 30 34Z"/>
+    </g>
+    <g transform="translate(1060 786) scale(1.05)">
+      <path d="M0 128C2 80 10 44 28 6" stroke="#1f3f28" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M14 78c-26-8-38-24-42-46 22 2 38 14 42 46Z"/>
+      <path d="M19 56c24-6 38-20 44-42-24 0-40 12-44 42Z"/>
+    </g>
+  </g>
+
+  <g opacity=".28" fill="none" stroke="#f2e6b3" stroke-width="1.5">
+    <path d="M0 566c170-24 342-14 500 16 170 32 360 22 700-22"/>
+    <path d="M0 598c180-20 350-10 510 20 170 32 364 18 690-26"/>
+  </g>
+
+  <rect width="1200" height="900" filter="url(#grain)" opacity=".55"/>
+  <rect width="1200" height="900" fill="#3b2f1a" opacity=".06"/>
+</svg>

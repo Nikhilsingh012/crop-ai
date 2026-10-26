@@ -1,0 +1,89 @@
+{
+  "dataset_type": "historical_forecast",
+  "weather_classification": "Historical forecast output; not observed weather or reanalysis.",
+  "http_status": 200,
+  "requested_date_range": {
+    "start": "2022-01-01",
+    "end": "2022-01-03"
+  },
+  "actual_downloaded_date_range": {
+    "start": "2022-01-01",
+    "end": "2022-01-03"
+  },
+  "rows_downloaded": 72,
+  "duplicate_timestamp_count": 0,
+  "duplicate_timestamps": [],
+  "missing_hour_count": 0,
+  "missing_hour_samples": [],
+  "missingness_by_variable": {
+    "temperature_2m": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "relative_humidity_2m": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "precipitation": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "soil_temperature_0cm": {
+      "missing": 72,
+      "total": 72,
+      "fraction": 1.0
+    },
+    "soil_temperature_6cm": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "soil_temperature_18cm": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "soil_moisture_0_to_1cm": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "soil_moisture_1_to_3cm": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "soil_moisture_3_to_9cm": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    },
+    "et0_fao_evapotranspiration": {
+      "missing": 0,
+      "total": 72,
+      "fraction": 0.0
+    }
+  },
+  "returned_location": {
+    "latitude": 28.50615,
+    "longitude": 77.50853,
+    "timezone": "Asia/Kolkata",
+    "elevation": 198.0
+  },
+  "validations": {
+    "timestamps_unique": true,
+    "no_missing_hours_in_returned_span": true,
+    "returned_date_coverage_matches_request": true,
+    "all_requested_variables_present": true
+  },
+  "output_files": {
+    "raw_json": "..\\data\\historical_weather\\2022-01-01_2022-01-03_20261022T190028\\raw_response.json",
+    "metadata_json": "..\\data\\historical_weather\\2022-01-01_2022-01-03_20261022T190028\\metadata.json",
+    "hourly_csv": "..\\data\\historical_weather\\2022-01-01_2022-01-03_20261022T190028\\hourly.csv",
+    "daily_features_csv": "..\\data\\historical_weather\\2022-01-01_2022-01-03_20261022T190028\\daily_features.csv",
+    "quality_report_json": "..\\data\\historical_weather\\2022-01-01_2022-01-03_20261022T190028\\quality_report.json"
+  }
+}

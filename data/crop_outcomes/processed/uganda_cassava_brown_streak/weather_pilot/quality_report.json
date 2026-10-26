@@ -1,0 +1,63 @@
+{
+  "dataset": "Uganda cassava brown streak Dataset C pilot observations matched to NASA POWER daily data",
+  "input_file": "C:\\Users\\nikhi\\Crop-Disease-Detection-for-Indian-Agriculture\\data\\crop_outcomes\\processed\\uganda_cassava_brown_streak\\weather_pilot\\pilot_observations.csv",
+  "output_rows": 10,
+  "input_rows": 10,
+  "row_count_matches_input": true,
+  "status_counts": {
+    "matched": 10,
+    "missing weather": 0,
+    "API failure": 0,
+    "invalid coordinates/date": 0
+  },
+  "duplicate_observation_rows_preserved": 0,
+  "duplicate_observation_rows_dropped": 0,
+  "matching_date_is_exact": true,
+  "matched_values_are_finite_numeric_and_not_fill_values": true,
+  "blank_output_counts_by_parameter": {
+    "T2M": 0,
+    "PRECTOTCORR": 0,
+    "RH2M": 0
+  },
+  "rows_missing_parameter_in_successful_responses": {
+    "T2M": 0,
+    "PRECTOTCORR": 0,
+    "RH2M": 0
+  },
+  "request_count": 10,
+  "api_failures": [],
+  "weather_source": "NASA POWER Daily API; MERRA-2 meteorological inputs as identified by response metadata",
+  "time_standard": "LST",
+  "parameters": [
+    "T2M",
+    "PRECTOTCORR",
+    "RH2M"
+  ],
+  "quality_pass": true,
+  "output_file": "weather_matches.csv",
+  "output_sha256": "586a1961f1368b91224f39153398ba0974fe3a637d343d48d2e50c478bb70b17",
+  "raw_response_files": [
+    "raw_cache\\bc5b5857bf4e264817594cb6feac5d89fbd6bf6ba3ca76a7935ee619e7f253c0.json",
+    "raw_cache\\bee4c618147b80324f74d097c2bff00260e927c666b5372043cd278bedfac89b.json",
+    "raw_cache\\1c69663ca2db198df545dd138210d9a2d9e7f9602d402186fac7f1d1cd815c84.json",
+    "raw_cache\\a77a233dfb4eeac2eaf3817c66a0f1651bf0c2f927ef7a4742891d195d16e696.json",
+    "raw_cache\\a6e180943bb51b936646e738bb2e1296a60824a3c1b0c3090b3d1fb25b4e6b86.json",
+    "raw_cache\\8e4c5a301fcc183e088282213999978b957e9b158c706a1c22ffcf67c454aec4.json",
+    "raw_cache\\090eb391b740832a3283d766bf20b48a7ce0e45ad19c7eca40c47f8725141afc.json",
+    "raw_cache\\9ba1174e20627b28ce8913a759977deb6fe5233b6234e3718f2b50a2c828329e.json",
+    "raw_cache\\fd3b0bfc5a0b3a426a756b0615e21529fb8766e2dcb74cf35d201d48eec92727.json",
+    "raw_cache\\3076580b6f379e51e04646ce1b07d3402ca7c32982750c532401ac95d8406868.json"
+  ],
+  "raw_response_sha256": {
+    "raw_cache\\bc5b5857bf4e264817594cb6feac5d89fbd6bf6ba3ca76a7935ee619e7f253c0.json": "e2640eee6cda9e1f3b0449e81cb88840645fe3580861e134048c4c7ee748e56f",
+    "raw_cache\\bee4c618147b80324f74d097c2bff00260e927c666b5372043cd278bedfac89b.json": "32b43307cc136bb9e614949df2b958e8e37524a45ab3569e7bf621dd96e396e4",
+    "raw_cache\\1c69663ca2db198df545dd138210d9a2d9e7f9602d402186fac7f1d1cd815c84.json": "80dbf9d774b5014b5d0632ee966960336abe5fd6bd77c3cd8c7f5f1c54f2f3f4",
+    "raw_cache\\a77a233dfb4eeac2eaf3817c66a0f1651bf0c2f927ef7a4742891d195d16e696.json": "ef27c062d573aaf8482b4c5414dbbf70656ab59aca455cb092a87074b99588f4",
+    "raw_cache\\a6e180943bb51b936646e738bb2e1296a60824a3c1b0c3090b3d1fb25b4e6b86.json": "4e41b49fb45aa0e05510e80ce180871b52079fea612fc74b86f563fff521e232",
+    "raw_cache\\8e4c5a301fcc183e088282213999978b957e9b158c706a1c22ffcf67c454aec4.json": "51c814e21fd8e583e3a3081078d0f64bb59c28dc19740958f81f9a0bd12fae9c",
+    "raw_cache\\090eb391b740832a3283d766bf20b48a7ce0e45ad19c7eca40c47f8725141afc.json": "acd216240028751449b8d1e59d88d0dec3a42cdf87de7340b2cbab8c87953f10",
+    "raw_cache\\9ba1174e20627b28ce8913a759977deb6fe5233b6234e3718f2b50a2c828329e.json": "58145726403e60f850062739097a0b181178fd83e73f7ee2e87c941469b0b0fb",
+    "raw_cache\\fd3b0bfc5a0b3a426a756b0615e21529fb8766e2dcb74cf35d201d48eec92727.json": "87ca5c01f6c1f25827b00638f233596850123509c5a5ba0fe18e83704add7f91",
+    "raw_cache\\3076580b6f379e51e04646ce1b07d3402ca7c32982750c532401ac95d8406868.json": "de39f5b3e7aa9a9c3869ac64160ef23b35b5b70a931ad6acc2b0402102ce08c0"
+  }
+}

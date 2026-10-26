@@ -583,6 +583,15 @@ def find_recent_alert(crop_id, alert_type, title):
         ).fetchone()
 
 
+def find_user_crop_alert_event(user_crop_id, title):
+    """Find an alert already created for this saved-crop forecast event."""
+    with connection() as conn:
+        return conn.execute(
+            "SELECT * FROM alerts WHERE user_crop_id = %s AND title = %s ORDER BY created_at DESC LIMIT 1",
+            (user_crop_id, title),
+        ).fetchone()
+
+
 def list_alerts(crop_id=None):
     if crop_id is None:
         with connection() as conn:
@@ -667,7 +676,7 @@ def list_user_crops(user_id=None):
 
 
 def update_user_crop(crop_id, values):
-    return _update_record(crop_id and "user_crops", crop_id, values, {"crop_name", "variety", "latitude", "longitude", "city", "state", "country", "planting_date", "growth_stage", "mode", "updated_at"})
+    return _update_record(crop_id and "user_crops", crop_id, values, {"crop_name", "variety", "latitude", "longitude", "city", "district", "state", "country", "planting_date", "growth_stage", "soil_type", "drainage_condition", "irrigation_availability", "mode", "updated_at"})
 
 
 def save_weather_snapshot(crop_id, payload):

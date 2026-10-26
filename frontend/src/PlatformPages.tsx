@@ -1,11 +1,21 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { marketViewState } from './marketViewState.js';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 
-type Page = 'home' | 'tasks' | 'schemes' | 'money' | 'diary' | 'market' | 'voice' | 'profile' | 'irrigation' | 'harvest';
+type Page = 'tasks' | 'schemes' | 'money' | 'diary' | 'market' | 'voice';
+type ChatMessage = { role: 'user' | 'assistant'; content: string };
 type Item = Record<string, unknown>;
-type MarketRecord = { id:number; commodity:string; variety:string|null; grade:string|null; state:string; district:string; mandi:string; observed_on:string; minimum_price:string|null; modal_price:string|null; maximum_price:string|null; price_unit:string; source_url:string; freshness:string };
-type SpeechRecognizer = { lang: string; onresult: ((event: SpeechRecognitionEvent) => void) | null; onerror: (() => void) | null; start: () => void };
+type MarketEstimateRecord = { commodity:string; variety:string|null; grade:string|null; state:string; district:string; market:string; reporting_date:string; minimum_price:string|null; modal_price:string|null; maximum_price:string|null; source_price_unit:string; source:string; source_url:string; fetched_at:string; freshness:string; stale:boolean; quantity_kg:string; minimum_price_per_kg:string|null; modal_price_per_kg:string|null; maximum_price_per_kg:string|null; minimum_value:string|null; expected_value:string|null; maximum_value:string|null };
+type MarketEstimate = { status:string; provider:string; source_url:string; served_from?:string; retrieved_at:string; query:{commodity:string;state:string|null;district:string|null;market:string|null;variety:string|null;quantity:string;unit:string;quantity_kg:string}; comparison_note:string|null; message?:string; price_note:string; items:MarketEstimateRecord[] };
+type MarketOptions = { status?:string; commodities:string[]; states:string[]; districts:string[]; markets:string[]; varieties:string[]; grades:string[]; coverage?:{records?:number; newest_observation?:string|null; last_fetched?:string|null} };
+type SpeechRecognitionFailure = { error: string };
+type SpeechRecognizer = { lang: string; onresult: ((event: SpeechRecognitionEvent) => void) | null; onerror: ((event: SpeechRecognitionFailure) => void) | null; onstart: (() => void) | null; onend: (() => void) | null; start: () => void };
 type SpeechRecognizerConstructor = new () => SpeechRecognizer;
+
+export function AssistantLauncher({onClick}:{onClick:()=>void}) {
+  return <button type="button" className="cropai-launcher" onClick={onClick} aria-label="Open CropAI chat assistant" title="Chat with CropAI">
+    <span className="cropai-launcher-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 7.5h20v14H15l-6 4v-4H6z"/><path d="M11 16c1.2-4.4 4.7-7.2 10.7-8-1.1 5.8-4.3 9.2-9 9.2"/></svg></span>
+    <span className="cropai-launcher-copy"><strong>CropAI</strong><small>Chat with us</small></span><span className="cropai-launcher-pulse" aria-hidden="true"/>
+  </button>;
+}
 
 function financeLabel(value: unknown, fallback: string): string {
   if (value === null || value === undefined) return fallback;
@@ -16,6 +26,11 @@ function financeLabel(value: unknown, fallback: string): string {
 
 function hasFinanceValue(value: unknown): boolean {
   return financeLabel(value, '') !== '';
+}
+
+function formatINR(value: string|null|undefined): string {
+  if(value===null||value===undefined||value==='')return 'Not reported';
+  return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(Number(value));
 }
 
 function schemeQuestions(value: unknown): Array<{field:string;label:string}> {
@@ -40,8 +55,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return data;
 }
 
-export function PlatformPages({ userId }: { userId: number }) {
-  const [page, setPage] = useState<Page>('home');
+export function PlatformPages({ userId, initialPage = 'tasks' }: { userId: number; initialPage?: Page }) {
+  const [page, setPage] = useState<Page>(initialPage);
   const [items, setItems] = useState<Item[]>([]);
   const [taskSchemeDeadlines, setTaskSchemeDeadlines] = useState<Item[]>([]);
   const [notice, setNotice] = useState('');
@@ -67,8 +82,12 @@ export function PlatformPages({ userId }: { userId: number }) {
   const [yieldChange, setYieldChange] = useState('0');
   const [priceChange, setPriceChange] = useState('0');
   const [diaryNote, setDiaryNote] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [question, setQuestion] = useState('');
+  const [voiceMessages, setVoiceMessages] = useState<ChatMessage[]>([]);
+  const [voiceInput, setVoiceInput] = useState('');
+  const [voiceBusy, setVoiceBusy] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speakReplies, setSpeakReplies] = useState(true);
+  const voiceMessagesEnd = useRef<HTMLDivElement|null>(null);
   const [chatLanguage, setChatLanguage] = useState<'en'|'hi'|'hinglish'>('en');
   const [schemeMatch, setSchemeMatch] = useState('');
   const [schemeAnswers, setSchemeAnswers] = useState<Record<string,boolean|undefined>>({});
@@ -85,28 +104,16 @@ export function PlatformPages({ userId }: { userId: number }) {
   const [savedSchemeIds, setSavedSchemeIds] = useState<string[]>([]);
   const [schemeChecklists, setSchemeChecklists] = useState<Record<string,Record<string,boolean>>>({});
   const [schemeDeadlines, setSchemeDeadlines] = useState<Item[]>([]);
-  const [advisoryCrops,setAdvisoryCrops] = useState<Item[]>([]);
-  const [selectedAdvisoryCrop,setSelectedAdvisoryCrop] = useState('');
-  const [soilMoistureStatus,setSoilMoistureStatus] = useState('');
-  const [forecastRainfall,setForecastRainfall] = useState('');
-  const [advisoryResult,setAdvisoryResult] = useState<Record<string,unknown>|null>(null);
-  const [advisoryBusy,setAdvisoryBusy] = useState(false);
-  const [harvestTargetDate,setHarvestTargetDate] = useState('');
-  const [profile, setProfile] = useState<{name:string;state:string|null;district:string|null;preferred_language:string;location_consent_at?:string|null}>({name:'',state:'',district:'',preferred_language:'en'});
-  const [marketItems, setMarketItems] = useState<MarketRecord[]>([]);
-  const [marketPoints, setMarketPoints] = useState<{date:string;modal_price:number}[]>([]);
-  const [marketTrends, setMarketTrends] = useState<Record<string,number|null>>({});
-  const [marketStatus, setMarketStatus] = useState<Record<string,unknown>>({});
-  const [marketChoices, setMarketChoices] = useState<{commodities:string[];states:string[];varieties:string[];grades:string[]}>({commodities:[],states:[],varieties:[],grades:[]});
-  const [marketFilters, setMarketFilters] = useState({commodity:'',variety:'',grade:'',state:'',district:'',mandi:'',date_from:'',date_to:''});
-  const [marketBusy, setMarketBusy] = useState(false);
-  const [marketForecast, setMarketForecast] = useState<Record<string,unknown>|null>(null);
-  const [marketCompare, setMarketCompare] = useState<MarketRecord[]>([]);
-  const [marketCompareBusy, setMarketCompareBusy] = useState(false);
-  const [marketCompareMessage, setMarketCompareMessage] = useState('');
-  const marketState = marketViewState({loading:marketBusy,error:Boolean(notice)&&page==='market',items:marketItems});
-  const marketLastIngestion = marketStatus.last_ingestion && typeof marketStatus.last_ingestion === 'object' ? marketStatus.last_ingestion as Record<string,unknown> : null;
-  const marketEmptyMessage = marketLastIngestion?.error_message ? `Market sync failed: ${String(marketLastIngestion.error_message)}` : marketStatus.configured ? 'No stored observations yet. Run the backend market sync after outbound access to data.gov.in is available.' : 'No stored price observations. Configure DATA_GOV_IN_API_KEY on the backend and run the documented market refresh command.';
+  const [estimateForm, setEstimateForm] = useState({commodity:'',quantity:'',unit:'quintal',state:'',district:'',market:'',variety:''});
+  const [regionalCropSearch, setRegionalCropSearch] = useState('');
+  const [regionalCropPickerOpen, setRegionalCropPickerOpen] = useState(false);
+  const [estimate, setEstimate] = useState<MarketEstimate|null>(null);
+  const [estimateBusy, setEstimateBusy] = useState(false);
+  const [estimateError, setEstimateError] = useState('');
+  const [estimateSort, setEstimateSort] = useState<'modal'|'gross'>('modal');
+  const [estimateMeasure, setEstimateMeasure] = useState<'expected'|'minimum'|'maximum'>('expected');
+  const [marketOptions, setMarketOptions] = useState<MarketOptions>({commodities:[],states:[],districts:[],markets:[],varieties:[],grades:[]});
+  const [marketOptionsError, setMarketOptionsError] = useState('');
 
   useEffect(() => {
     setNotice('');
@@ -114,14 +121,15 @@ export function PlatformPages({ userId }: { userId: number }) {
     if (page !== 'tasks') setTaskSchemeDeadlines([]);
     if (page === 'tasks') request<{ items: Item[]; scheme_deadlines?: Item[] }>(path!).then((result) => { setItems(result.items); setTaskSchemeDeadlines(result.scheme_deadlines || []); }).catch((error: Error) => setNotice(error.message));
     else if (path) request<{ items: Item[] }>(path).then((result) => setItems(result.items)).catch((error: Error) => setNotice(error.message));
-    if(page==='profile'||page==='voice') request<typeof profile>('/farmer/profile').then(setProfile).catch((error:Error)=>setNotice(error.message));
-    if(page==='market') request<Record<string,unknown>>('/markets/status').then(setMarketStatus).catch((error:Error)=>setNotice(error.message));
-    if(page==='market') request<typeof marketChoices>('/markets/options').then(setMarketChoices).catch((error:Error)=>setNotice(error.message));
     if(page==='money') {
       request<{items:Item[]}>(`/users/${userId}/farms`).then(result=>setFinanceFarms(result.items)).catch((error:Error)=>setNotice(error.message));
       request<Record<string,unknown>>('/farm/profit-summary').then(setFinanceSummary).catch((error:Error)=>setNotice(error.message));
     }
   }, [page, recordKind]);
+
+  useEffect(() => {
+    voiceMessagesEnd.current?.scrollIntoView({behavior:'smooth',block:'end'});
+  }, [voiceMessages, voiceBusy]);
 
   useEffect(()=>{
     if(page!=='schemes')return;
@@ -145,25 +153,16 @@ export function PlatformPages({ userId }: { userId: number }) {
   },[page]);
 
   useEffect(()=>{
-    if(page!=='irrigation'&&page!=='harvest')return;
+    if(page!=='market')return;
     let active=true;
-    (async()=>{
-      try{
-        const farms=(await request<{items:Item[]}>(`/users/${userId}/farms`)).items;
-        const fields=(await Promise.all(farms.map(farm=>request<{items:Item[]}>(`/farms/${String(farm.id)}/fields`)))).flatMap(result=>result.items);
-        const crops=(await Promise.all(fields.map(field=>request<{items:Item[]}>(`/fields/${String(field.id)}/crops`)))).flatMap(result=>result.items);
-        if(active){setAdvisoryCrops(crops);if(!selectedAdvisoryCrop&&crops.length)setSelectedAdvisoryCrop(String(crops[0].id));}
-      }catch(error){if(active)setNotice((error as Error).message);}
-    })();
-    return()=>{active=false;};
-  },[page,userId]);
-
-  useEffect(()=>{
-    if(page!=='harvest'||!selectedAdvisoryCrop)return;
-    const crop=advisoryCrops.find(item=>String(item.id)===selectedAdvisoryCrop);
-    setHarvestTargetDate(String(crop?.expected_harvest_date||''));
-    request<Record<string,unknown>>(`/crops/${selectedAdvisoryCrop}/harvest-window`).then(setAdvisoryResult).catch((error:Error)=>setNotice(error.message));
-  },[page,selectedAdvisoryCrop,advisoryCrops]);
+    setMarketOptionsError('');
+    request<MarketOptions>('/markets/options').then(result=>{
+      if(active) setMarketOptions({...result,commodities:result.commodities||[],states:result.states||[],districts:result.districts||[],markets:result.markets||[],varieties:result.varieties||[],grades:result.grades||[]});
+    }).catch((error:Error)=>{
+      if(active) setMarketOptionsError(error.message);
+    });
+    return ()=>{active=false;};
+  },[page]);
 
   useEffect(()=>{
     if(page!=='money'||!financeFarmId){setFinanceCrops([]);return;}
@@ -187,28 +186,27 @@ export function PlatformPages({ userId }: { userId: number }) {
     refreshProfit().catch((error:Error)=>setNotice(error.message));
   },[page,financeFarmId,financeCropId,financeSeason,expectedOutput,financeQuantityUnit,yieldChange,priceChange]);
 
-  useEffect(() => {
-    if(page!=='market') return;
-    const query = new URLSearchParams(Object.entries(marketFilters).filter(([,value])=>Boolean(value)));
-    setNotice('');
-    setMarketBusy(true);
-    Promise.all([
-      request<{items:MarketRecord[]}>(`/markets/prices?${query}`),
-      request<{points:{date:string;modal_price:number}[];changes_percent:Record<string,number|null>}>(`/markets/trends?${query}`),
-      request<Record<string,unknown>>(`/markets/forecast?${query}`),
-    ]).then(([pricesResult,trendsResult,forecastResult])=>{
-      setMarketItems(pricesResult.items);setMarketPoints(trendsResult.points);setMarketTrends(trendsResult.changes_percent);setMarketForecast(forecastResult);
-    }).catch((error:Error)=>setNotice(error.message)).finally(()=>setMarketBusy(false));
-  }, [page, marketFilters]);
-
-  async function compareMandis(){
-    if(!marketFilters.commodity){setNotice('Select a commodity to compare mandis.');return;}
-    setMarketCompareBusy(true);
-    setMarketCompareMessage('');
-    setMarketCompare([]);
-    try{const result=await request<{items:MarketRecord[];message?:string}>('/markets/compare',{method:'POST',body:JSON.stringify(marketFilters)});setMarketCompare(result.items||[]);setMarketCompareMessage(result.message||((result.items||[]).length?'':'No matching observations exist for at least two mandis on the same date and price unit.'));}
-    catch(error){setNotice((error as Error).message);}
-    finally{setMarketCompareBusy(false);}
+  async function findMarketPrices(event:FormEvent){
+    event.preventDefault();
+    if(!estimateForm.commodity.trim()||!estimateForm.quantity.trim()){
+      setEstimateError('Enter a crop and harvest quantity. Leave state and district blank to search across India.');return;
+    }
+    const feedLabel=(value:string)=>value.trim().toLocaleLowerCase().replace(/\b[a-z]/g,letter=>letter.toLocaleUpperCase());
+    const stateAliases:Record<string,string>={'gujrat':'Gujarat','orissa':'Odisha'};
+    const commodity=feedLabel(estimateForm.commodity);
+    const state=stateAliases[estimateForm.state.trim().toLocaleLowerCase()]||feedLabel(estimateForm.state);
+    const district=feedLabel(estimateForm.district);
+    const market=feedLabel(estimateForm.market);
+    if(commodity!==estimateForm.commodity.trim()||state!==estimateForm.state.trim()||district!==estimateForm.district.trim())setEstimateForm(current=>({...current,commodity,state,district}));
+    const params=new URLSearchParams({commodity,quantity:estimateForm.quantity.trim(),unit:estimateForm.unit});
+    if(state)params.set('state',state);
+    if(district)params.set('district',district);
+    if(market)params.set('market',market);
+    if(estimateForm.variety.trim())params.set('variety',feedLabel(estimateForm.variety));
+    setEstimateBusy(true);setEstimateError('');setEstimate(null);
+    try{const result=await request<MarketEstimate>(`/markets/estimate?${params}`);setEstimate(result);}
+    catch(error){setEstimateError((error as Error).message);}
+    finally{setEstimateBusy(false);}
   }
 
   async function refreshProfit(){
@@ -252,6 +250,15 @@ export function PlatformPages({ userId }: { userId: number }) {
     }catch(error){setNotice((error as Error).message);}
   }
 
+  async function deleteTask(id:string){
+    if(!window.confirm('Delete this task? This cannot be undone.'))return;
+    try{
+      await request(`/tasks/${encodeURIComponent(id)}`,{method:'DELETE'});
+      const result=await request<{items:Item[];scheme_deadlines?:Item[]}>('/farm/actions/today');
+      setItems(result.items);setTaskSchemeDeadlines(result.scheme_deadlines||[]);setNotice('Task deleted.');
+    }catch(error){setNotice((error as Error).message);}
+  }
+
   async function submit(event: FormEvent) {
     event.preventDefault();
     try {
@@ -267,16 +274,25 @@ export function PlatformPages({ userId }: { userId: number }) {
     } catch (error) { setNotice((error as Error).message); }
   }
 
-  async function ask() {
+  async function ask(event?: FormEvent) {
+    event?.preventDefault();
+    const message = voiceInput.trim();
+    if (!message || voiceBusy) return;
+    setNotice('');
+    setVoiceInput('');
+    setVoiceMessages(current => [...current, {role:'user', content:message}]);
+    setVoiceBusy(true);
     try {
-      const result = await request<{ answer: string }>('/chat', { method: 'POST', body: JSON.stringify({ message: question, language: chatLanguage }) });
-      setAnswer(result.answer);
-      if ('speechSynthesis' in window) {
+      const result = await request<{ answer: string }>('/chat', { method: 'POST', body: JSON.stringify({ message, language: chatLanguage, conversation: voiceMessages.slice(-8) }) });
+      setVoiceMessages(current => [...current, {role:'assistant', content:result.answer}]);
+      if (speakReplies && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
         const utterance=new SpeechSynthesisUtterance(result.answer);
         utterance.lang=chatLanguage==='en'?'en-IN':'hi-IN';
         window.speechSynthesis.speak(utterance);
       }
-    } catch (error) { setNotice((error as Error).message); }
+    } catch (error) { setNotice((error as Error).message); setVoiceMessages(current=>current.slice(0,-1)); setVoiceInput(message); }
+    finally { setVoiceBusy(false); }
   }
 
   async function checkSchemes() {
@@ -317,63 +333,58 @@ export function PlatformPages({ userId }: { userId: number }) {
     catch(error){setNotice((error as Error).message);}
   }
 
-  async function requestIrrigationAdvice(event:FormEvent){
-    event.preventDefault();
-    if(!selectedAdvisoryCrop){setNotice('Add a crop before requesting an irrigation prompt.');return;}
-    setAdvisoryBusy(true);setAdvisoryResult(null);setNotice('');
-    try{
-      const body:Record<string,unknown>={crop_id:Number(selectedAdvisoryCrop),soil_moisture_status:soilMoistureStatus};
-      if(forecastRainfall.trim())body.forecast_rainfall=forecastRainfall;
-      const result=await request<Record<string,unknown>>('/advisories/irrigation',{method:'POST',body:JSON.stringify(body)});
-      setAdvisoryResult(result);
-    }catch(error){setNotice((error as Error).message);}
-    finally{setAdvisoryBusy(false);}
-  }
-
-  async function saveHarvestPlanningDate(event:FormEvent){
-    event.preventDefault();
-    if(!selectedAdvisoryCrop||!harvestTargetDate)return;
-    setAdvisoryBusy(true);setNotice('');
-    try{
-      const result=await request<Record<string,unknown>>('/advisories/harvest-window',{method:'POST',body:JSON.stringify({crop_id:Number(selectedAdvisoryCrop),expected_harvest_date:harvestTargetDate})});
-      setAdvisoryResult(result);
-    }catch(error){setNotice((error as Error).message);}
-    finally{setAdvisoryBusy(false);}
-  }
-
-  async function saveProfile(event:FormEvent){
-    event.preventDefault();
-    try{const saved=await request<typeof profile>('/farmer/profile',{method:'PUT',body:JSON.stringify(profile)});setProfile(saved);setNotice('Profile saved.');}
-    catch(error){setNotice((error as Error).message);}
-  }
-
-  async function changeLocationConsent(consented:boolean){
-    try{
-      if(consented) await request('/farmer/profile',{method:'PUT',body:JSON.stringify({location_consent:true})});
-      else await request('/location',{method:'DELETE'});
-      setProfile({...profile,location_consent_at:consented?new Date().toISOString():null});
-      setNotice(consented?'Location consent saved. Use the location weather button to share coordinates.':'Saved location deleted and consent withdrawn.');
-    }catch(error){setNotice((error as Error).message);}
-  }
-
   function speakQuestion() {
     const speech = window as typeof window & { SpeechRecognition?: SpeechRecognizerConstructor; webkitSpeechRecognition?: SpeechRecognizerConstructor };
     const Recognition = speech.SpeechRecognition || speech.webkitSpeechRecognition;
-    if (!Recognition) { setNotice('Voice input is not supported by this browser. You can still type your question.'); return; }
+    if (!Recognition) { setNotice('Voice input is not supported in this browser. Try Chrome or Edge, or type your question.'); return; }
+    if (!window.isSecureContext) { setNotice('Microphone access requires a secure page. Open the app using localhost or HTTPS, then allow microphone access.'); return; }
     const recognition = new Recognition();
     recognition.lang = chatLanguage==='en'?'en-IN':'hi-IN';
-    recognition.onresult = (event) => setQuestion(event.results[0][0].transcript);
-    recognition.onerror = () => setNotice('Voice input could not be completed. Check microphone permission or type your question.');
-    recognition.start();
+    recognition.onstart = () => { setNotice('Listening… speak your question now.'); setIsListening(true); };
+    recognition.onresult = (event) => setVoiceInput(event.results[0][0].transcript);
+    recognition.onerror = (event) => {
+      const messages:Record<string,string>={
+        'not-allowed':'Microphone access is blocked. Allow microphone access for this site in your browser’s site settings, and check Windows microphone privacy settings.',
+        'service-not-allowed':'The browser speech service is blocked. Check browser microphone permissions or use Chrome/Edge on localhost or HTTPS.',
+        'audio-capture':'No microphone is available. Connect or enable a microphone, then try again.',
+        'network':'The browser speech-recognition service could not connect. Check your internet connection, or type your question.',
+        'no-speech':'No speech was detected. Tap the mic and speak clearly after the listening prompt.',
+        'language-not-supported':'Speech recognition does not support the selected language in this browser. Choose another language or type your question.',
+        'aborted':'Voice input was cancelled.',
+      };
+      setNotice(messages[event.error]||`Voice input failed (${event.error}). Check microphone permission, or type your question.`);
+      setIsListening(false);
+    };
+    recognition.onend = () => setIsListening(false);
+    try { recognition.start(); }
+    catch (error) {
+      setIsListening(false);
+      const reason=(error as Error).name;
+      setNotice(reason==='NotAllowedError'||reason==='SecurityError'?'Microphone access is blocked. Allow it in your browser’s site settings and use localhost or HTTPS.':'Could not start the microphone. Check that another app is not using it, then try again.');
+    }
   }
+
+  const estimateRows=[...(estimate?.items||[])].sort((a,b)=>{
+    const key=estimateSort==='gross'?(estimateMeasure==='expected'?'expected_value':`${estimateMeasure}_value` as 'minimum_value'|'maximum_value'):'modal_price';
+    const left=a[key]===null?Number.NEGATIVE_INFINITY:Number(a[key]);
+    const right=b[key]===null?Number.NEGATIVE_INFINITY:Number(b[key]);
+    return right-left;
+  });
+  const estimateSummaryField=`${estimateMeasure}_value` as 'expected_value'|'minimum_value'|'maximum_value';
+  const marketCropChoices=marketOptions.commodities.map(commodity=>({commodity,label:commodity}));
+  const filteredMarketCropChoices=marketCropChoices.filter(choice=>choice.label.toLocaleLowerCase().includes(regionalCropSearch.trim().toLocaleLowerCase())).slice(0,12);
+  const marketCoverage=marketOptions.coverage;
+  const estimateSummary=estimateForm.market.trim()?estimateRows.find(row=>row.market.toLocaleLowerCase()===estimateForm.market.trim().toLocaleLowerCase()):estimateRows.filter(row=>row[estimateSummaryField]!==null).sort((a,b)=>Number(b[estimateSummaryField])-Number(a[estimateSummaryField]))[0];
+  const estimateSummaryValue=estimateSummary?.[`${estimateMeasure}_value` as 'expected_value'|'minimum_value'|'maximum_value'];
+  const highestModal=estimateRows.filter(row=>row.modal_price!==null).reduce<MarketEstimateRecord|null>((highest,row)=>!highest||Number(row.modal_price)>Number(highest.modal_price)?row:highest,null);
 
   return <section className="platform-hub">
     <nav className="platform-nav" aria-label="Farm tools">
-      {([['home','Dashboard'],['tasks','Tasks'],['schemes','Schemes'],['irrigation','Irrigation advisor'],['harvest','Harvest planner'],['money','Farm finances'],['diary','Diary'],['market','Mandi Price Intelligence'],['voice','Voice assistant'],['profile','Profile']] as [Page,string][]).map(([id,label]) => <button key={id} className={page===id?'selected':''} onClick={()=>setPage(id)}>{label}</button>)}
+      {([['tasks','Tasks'],['schemes','Schemes'],['money','Farm finances'],['diary','Diary'],['market','Mandi Price Intelligence']] as [Page,string][]).map(([id,label]) => <button key={id} className={page===id?'selected':''} onClick={()=>setPage(id)}>{label}</button>)}
     </nav>
+    <AssistantLauncher onClick={()=>setPage('voice')}/>
     {notice && <p className="notice" role="status">{notice}</p>}
-    {page==='home' && <p>Farm workspace for account {userId}. Crop scans, weather, and risk alerts are on the dashboard above.</p>}
-    {page==='tasks' && <><h2>Today’s farm action plan</h2><p>Checklist items are generated from saved crop context and general care guidance. Weather and scheme deadlines are included only when verified inputs exist.</p><form className="inline-form" onSubmit={submit}><input required maxLength={160} placeholder="Add a task title" value={taskTitle} onChange={e=>setTaskTitle(e.target.value)}/><input required maxLength={2000} placeholder="What needs doing?" value={taskNote} onChange={e=>setTaskNote(e.target.value)}/><button className="primary">Save task</button></form>{taskSchemeDeadlines.length>0&&<section className="scheme-panel daily-deadlines"><h3>Verified scheme deadlines - next 30 days</h3><p>Only recently checked official records for your location are shown. Confirm details with the scheme authority.</p>{taskSchemeDeadlines.map(deadline=><article key={String(deadline.scheme_id)}><strong>{String(deadline.official_name)}</strong><span>Due {String(deadline.deadline)} {Boolean(deadline.application_status)&&<em>- {String(deadline.application_status)}</em>}</span><a href={String(deadline.official_application_url)} target="_blank" rel="noreferrer">Open official application page</a></article>)}</section>}{items.map(item=><article className="platform-item" key={String(item.id)}><strong>{String(item.title)}</strong><p>{String(item.recommendation)}</p>{Boolean(item.reason)&&<p>{String(item.reason)}</p>}<small>{String(item.state)} · {String(item.evidence_quality)}{item.due_date?` · Due ${String(item.due_date)}`:''}</small>{item.state==='open'&&<div className="task-actions"><button type="button" onClick={()=>updateTaskState(String(item.id),'complete')}>Mark complete</button><button type="button" onClick={()=>updateTaskState(String(item.id),'dismiss')}>Dismiss</button></div>}</article>)}</>}
+    {page==='tasks' && <><h2>Today’s farm action plan</h2><p>Checklist items are generated from saved crop context and general care guidance. Weather and scheme deadlines are included only when verified inputs exist.</p><form className="inline-form" onSubmit={submit}><input required maxLength={160} placeholder="Add a task title" value={taskTitle} onChange={e=>setTaskTitle(e.target.value)}/><input required maxLength={2000} placeholder="What needs doing?" value={taskNote} onChange={e=>setTaskNote(e.target.value)}/><button className="primary">Save task</button></form>{taskSchemeDeadlines.length>0&&<section className="scheme-panel daily-deadlines"><h3>Verified scheme deadlines - next 30 days</h3><p>Only recently checked official records for your location are shown. Confirm details with the scheme authority.</p>{taskSchemeDeadlines.map(deadline=><article key={String(deadline.scheme_id)}><strong>{financeLabel(deadline.official_name,'Scheme name unavailable')}</strong><span>Due {financeLabel(deadline.deadline,'Date unavailable')} {Boolean(deadline.application_status)&&<em>- {financeLabel(deadline.application_status,'Status unavailable')}</em>}</span><a href={String(deadline.official_application_url)} target="_blank" rel="noreferrer">Open official application page</a></article>)}</section>}{items.map(item=><article className="platform-item" key={String(item.id)}><strong>{financeLabel(item.title,'Untitled task')}</strong><p>{financeLabel(item.recommendation,'No task details provided.')}</p>{financeLabel(item.reason,'')&&<p>{financeLabel(item.reason,'')}</p>}<small>{financeLabel(item.state,'State unavailable')} · {financeLabel(item.evidence_quality,'Evidence not recorded')}{item.due_date?` · Due ${financeLabel(item.due_date,'Date unavailable')}`:''}</small>{item.state==='open'&&<div className="task-actions"><button type="button" onClick={()=>updateTaskState(String(item.id),'complete')}>Mark complete</button><button type="button" onClick={()=>updateTaskState(String(item.id),'dismiss')}>Dismiss</button></div>}<div className="task-actions"><button type="button" className="task-delete" onClick={()=>deleteTask(String(item.id))}>Delete task</button></div></article>)}</>}
     {page==='schemes' && <>
       <div className="scheme-heading"><div><span className="eyebrow">OFFICIAL PROGRAMMES</span><h2>Government benefits finder</h2><p>Browse schemes and compare your answers with published criteria. The responsible department makes the final decision.</p></div><a href="https://www.india.gov.in/topics/agriculture" target="_blank" rel="noreferrer">National Portal of India ↗</a></div>
       <div className="scheme-filters"><label>Search schemes<input value={schemeSearch} onChange={e=>setSchemeSearch(e.target.value)} placeholder="Name or purpose"/></label><label>Government level<select value={schemeLevel} onChange={e=>setSchemeLevel(e.target.value)}><option value="">All levels</option><option value="central">Central</option><option value="state">State</option></select></label><label>State scope<input value={schemeState} onChange={e=>setSchemeState(e.target.value)} placeholder="Any state"/></label><label>Source review<select value={schemeVerification} onChange={e=>setSchemeVerification(e.target.value)}><option value="">Any review status</option><option value="verified">Verified</option><option value="stale">Stale</option><option value="unverified">Unverified</option></select></label><label>Application status<select value={schemeApplicationStatus} onChange={e=>setSchemeApplicationStatus(e.target.value)}><option value="">Any application status</option><option value="open">Open</option><option value="closed">Closed</option><option value="continuous">Continuous</option><option value="unknown">Unknown</option></select></label></div>
@@ -384,27 +395,56 @@ export function PlatformPages({ userId }: { userId: number }) {
         {schemeMatch&&<p className="scheme-disclaimer" role="status">{schemeMatch}</p>}
         {schemeResults.map(result=><article className="scheme-result" key={String(result.scheme_id)}><div><strong>{String(result.official_name)}</strong><span className={`scheme-status ${String(result.status)}`}>{String(result.status).replace(/_/g,' ')}</span></div>{Array.isArray(result.reasons)&&result.reasons.map((reason,index)=><p key={index}>{String(reason)}</p>)}{Array.isArray(result.missing_information)&&result.missing_information.map((missing,index)=><small key={index}>Needs confirmation: {String((missing as Record<string,unknown>).question)}</small>)}<a href={String(result.official_application_url||result.official_source_url)} target="_blank" rel="noreferrer">Confirm with official department ↗</a></article>)}
       </section>
-      {schemeDeadlines.length>0&&<section className="scheme-panel"><h3>Verified upcoming deadlines</h3>{schemeDeadlines.map(deadline=><p key={String(deadline.scheme_id)}><strong>{String(deadline.official_name)}</strong> · {String(deadline.deadline)} · <a href={String(deadline.official_application_url||'#')} target="_blank" rel="noreferrer">Official application page</a></p>)}</section>}
+      {schemeDeadlines.length>0&&<section className="scheme-panel"><h3>Verified upcoming deadlines</h3>{schemeDeadlines.map(deadline=><p key={String(deadline.scheme_id)}><strong>{financeLabel(deadline.official_name,'Scheme name unavailable')}</strong> · {financeLabel(deadline.deadline,'Date unavailable')} · <a href={String(deadline.official_application_url||'#')} target="_blank" rel="noreferrer">Official application page</a></p>)}</section>}
       <section className="scheme-list"><h3>Scheme registry</h3>{schemeLoading?<p role="status">Loading schemes...</p>:items.length===0?<p>No schemes match these filters. Clear the filters to browse the full registry.</p>:items.map(item=><article className="scheme-card" key={String(item.scheme_id)}><div className="scheme-card-top"><div><span className={`scheme-status ${String(item.verification_status)}`}>{String(item.verification_status)}</span><h4>{String(item.official_name)}</h4></div><button type="button" onClick={()=>toggleSavedScheme(String(item.scheme_id))}>{savedSchemeIds.includes(String(item.scheme_id))?'Saved ✓':'Save scheme'}</button></div><p>{String(item.description||'Purpose and eligibility details have not been verified yet. Review the official source before relying on this scheme information.')}</p>{Boolean(item.benefit_description)&&<p><strong>Benefit:</strong> {String(item.benefit_description)}</p>}<div className="scheme-facts"><span>Application status: <strong>{String(item.application_status||'unknown')}</strong></span><span>{item.deadline?`Deadline: ${String(item.deadline)}`:'Deadline not verified — check the official portal.'}</span><span>Last source check: {item.last_checked_at?String(item.last_checked_at):'Not recorded'}</span></div><div className="scheme-actions"><button type="button" onClick={()=>openScheme(String(item.scheme_id))} disabled={schemeDetailBusy}>{schemeDetailBusy?'Loading...':'View scheme details'}</button><a href={String(item.official_application_url||item.official_source_url||item.url)} target="_blank" rel="noreferrer">Official portal ↗</a></div></article>)}</section>
       {schemeDetail&&<section className="scheme-panel scheme-detail"><div className="scheme-card-top"><div><span className="eyebrow">SCHEME DETAILS</span><h3>{String(schemeDetail.official_name)}</h3></div><button type="button" onClick={()=>setSchemeDetail(null)}>Close details</button></div><p>{String(schemeDetail.description||'No verified description is currently recorded.')}</p><p><strong>Eligibility criteria:</strong> {schemeQuestions(schemeDetail.eligibility_rules).map(rule=>rule.label).join(' ')||'No verified structured criteria recorded.'}</p><p><strong>Exclusions:</strong> {Array.isArray(schemeDetail.exclusion_rules)?(schemeDetail.exclusion_rules as unknown[]).map(String).join('; '):'No verified exclusions recorded.'}</p><p><strong>Application status:</strong> {String(schemeDetail.application_status)} · <strong>Deadline:</strong> {schemeDetail.deadline?String(schemeDetail.deadline):'Not verified'}</p><h4>Documents checklist</h4>{Array.isArray(schemeDetail.document_checklist)&&(schemeDetail.document_checklist as unknown[]).map((doc,index)=>{const data=doc as Record<string,unknown>;const label=String(data.item||`Document ${index+1}`);const id=String(schemeDetail.scheme_id);return <label className="scheme-checklist" key={label}><input type="checkbox" disabled={!savedSchemeIds.includes(id)} checked={Boolean(schemeChecklists[id]?.[label])} onChange={e=>updateSchemeChecklist(id,label,e.target.checked)}/><span><strong>{label}</strong><small>{String(data.note||data.status||'Confirm requirements on the official portal.')}</small></span></label>})}{!savedSchemeIds.includes(String(schemeDetail.scheme_id))&&Array.isArray(schemeDetail.document_checklist)&&schemeDetail.document_checklist.length>0&&<small>Save this scheme to track document checklist progress.</small>}<h4>How to apply</h4>{Array.isArray(schemeDetail.application_procedure)?<ol>{(schemeDetail.application_procedure as unknown[]).map((step,index)=><li key={index}>{String(step)}</li>)}</ol>:<p>Application steps are not verified. Use the official portal.</p>}<p><a href={String(schemeDetail.official_application_url||schemeDetail.official_source_url)} target="_blank" rel="noreferrer">Open official scheme source ↗</a></p>{Array.isArray(schemeDetail.updates)&&<><h4>Recorded source updates</h4>{(schemeDetail.updates as unknown[]).length?(schemeDetail.updates as unknown[]).map((update,index)=><p key={index}>Reviewed {String((update as Record<string,unknown>).recorded_at)} · <a href={String((update as Record<string,unknown>).evidence_url)} target="_blank" rel="noreferrer">Evidence ↗</a></p>):<small>No source change history is recorded.</small>}</>}</section>}
     </>}
-    {page==='irrigation' && <section className="advisory-page"><span className="eyebrow">FIELD OBSERVATION</span><h2>Irrigation advisor</h2><p>This tool uses your field moisture observation as a prompt. It does not measure soil moisture remotely or prescribe a crop-specific water amount.</p>{advisoryCrops.length===0?<div className="empty-state"><strong>No saved crops yet</strong><p>Add a crop in My crops before requesting an irrigation prompt.</p></div>:<><label>Crop<select value={selectedAdvisoryCrop} onChange={e=>{setSelectedAdvisoryCrop(e.target.value);setAdvisoryResult(null);}}>{advisoryCrops.map(crop=><option key={String(crop.id)} value={String(crop.id)}>{String(crop.crop_name)}{crop.current_stage?` - ${String(crop.current_stage)}`:''}</option>)}</select></label><form onSubmit={requestIrrigationAdvice}><label>Root-zone soil moisture you observed<select required value={soilMoistureStatus} onChange={e=>setSoilMoistureStatus(e.target.value)}><option value="">Choose an observation</option><option value="dry">Dry</option><option value="adequate">Adequate</option><option value="wet">Wet</option></select></label><label>Forecast rainfall (mm), optional<input type="number" min="0" max="1000" step="0.1" value={forecastRainfall} onChange={e=>setForecastRainfall(e.target.value)} placeholder="Enter a forecast you checked"/></label><small>Forecast values are supplied by you and are not independently verified here. Check <a href="https://mausam.imd.gov.in/responsive/agromet_adv_ser_block_current_en.php" target="_blank" rel="noreferrer">IMD district agromet advisories</a> and local crop guidance.</small><button className="primary" disabled={advisoryBusy}>{advisoryBusy?'Checking...':'Review irrigation conditions'}</button></form></>}{advisoryResult&&page==='irrigation'&&<article className="advisory-result"><span className={`scheme-status ${String(advisoryResult.status)}`}>{String(advisoryResult.status).replace(/_/g,' ')}</span><h3>{String(advisoryResult.timing||'No recommendation available')}</h3><p>{String(advisoryResult.reason||'')}</p><small>Evidence: {String(advisoryResult.evidence_quality||'insufficient')} - checked {String(advisoryResult.checked_at||'now')}</small>{Array.isArray(advisoryResult.limitations)&&<ul>{advisoryResult.limitations.map((note,index)=><li key={index}>{String(note)}</li>)}</ul>}</article>}</section>}
-    {page==='harvest' && <section className="advisory-page"><span className="eyebrow">HARVEST PLANNING</span><h2>Harvest planner</h2><p>Save a date you or your local advisor expect. CropAI will show it as a planning target, not a maturity prediction, because verified crop- and variety-specific duration evidence is not configured.</p>{advisoryCrops.length===0?<div className="empty-state"><strong>No saved crops yet</strong><p>Add a crop in My crops before recording a harvest target.</p></div>:<><label>Crop<select value={selectedAdvisoryCrop} onChange={e=>{setSelectedAdvisoryCrop(e.target.value);setAdvisoryResult(null);}}>{advisoryCrops.map(crop=><option key={String(crop.id)} value={String(crop.id)}>{String(crop.crop_name)}{crop.variety?` - ${String(crop.variety)}`:''}</option>)}</select></label><form onSubmit={saveHarvestPlanningDate}><label>Expected harvest date<input required type="date" value={harvestTargetDate} onChange={e=>setHarvestTargetDate(e.target.value)}/></label><button className="primary" disabled={advisoryBusy}>{advisoryBusy?'Saving...':'Save planning date'}</button></form><p>Current status: <strong>{String(advisoryResult?.status||'Loading')}</strong>{advisoryResult?.expected_harvest_date?` - Planning target ${String(advisoryResult.expected_harvest_date)}`:''}</p>{advisoryResult&&<p>{String(advisoryResult.planning_note||'No reliable estimated range is available.')}</p>}</>}<p><a href="https://mausam.imd.gov.in/responsive/agromet_adv_ser_block_current_en.php" target="_blank" rel="noreferrer">Check current IMD district advisories</a></p></section>}
-    {page==='money' && <><h2>Farm finances</h2><div className="platform-nav"><button className={recordKind==='expenses'?'selected':''} onClick={()=>{setRecordKind('expenses');setFinanceEditId(null);}}>Expenses</button><button className={recordKind==='sales'?'selected':''} onClick={()=>{setRecordKind('sales');setFinanceEditId(null);}}>Sales</button></div><form className="inline-form" onSubmit={submit}><label>Farm<select value={financeFarmId} onChange={e=>{setFinanceFarmId(e.target.value);setFinanceCropId('');}}><option value="">Unassigned</option>{financeFarms.map(f=><option key={String(f.id)} value={String(f.id)}>{String(f.name)}</option>)}</select></label><label>Crop<select value={financeCropId} onChange={e=>setFinanceCropId(e.target.value)}><option value="">Unassigned</option>{financeCrops.map(c=><option key={String(c.id)} value={String(c.id)}>{String(c.crop_name)}{c.season?` · ${String(c.season)}`:''}</option>)}</select></label><label>Season<input maxLength={80} value={financeSeason} onChange={e=>setFinanceSeason(e.target.value)} placeholder="e.g. Kharif 2026"/></label>{recordKind==='expenses'&&<label>Category<select value={financeCategory} onChange={e=>setFinanceCategory(e.target.value)}>{[['seeds','Seeds'],['fertilizer','Fertilizer'],['crop_protection','Crop protection'],['labor','Labor'],['machinery','Machinery and fuel'],['irrigation','Irrigation'],['equipment_rental','Equipment rental'],['transport','Transport'],['other','Other']].map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label>}{recordKind==='sales'&&<><label>Quantity<input required type="number" min="0.001" step="0.001" value={quantity} onChange={e=>setQuantity(e.target.value)}/></label><label>Quantity unit<select value={financeQuantityUnit} onChange={e=>setFinanceQuantityUnit(e.target.value)}><option value="kg">kg</option><option value="quintal">quintal</option><option value="tonne">tonne</option></select></label><label>Price per unit<select value={financePriceUnit} onChange={e=>setFinancePriceUnit(e.target.value)}><option value="kg">INR/kg</option><option value="quintal">INR/quintal</option><option value="tonne">INR/tonne</option></select></label><label>Selling costs (INR)<input type="number" min="0" step="0.01" value={financeSellingCost} onChange={e=>setFinanceSellingCost(e.target.value)}/></label></>}<label>{recordKind==='expenses'?'Description':'Sale notes'}<input required maxLength={recordKind==='expenses'?500:1000} value={description} onChange={e=>setDescription(e.target.value)}/></label><label>{recordKind==='expenses'?'Amount (INR)':'Price (INR per selected unit)'}<input required type="number" min="0" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)}/></label><label>Date<input required type="date" value={financeDate} onChange={e=>setFinanceDate(e.target.value)}/></label><button className="primary">{financeEditId?'Update':'Record'} {recordKind==='expenses'?'expense':'sale'}</button>{financeEditId&&<button type="button" onClick={()=>setFinanceEditId(null)}>Cancel edit</button>}</form><div className="finance-summary"><h3>Recorded farm return</h3><p>Expenses ₹{String(financeSummary.expenses??'0')} · Sales revenue ₹{String(financeSummary.gross_revenue??'0')} · Selling costs ₹{String(financeSummary.selling_costs??'0')} · Net return ₹{String(financeSummary.net_return??'0')}</p><p>Break-even price: {financeSummary.break_even_price_per_quintal?`₹${String(financeSummary.break_even_price_per_quintal)}/quintal`:'enter expected saleable output below'}</p><form className="inline-form" onSubmit={async e=>{e.preventDefault();try{await refreshProfit();}catch(error){setNotice((error as Error).message);}}}><label>Expected saleable output<input type="number" min="0.001" step="0.001" value={expectedOutput} onChange={e=>setExpectedOutput(e.target.value)}/></label><label>Output unit<select value={financeQuantityUnit} onChange={e=>setFinanceQuantityUnit(e.target.value)}><option value="kg">kg</option><option value="quintal">quintal</option><option value="tonne">tonne</option></select></label><label>Yield change %<input type="number" min="-100" max="500" value={yieldChange} onChange={e=>setYieldChange(e.target.value)}/></label><label>Price change %<input type="number" min="-100" max="500" value={priceChange} onChange={e=>setPriceChange(e.target.value)}/></label><button>Calculate scenario</button></form>{Boolean(financeSummary.scenario)&&<p>Scenario estimated net return: {String((financeSummary.scenario as Record<string,unknown>).estimated_net_return??'incomplete; record a sale price first')}</p>}{Array.isArray(financeSummary.breakdown)&&financeSummary.breakdown.map((group,index)=><p key={index}>{String(group.crop)} · {String(group.season)} · cost per acre {group.cost_per_acre==null?'unavailable':`₹${String(group.cost_per_acre)}`} · cost per quintal {group.cost_per_quintal==null?'unavailable':`₹${String(group.cost_per_quintal)}`}</p>)}</div>{items.filter(item=>[item.description,item.notes,item.amount,item.unit_price,item.incurred_on,item.sold_on].some(hasFinanceValue)).map((item,index)=>{const title=financeLabel(recordKind==='expenses'?item.description:item.notes,recordKind==='expenses'?'Farm expense':'Farm sale');const amountValue=financeLabel(recordKind==='expenses'?item.amount:item.unit_price,'Amount not recorded');const dateValue=financeLabel(recordKind==='expenses'?item.incurred_on:item.sold_on,'Date not recorded');const category=financeLabel(item.category,recordKind==='expenses'?'Expense':'Sale');return <article className="finance-record" key={financeLabel(item.id,`record-${index}`)}><div className="finance-record-copy"><strong>{title}</strong><span>{category.replace(/_/g,' ')}</span><small>{dateValue}{recordKind==='sales'&&item.quantity!=null?` · ${financeLabel(item.quantity,'')} ${financeLabel(item.quantity_unit,'')}`:''}</small></div><div className="finance-record-actions"><strong>₹{amountValue}</strong><div><button type="button" onClick={()=>editFinanceRecord(item)}>Edit</button><button type="button" onClick={()=>deleteFinanceRecord(financeLabel(item.id,''))}>Delete</button></div></div></article>})}</>}
-    {page==='diary' && <><h2>Farm diary</h2><form className="inline-form" onSubmit={submit}><textarea required maxLength={4000} placeholder="Record an observation" value={diaryNote} onChange={e=>setDiaryNote(e.target.value)}/><button className="primary">Save entry</button></form>{items.map(item=><article className="platform-item" key={String(item.id)}>{String(item.entry_date)} · {String(item.notes)}</article>)}</>}
-    {page==='market' && <div className="mandi-page"><header><div><span className="eyebrow">AGMARKNET · data.gov.in</span><h2>Mandi Price Intelligence</h2><p>Observed wholesale market prices. They are not guaranteed farm-gate prices or MSP rates.</p></div><a href="https://www.enam.gov.in/web/dashboard/trade-data" target="_blank" rel="noreferrer">Open official e-NAM trade data ↗</a></header>
-      <div className="mandi-status" role="status">{marketStatus.configured?'data.gov.in credentials configured':'Official data feed not configured'} · Latest observation: {String(marketStatus.newest_observation||'none available')} · Stored observations: {String(marketStatus.records??0)}{marketItems[0]?.freshness==='stale'?' · Showing stale observations':''}</div>
-      <div className="mandi-filters"><label>Crop / commodity<input list="market-commodities" value={marketFilters.commodity} onChange={e=>setMarketFilters({...marketFilters,commodity:e.target.value})} placeholder="Choose or type a crop"/><datalist id="market-commodities">{marketChoices.commodities.map(v=><option key={v} value={v}/>)}</datalist></label><label>Variety<input list="market-varieties" value={marketFilters.variety} onChange={e=>setMarketFilters({...marketFilters,variety:e.target.value})} placeholder="All varieties"/><datalist id="market-varieties">{marketChoices.varieties.map(v=><option key={v} value={v}/>)}</datalist></label><label>Grade<input list="market-grades" value={marketFilters.grade} onChange={e=>setMarketFilters({...marketFilters,grade:e.target.value})} placeholder="All grades"/><datalist id="market-grades">{marketChoices.grades.map(v=><option key={v} value={v}/>)}</datalist></label><label>State<input list="market-states" value={marketFilters.state} onChange={e=>setMarketFilters({...marketFilters,state:e.target.value})} placeholder="All states"/><datalist id="market-states">{marketChoices.states.map(v=><option key={v} value={v}/>)}</datalist></label>{(['district','mandi'] as const).map(key=><label key={key}>{key==='mandi'?'Mandi':'District'}<input value={marketFilters[key]} onChange={e=>setMarketFilters({...marketFilters,[key]:e.target.value})} placeholder={`Filter ${key}`}/></label>)}<label>From<input type="date" value={marketFilters.date_from} onChange={e=>setMarketFilters({...marketFilters,date_from:e.target.value})}/></label><label>To<input type="date" value={marketFilters.date_to} onChange={e=>setMarketFilters({...marketFilters,date_to:e.target.value})}/></label></div>
-      {marketBusy&&<p role="status">Loading mandi observations…</p>}
-      <div className="mandi-cards"><article><small>Latest observed modal</small><strong>{marketItems[0]?.modal_price?`₹${marketItems[0].modal_price}`:'—'}</strong><span>{marketItems[0]?`Min ₹${marketItems[0].minimum_price??'—'} · Max ₹${marketItems[0].maximum_price??'—'}`:'No observation'} / {marketItems[0]?.price_unit||'INR/quintal'}</span><span>{marketItems[0]?`Observed ${marketItems[0].observed_on}`:''}</span></article><article><small>7-day trend</small><strong>{marketTrends['7_day']==null?'—':`${marketTrends['7_day']>0?'+':''}${marketTrends['7_day']}%`}</strong><span>Based on available observed dates</span></article><article><small>30-day trend</small><strong>{marketTrends['30_day']==null?'—':`${marketTrends['30_day']>0?'+':''}${marketTrends['30_day']}%`}</strong><span>Based on available observed dates</span></article></div>
-      {marketFilters.commodity&&marketFilters.mandi&&<p>Daily change: {marketTrends.daily_change==null?'insufficient observations':`${marketTrends.daily_change>0?'+':''}${marketTrends.daily_change}%`}. Year-over-year seasonal comparisons appear only when a comparable observation from roughly one year earlier exists.</p>}
-      <section className="mandi-panel"><h3>Historical modal price</h3>{marketPoints.length>1?<><svg className="mandi-chart" viewBox="0 0 720 190" role="img" aria-label="Historical mandi modal prices"><polyline fill="none" stroke="#2b6844" strokeWidth="3" points={marketPoints.map((point,index)=>`${index*700/Math.max(1,marketPoints.length-1)+10},${180-((point.modal_price-Math.min(...marketPoints.map(p=>p.modal_price)))/(Math.max(...marketPoints.map(p=>p.modal_price))-Math.min(...marketPoints.map(p=>p.modal_price))||1))*155}`).join(' ')}/></svg><p>{marketPoints[0].date} → {marketPoints[marketPoints.length-1].date} · ₹/quintal</p></>:<p>No historical observations available for these filters.</p>}</section>
-      <section className="mandi-panel"><h3>Comparable mandis</h3><button type="button" onClick={compareMandis} disabled={marketCompareBusy||!marketFilters.commodity}>{marketCompareBusy?'Comparing...':'Compare available mandis'}</button>{marketCompare.length?marketCompare.map(row=><p key={`${row.mandi}-${row.observed_on}`}>{row.mandi}, {row.state} · ₹{row.modal_price}/{row.price_unit} · {row.observed_on}</p>):<p>{marketCompareMessage||(!marketFilters.commodity?'Choose a commodity before comparing mandis.':'Run the comparison to rank matching observations.')}</p>}</section>
-      <section className="mandi-panel"><h3>Forecast</h3>{marketForecast?.status==='available'?<><p>{String(marketForecast.model)} · walk-forward MAE ₹{String((marketForecast.backtest as Record<string,unknown>)?.mae)}/quintal</p><p>{String(marketForecast.warning)}</p></>:<p>Insufficient history for a reliable forecast. {String(marketForecast?.message||'No validated forecast is available.')}</p>}</section>
-      <section className="mandi-panel"><h3>Latest observations</h3>{marketState==='ready'?marketItems.map(row=><article className="platform-item" key={row.id}><strong>{row.commodity}{row.variety?` · ${row.variety}`:''}</strong><p>{row.mandi}, {row.district}, {row.state} · {row.observed_on}</p><small>Min ₹{row.minimum_price??'—'} · Modal ₹{row.modal_price??'—'} · Max ₹{row.maximum_price??'—'} / {row.price_unit} · {row.freshness}</small><p><a href={row.source_url} target="_blank" rel="noreferrer">Source: data.gov.in</a></p></article>):marketState==='loading'?<p role="status">Loading observations…</p>:marketState==='error'?<p role="alert">Could not load market observations. {notice}</p>:<p role="status">{marketEmptyMessage}</p>}</section>
-      <p className="mandi-note">Prices are reported at mandi level. MSP is separate and is not represented by these observations. Seasonal comparison appears only when sufficient multi-year data exists.</p>
+    {page==='money' && <><h2>Farm finances</h2><div className="platform-nav"><button className={recordKind==='expenses'?'selected':''} onClick={()=>{setRecordKind('expenses');setFinanceEditId(null);}}>Expenses</button><button className={recordKind==='sales'?'selected':''} onClick={()=>{setRecordKind('sales');setFinanceEditId(null);}}>Sales</button></div><form className="inline-form" onSubmit={submit}><label>Farm<select value={financeFarmId} onChange={e=>{setFinanceFarmId(e.target.value);setFinanceCropId('');}}><option value="">Unassigned</option>{financeFarms.map(f=><option key={String(f.id)} value={String(f.id)}>{financeLabel(f.name,'Unnamed farm')}</option>)}</select></label><label>Crop<select value={financeCropId} onChange={e=>setFinanceCropId(e.target.value)}><option value="">Unassigned</option>{financeCrops.map(c=><option key={String(c.id)} value={String(c.id)}>{financeLabel(c.crop_name,'Unnamed crop')}{c.season?` · ${financeLabel(c.season,'Season not recorded')}`:''}</option>)}</select></label><label>Season<input maxLength={80} value={financeSeason} onChange={e=>setFinanceSeason(e.target.value)} placeholder="e.g. Kharif 2026"/></label>{recordKind==='expenses'&&<label>Category<select value={financeCategory} onChange={e=>setFinanceCategory(e.target.value)}>{[['seeds','Seeds'],['fertilizer','Fertilizer'],['crop_protection','Crop protection'],['labor','Labor'],['machinery','Machinery and fuel'],['irrigation','Irrigation'],['equipment_rental','Equipment rental'],['transport','Transport'],['other','Other']].map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label>}{recordKind==='sales'&&<><label>Quantity<input required type="number" min="0.001" step="0.001" value={quantity} onChange={e=>setQuantity(e.target.value)}/></label><label>Quantity unit<select value={financeQuantityUnit} onChange={e=>setFinanceQuantityUnit(e.target.value)}><option value="kg">kg</option><option value="quintal">quintal</option><option value="tonne">tonne</option></select></label><label>Price per unit<select value={financePriceUnit} onChange={e=>setFinancePriceUnit(e.target.value)}><option value="kg">INR/kg</option><option value="quintal">INR/quintal</option><option value="tonne">INR/tonne</option></select></label><label>Selling costs (INR)<input type="number" min="0" step="0.01" value={financeSellingCost} onChange={e=>setFinanceSellingCost(e.target.value)}/></label></>}<label>{recordKind==='expenses'?'Description':'Sale notes'}<input required maxLength={recordKind==='expenses'?500:1000} value={description} onChange={e=>setDescription(e.target.value)}/></label><label>{recordKind==='expenses'?'Amount (INR)':'Price (INR per selected unit)'}<input required type="number" min="0" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)}/></label><label>Date<input required type="date" value={financeDate} onChange={e=>setFinanceDate(e.target.value)}/></label><button className="primary">{financeEditId?'Update':'Record'} {recordKind==='expenses'?'expense':'sale'}</button>{financeEditId&&<button type="button" onClick={()=>setFinanceEditId(null)}>Cancel edit</button>}</form><div className="finance-summary"><h3>Recorded farm return</h3><p>Expenses ₹{financeLabel(financeSummary.expenses,'0')} · Sales revenue ₹{financeLabel(financeSummary.gross_revenue,'0')} · Selling costs ₹{financeLabel(financeSummary.selling_costs,'0')} · Net return ₹{financeLabel(financeSummary.net_return,'0')}</p><p>Break-even price: {financeSummary.break_even_price_per_quintal?`₹${String(financeSummary.break_even_price_per_quintal)}/quintal`:'enter expected saleable output below'}</p><form className="inline-form" onSubmit={async e=>{e.preventDefault();try{await refreshProfit();}catch(error){setNotice((error as Error).message);}}}><label>Expected saleable output<input type="number" min="0.001" step="0.001" value={expectedOutput} onChange={e=>setExpectedOutput(e.target.value)}/></label><label>Output unit<select value={financeQuantityUnit} onChange={e=>setFinanceQuantityUnit(e.target.value)}><option value="kg">kg</option><option value="quintal">quintal</option><option value="tonne">tonne</option></select></label><label>Yield change %<input type="number" min="-100" max="500" value={yieldChange} onChange={e=>setYieldChange(e.target.value)}/></label><label>Price change %<input type="number" min="-100" max="500" value={priceChange} onChange={e=>setPriceChange(e.target.value)}/></label><button>Calculate scenario</button></form>{Boolean(financeSummary.scenario)&&<p>Scenario estimated net return: {financeLabel((financeSummary.scenario as Record<string,unknown>).estimated_net_return,'incomplete; record a sale price first')}</p>}{Array.isArray(financeSummary.breakdown)&&financeSummary.breakdown.map((group,index)=><p key={index}>{financeLabel(group.crop,'Crop not linked')} · {financeLabel(group.season,'Season not recorded')} · cost per acre {group.cost_per_acre==null?'unavailable':`₹${financeLabel(group.cost_per_acre,'unavailable')}`} · cost per quintal {group.cost_per_quintal==null?'unavailable':`₹${financeLabel(group.cost_per_quintal,'unavailable')}`}</p>)}</div>{items.filter(item=>[item.description,item.notes,item.amount,item.unit_price,item.incurred_on,item.sold_on].some(hasFinanceValue)).map((item,index)=>{const title=financeLabel(recordKind==='expenses'?item.description:item.notes,recordKind==='expenses'?'Farm expense':'Farm sale');const amountValue=financeLabel(recordKind==='expenses'?item.amount:item.unit_price,'Amount not recorded');const dateValue=financeLabel(recordKind==='expenses'?item.incurred_on:item.sold_on,'Date not recorded');const category=financeLabel(item.category,recordKind==='expenses'?'Expense':'Sale');return <article className="finance-record" key={financeLabel(item.id,`record-${index}`)}><div className="finance-record-copy"><strong>{title}</strong><span>{category.replace(/_/g,' ')}</span><small>{dateValue}{recordKind==='sales'&&item.quantity!=null?` · ${financeLabel(item.quantity,'')} ${financeLabel(item.quantity_unit,'')}`:''}</small></div><div className="finance-record-actions"><strong>₹{amountValue}</strong><div><button type="button" onClick={()=>editFinanceRecord(item)}>Edit</button><button type="button" onClick={()=>deleteFinanceRecord(financeLabel(item.id,''))}>Delete</button></div></div></article>})}</>}
+    {page==='diary' && <><h2>Farm diary</h2><form className="inline-form" onSubmit={submit}><textarea required maxLength={4000} placeholder="Record an observation" value={diaryNote} onChange={e=>setDiaryNote(e.target.value)}/><button className="primary">Save entry</button></form>{items.map(item=><article className="platform-item" key={String(item.id)}>{financeLabel(item.entry_date,'Date not recorded')} · {financeLabel(item.notes,'No note recorded')}</article>)}</>}
+    {page==='market' && <div className="mandi-page"><header><div><span className="eyebrow">AGMARKNET · data.gov.in</span><h2>Mandi Price Intelligence</h2><p>Compare reported market prices and estimate your harvest's gross value.</p></div><a href="https://www.enam.gov.in/web/dashboard/trade-data" target="_blank" rel="noreferrer">Open official e-NAM trade data ↗</a></header>
+      <section className="market-estimator" aria-labelledby="estimate-heading">
+        <div className="market-estimator-heading"><div><span className="eyebrow">HARVEST VALUE CHECK</span><h3 id="estimate-heading">Compare reported markets across India</h3><p>Search any commodity currently reported by AGMARKNET, or add a state and district to narrow the results. Reports are updated daily.</p></div><span className="provider-mark">DATA.GOV.IN<br/>AGMARKNET</span></div>
+        <label className="estimate-demo">Choose a commodity in the current feed<select value="" onChange={event=>{const commodity=event.target.value;if(!commodity)return;setEstimateForm({...estimateForm,commodity,quantity:estimateForm.quantity||'12',unit:'kg',state:'',district:'',market:'',variety:''});setEstimate(null);setEstimateError('');}}><option value="">{marketOptions.commodities.length?`${marketOptions.commodities.length} commodities available`:'Commodity list is loading…'}</option>{marketOptions.commodities.map(commodity=><option key={commodity} value={commodity}>{commodity}</option>)}</select><small>{marketCoverage?.records?`${Number(marketCoverage.records).toLocaleString('en-IN')} AGMARKNET observations are stored${marketCoverage.newest_observation?`; newest report ${marketCoverage.newest_observation}`:''}.`:'Loading the latest commodity coverage from the mandi feed.'} Prices change as the feed updates.</small></label>
+        {marketOptionsError&&<p className="estimate-error" role="alert">Commodity list unavailable: {marketOptionsError}. You can still type a commodity name below.</p>}
+        <div className="estimate-demo regional-picker">
+          <label htmlFor="regional-crop-search">Search all available commodities</label>
+          <input id="regional-crop-search" type="search" role="combobox" aria-autocomplete="list" aria-expanded={regionalCropPickerOpen} aria-controls="regional-crop-suggestions" value={regionalCropSearch} onFocus={()=>setRegionalCropPickerOpen(true)} onChange={event=>{setRegionalCropSearch(event.target.value);setRegionalCropPickerOpen(true);}} onKeyDown={event=>{if(event.key==='Escape')setRegionalCropPickerOpen(false);if(event.key==='Enter'&&regionalCropPickerOpen&&filteredMarketCropChoices[0]){event.preventDefault();const choice=filteredMarketCropChoices[0];setEstimateForm(current=>({...current,commodity:choice.commodity,quantity:current.quantity||'12',unit:'kg',state:'',district:'',market:'',variety:''}));setRegionalCropSearch(choice.label);setRegionalCropPickerOpen(false);setEstimate(null);setEstimateError('');}}} placeholder="Search onion, wheat, tomato, paddy…" autoComplete="off" />
+          {regionalCropPickerOpen&&<ul className="regional-suggestions" id="regional-crop-suggestions" role="listbox">{filteredMarketCropChoices.length?filteredMarketCropChoices.map(choice=><li role="option" aria-selected="false" key={choice.commodity}><button type="button" onClick={()=>{setEstimateForm(current=>({...current,commodity:choice.commodity,quantity:current.quantity||'12',unit:'kg',state:'',district:'',market:'',variety:''}));setRegionalCropSearch(choice.label);setRegionalCropPickerOpen(false);setEstimate(null);setEstimateError('');}}><strong>{choice.commodity}</strong><span>Search every reported mandi · all India</span></button></li>):<li className="regional-suggestions-empty">{marketOptions.commodities.length?'No matching commodity. Try a shorter search.':'The commodity list is still loading; you can type the name manually.'}</li>}</ul>}
+          <small>Every commodity in the current feed is listed. Pick one, then narrow to a state, district, or mandi if you want a local comparison.</small>
+        </div>
+        <form className="estimate-form" onSubmit={findMarketPrices}>
+          <label>Crop or commodity<input required value={estimateForm.commodity} onChange={e=>setEstimateForm({...estimateForm,commodity:e.target.value})} placeholder="e.g. Onion"/></label>
+          <label>Harvest quantity<input required type="number" min="0.001" max="1000000000" step="any" value={estimateForm.quantity} onChange={e=>setEstimateForm({...estimateForm,quantity:e.target.value})} placeholder="e.g. 12"/></label>
+          <label>Unit<select value={estimateForm.unit} onChange={e=>setEstimateForm({...estimateForm,unit:e.target.value})}><option value="quintal">Quintals</option><option value="kg">Kilograms</option></select></label>
+          <label>State <span className="optional-label">Optional · leave blank for all India</span><input list="market-state-options" value={estimateForm.state} onChange={e=>setEstimateForm({...estimateForm,state:e.target.value})} placeholder="Any state"/><datalist id="market-state-options">{marketOptions.states.map(state=><option key={state} value={state}/>)}</datalist></label>
+          <label>District <span className="optional-label">Optional · blank searches every district in the selected state</span><input list="market-district-options" value={estimateForm.district} onChange={e=>setEstimateForm({...estimateForm,district:e.target.value})} placeholder="Any district"/><datalist id="market-district-options">{marketOptions.districts.map(district=><option key={district} value={district}/>)}</datalist></label>
+          <label>Variety <span className="optional-label">Optional</span><input list="market-variety-options" value={estimateForm.variety} onChange={e=>setEstimateForm({...estimateForm,variety:e.target.value})} placeholder="Any reported variety"/><datalist id="market-variety-options">{marketOptions.varieties.map(variety=><option key={variety} value={variety}/>)}</datalist></label>
+          <label>Mandi <span className="optional-label">Optional</span><input list="market-mandi-options" value={estimateForm.market} onChange={e=>setEstimateForm({...estimateForm,market:e.target.value})} placeholder="Compare all in district"/><datalist id="market-mandi-options">{marketOptions.markets.map(market=><option key={market} value={market}/>)}</datalist></label>
+          <button className="estimate-all-india" type="button" onClick={()=>setEstimateForm(current=>({...current,state:'',district:'',market:''}))}>Use all India scope</button>
+          <button className="primary estimate-submit" type="submit" disabled={estimateBusy}>{estimateBusy?'Fetching reported prices…':'Find Market Prices'}</button>
+        </form>
+        {estimateError&&<p className="estimate-error" role="alert">{estimateError}</p>}
+        {estimateBusy&&<p className="estimate-loading" role="status">Requesting the latest available provider records. Reported prices may be from an earlier market date.</p>}
+        {estimate&&<div className="estimate-results">
+          <div className="estimate-freshness" role="status"><strong>{estimate.status==='empty'?'No matching reported prices':estimate.items.some(row=>row.stale)?'Older reported observations':'Prices retrieved from data.gov.in'}</strong><span>{estimate.status==='empty'?'No market reporting date is available':`Market date: ${estimate.items.map(row=>row.reporting_date).sort().reverse()[0]}`} · Retrieved: {new Date(estimate.retrieved_at).toLocaleString('en-IN')}</span></div>
+          {estimate.status==='empty'?<div className="estimate-empty" role="status"><strong>No prices found for this search</strong><p>{estimate.message||'The official feed returned no matching market reports. Try a crop or location shown in the available choices.'}</p><small>No harvest value was calculated because there is no reported price to use.</small></div>:<>
+          {estimate.comparison_note&&<p className="comparison-note">{estimate.comparison_note}</p>}
+          <div className="estimate-summary"><div><span className="eyebrow">{estimateForm.market?`ESTIMATE · ${estimateForm.market.toUpperCase()}`:`HIGHEST REPORTED ${estimateMeasure==='expected'?'MODAL':estimateMeasure.toUpperCase()} PRICE`}</span><strong>{formatINR(estimateSummaryValue)}</strong><small>Gross estimate for {estimate.query.quantity} {estimate.query.unit} of {estimate.query.commodity}{estimateSummary?` at ${estimateSummary.market}, ${estimateSummary.district}`:''}</small></div><label>Estimate using<select value={estimateMeasure} onChange={e=>setEstimateMeasure(e.target.value as typeof estimateMeasure)}><option value="expected">Modal price</option><option value="minimum">Minimum price</option><option value="maximum">Maximum price</option></select></label></div>
+          <div className="estimate-table-heading"><div><span className="eyebrow">MATCHING OBSERVATIONS</span><h4>{estimate.items.length} market{estimate.items.length===1?'':'s'} found</h4></div><div className="estimate-sort" aria-label="Sort market observations"><button type="button" className={estimateSort==='modal'?'selected':''} onClick={()=>setEstimateSort('modal')}>Modal price</button><button type="button" className={estimateSort==='gross'?'selected':''} onClick={()=>setEstimateSort('gross')}>Gross value</button></div></div>
+          <div className="estimate-table-wrap"><table className="estimate-table"><thead><tr><th scope="col">Mandi</th><th scope="col">Variety / grade</th><th scope="col">Min / modal / max<br/><small>₹ per quintal</small></th><th scope="col">Estimated gross range</th><th scope="col">Reported</th><th scope="col">Source</th></tr></thead><tbody>{estimateRows.map(row=><tr key={`${row.market}-${row.reporting_date}-${row.variety}-${row.grade}`}><td><strong>{row.market}</strong>{highestModal===row&&<span className="highest-price">Highest modal</span>}<small>{row.district}, {row.state}</small></td><td>{row.variety||'Not specified'}<small>{row.grade||'Grade not reported'}</small></td><td>{formatINR(row.minimum_price)}<small>{formatINR(row.modal_price)} modal</small>{formatINR(row.maximum_price)}<small>{row.source_price_unit}</small></td><td><strong>{formatINR(row.minimum_value)}</strong><small>{formatINR(row.expected_value)} modal</small>{formatINR(row.maximum_value)}</td><td>{row.reporting_date}<small>{row.stale?'Older report':'Recent report'}</small></td><td><a href={row.source_url} target="_blank" rel="noreferrer">data.gov.in ↗</a></td></tr>)}</tbody></table></div>
+          </>}
+          <p className="estimate-source">Source: {estimate.provider} · {estimate.served_from==='live'?'Live provider response':'Stored daily feed'} · Retrieved at {new Date(estimate.retrieved_at).toLocaleString('en-IN')}. {estimate.status==='empty'?'No matching report was returned for these filters.':'The reporting date is supplied by the market feed; retrieval time is when this app last stored or requested the records.'}</p>
+        </div>}
+        <p className="estimate-disclaimer">Prices are estimates based on reported market data. Actual selling prices may vary by quality, variety, quantity, market conditions, and applicable deductions. No transport or transaction costs are deducted.</p>
+      </section>
+
     </div>}
-    {page==='voice' && <><h2>Ask the agriculture assistant</h2><p>Voice stays in your browser. Speech input/output follows the selected language where your browser supports it.</p><label>Language<select value={chatLanguage} onChange={e=>setChatLanguage(e.target.value as 'en'|'hi'|'hinglish')}><option value="en">English</option><option value="hi">Hindi</option><option value="hinglish">Hinglish</option></select></label><div className="chat-input-row"><input value={question} onChange={e=>setQuestion(e.target.value)} placeholder="Ask in your selected language"/><button className="mic-button" type="button" onClick={speakQuestion} aria-label="Dictate your question" title="Dictate your question"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V22m-4 0h8"/></svg></button><button type="button" className="primary" onClick={ask}>Send</button></div>{answer&&<p className="assistant-answer">{answer}</p>}</>}
-    {page==='profile' && <><h2>Farmer profile</h2><form className="inline-form" onSubmit={saveProfile}><label>Name<input required maxLength={120} value={profile.name||''} onChange={e=>setProfile({...profile,name:e.target.value})}/></label><label>State<input maxLength={100} value={profile.state||''} onChange={e=>setProfile({...profile,state:e.target.value})}/></label><label>District<input maxLength={100} value={profile.district||''} onChange={e=>setProfile({...profile,district:e.target.value})}/></label><label>Language<select value={profile.preferred_language||'en'} onChange={e=>setProfile({...profile,preferred_language:e.target.value})}><option value="en">English</option><option value="hi">Hindi</option><option value="hinglish">Hinglish</option></select></label><button className="primary">Save profile</button></form><label><input type="checkbox" checked={Boolean(profile.location_consent_at)} onChange={e=>changeLocationConsent(e.target.checked)}/> I consent to saving my location for farm alerts.</label><p>Browser permission is requested only when you choose the location weather action. Unchecking deletes the saved coordinates.</p></>}
+    {page==='voice' && <div className="voice-chat">
+      <header className="voice-chat-heading"><div><span className="eyebrow">GEMINI FARM ASSISTANT</span><h2>Talk with Kheti assistant</h2><p>Ask about crops, plant care, or farming. Choose Hindi, English, or Hinglish; use the mic to dictate and hear spoken replies.</p></div><span className="voice-status">English · हिन्दी · Hinglish</span></header>
+      <div className="voice-chat-options"><label>Reply language<select value={chatLanguage} onChange={e=>setChatLanguage(e.target.value as 'en'|'hi'|'hinglish')}><option value="en">English</option><option value="hi">Hindi</option><option value="hinglish">Hinglish</option></select></label><label className="speak-toggle"><input type="checkbox" checked={speakReplies} onChange={e=>setSpeakReplies(e.target.checked)}/> Read replies aloud</label><button type="button" className="quiet" onClick={()=>{setVoiceMessages([]);setNotice('');window.speechSynthesis?.cancel();}}>New conversation</button></div>
+      <div className="voice-messages" aria-live="polite" aria-label="Conversation with the farm assistant">{voiceMessages.length===0?<div className="voice-empty"><span aria-hidden="true">✳</span><strong>How can I help your farm today?</strong><p>Try “My tomato leaves have brown spots. What should I check?”</p></div>:voiceMessages.map((item,index)=><article className={`voice-message ${item.role}`} key={`${index}-${item.role}`}><small>{item.role==='user'?'You':'Kheti assistant'}</small><p>{item.content}</p>{item.role==='assistant'&&<button type="button" className="voice-read-button" onClick={()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(item.content);utterance.lang=chatLanguage==='en'?'en-IN':'hi-IN';window.speechSynthesis.speak(utterance);}}}>▶ Listen</button>}</article>)}{voiceBusy&&<article className="voice-message assistant" role="status"><small>Kheti assistant</small><p className="voice-thinking"><i/><i/><i/> Thinking…</p></article>}<div ref={voiceMessagesEnd}/></div>
+      <form className="voice-compose" onSubmit={ask}><textarea rows={2} maxLength={4000} value={voiceInput} onChange={e=>setVoiceInput(e.target.value)} placeholder={chatLanguage==='hi'?'अपना सवाल लिखें…':'Ask your farming question…'} aria-label="Your message"/><button className={`mic-button${isListening?' listening':''}`} type="button" onClick={speakQuestion} aria-label={isListening?'Listening for your message':'Dictate your message'} title={isListening?'Listening…':'Dictate your message'} aria-pressed={isListening}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V22m-4 0h8"/></svg></button><button type="submit" className="primary" disabled={voiceBusy||!voiceInput.trim()}>{voiceBusy?'Sending…':'Send message'} <span aria-hidden="true">↑</span></button></form>
+      <p className="voice-footnote">For urgent crop disease or chemical treatment decisions, verify advice with a local agricultural expert.</p>
+    </div>}
   </section>;
 }

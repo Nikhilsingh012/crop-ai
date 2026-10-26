@@ -1,0 +1,306 @@
+{
+  "source": "NASA POWER Daily API",
+  "endpoint": "https://power.larc.nasa.gov/api/temporal/daily/point",
+  "parameters": [
+    "T2M",
+    "PRECTOTCORR",
+    "RH2M"
+  ],
+  "community": "AG",
+  "time_standard": "LST",
+  "retrieval_run_at_utc": "2026-10-25T08:19:36.484647+00:00",
+  "requests": [
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=31.06333&latitude=0.7816667&start=20040727&end=20040727&format=JSON&time-standard=LST",
+      "cache_key_sha256": "bc5b5857bf4e264817594cb6feac5d89fbd6bf6ba3ca76a7935ee619e7f253c0",
+      "cache_file": "raw_cache\\bc5b5857bf4e264817594cb6feac5d89fbd6bf6ba3ca76a7935ee619e7f253c0.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:15.867934+00:00",
+      "requested_latitude": 0.7816667,
+      "requested_longitude": 31.06333,
+      "requested_start": "2004-07-27",
+      "requested_end": "2004-07-27",
+      "returned_latitude": 0.782,
+      "returned_longitude": 31.063,
+      "returned_elevation": 1166.72,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=34.07167&latitude=1.329722&start=20040824&end=20040824&format=JSON&time-standard=LST",
+      "cache_key_sha256": "bee4c618147b80324f74d097c2bff00260e927c666b5372043cd278bedfac89b",
+      "cache_file": "raw_cache\\bee4c618147b80324f74d097c2bff00260e927c666b5372043cd278bedfac89b.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:16.472093+00:00",
+      "requested_latitude": 1.329722,
+      "requested_longitude": 34.07167,
+      "requested_start": "2004-08-24",
+      "requested_end": "2004-08-24",
+      "returned_latitude": 1.33,
+      "returned_longitude": 34.072,
+      "returned_elevation": 1430.67,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=33.31425&latitude=1.946583&start=20050725&end=20050725&format=JSON&time-standard=LST",
+      "cache_key_sha256": "1c69663ca2db198df545dd138210d9a2d9e7f9602d402186fac7f1d1cd815c84",
+      "cache_file": "raw_cache\\1c69663ca2db198df545dd138210d9a2d9e7f9602d402186fac7f1d1cd815c84.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:17.038646+00:00",
+      "requested_latitude": 1.946583,
+      "requested_longitude": 33.31425,
+      "requested_start": "2005-07-25",
+      "requested_end": "2005-07-25",
+      "returned_latitude": 1.947,
+      "returned_longitude": 33.314,
+      "returned_elevation": 1074.7,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=33.0681&latitude=0.7831167&start=20060813&end=20060813&format=JSON&time-standard=LST",
+      "cache_key_sha256": "a77a233dfb4eeac2eaf3817c66a0f1651bf0c2f927ef7a4742891d195d16e696",
+      "cache_file": "raw_cache\\a77a233dfb4eeac2eaf3817c66a0f1651bf0c2f927ef7a4742891d195d16e696.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:18.138050+00:00",
+      "requested_latitude": 0.7831167,
+      "requested_longitude": 33.0681,
+      "requested_start": "2006-08-13",
+      "requested_end": "2006-08-13",
+      "returned_latitude": 0.783,
+      "returned_longitude": 33.068,
+      "returned_elevation": 1072.95,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=31.20966&latitude=2.4348&start=20080912&end=20080912&format=JSON&time-standard=LST",
+      "cache_key_sha256": "a6e180943bb51b936646e738bb2e1296a60824a3c1b0c3090b3d1fb25b4e6b86",
+      "cache_file": "raw_cache\\a6e180943bb51b936646e738bb2e1296a60824a3c1b0c3090b3d1fb25b4e6b86.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:18.848700+00:00",
+      "requested_latitude": 2.4348,
+      "requested_longitude": 31.20966,
+      "requested_start": "2008-09-12",
+      "requested_end": "2008-09-12",
+      "returned_latitude": 2.435,
+      "returned_longitude": 31.21,
+      "returned_elevation": 932.11,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=32.90849&latitude=0.24545&start=20100923&end=20100923&format=JSON&time-standard=LST",
+      "cache_key_sha256": "8e4c5a301fcc183e088282213999978b957e9b158c706a1c22ffcf67c454aec4",
+      "cache_file": "raw_cache\\8e4c5a301fcc183e088282213999978b957e9b158c706a1c22ffcf67c454aec4.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:20.174864+00:00",
+      "requested_latitude": 0.24545,
+      "requested_longitude": 32.90849,
+      "requested_start": "2010-09-23",
+      "requested_end": "2010-09-23",
+      "returned_latitude": 0.245,
+      "returned_longitude": 32.908,
+      "returned_elevation": 1154.52,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=31.35586&latitude=0.47931&start=20130710&end=20130710&format=JSON&time-standard=LST",
+      "cache_key_sha256": "090eb391b740832a3283d766bf20b48a7ce0e45ad19c7eca40c47f8725141afc",
+      "cache_file": "raw_cache\\090eb391b740832a3283d766bf20b48a7ce0e45ad19c7eca40c47f8725141afc.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:21.393475+00:00",
+      "requested_latitude": 0.47931,
+      "requested_longitude": 31.35586,
+      "requested_start": "2013-07-10",
+      "requested_end": "2013-07-10",
+      "returned_latitude": 0.479,
+      "returned_longitude": 31.356,
+      "returned_elevation": 1277.42,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=30.51784&latitude=0.67721&start=20141211&end=20141211&format=JSON&time-standard=LST",
+      "cache_key_sha256": "9ba1174e20627b28ce8913a759977deb6fe5233b6234e3718f2b50a2c828329e",
+      "cache_file": "raw_cache\\9ba1174e20627b28ce8913a759977deb6fe5233b6234e3718f2b50a2c828329e.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:22.531391+00:00",
+      "requested_latitude": 0.67721,
+      "requested_longitude": 30.51784,
+      "requested_start": "2014-12-11",
+      "requested_end": "2014-12-11",
+      "returned_latitude": 0.677,
+      "returned_longitude": 30.518,
+      "returned_elevation": 1328.66,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=31.74887&latitude=0.94605&start=20150724&end=20150724&format=JSON&time-standard=LST",
+      "cache_key_sha256": "fd3b0bfc5a0b3a426a756b0615e21529fb8766e2dcb74cf35d201d48eec92727",
+      "cache_file": "raw_cache\\fd3b0bfc5a0b3a426a756b0615e21529fb8766e2dcb74cf35d201d48eec92727.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:23.579407+00:00",
+      "requested_latitude": 0.94605,
+      "requested_longitude": 31.74887,
+      "requested_start": "2015-07-24",
+      "requested_end": "2015-07-24",
+      "returned_latitude": 0.946,
+      "returned_longitude": 31.749,
+      "returned_elevation": 1121.86,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CRH2M&community=AG&longitude=32.546185&latitude=2.130944&start=20170708&end=20170708&format=JSON&time-standard=LST",
+      "cache_key_sha256": "3076580b6f379e51e04646ce1b07d3402ca7c32982750c532401ac95d8406868",
+      "cache_file": "raw_cache\\3076580b6f379e51e04646ce1b07d3402ca7c32982750c532401ac95d8406868.json",
+      "cache_hit": true,
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-25T08:18:24.656306+00:00",
+      "requested_latitude": 2.130944,
+      "requested_longitude": 32.546185,
+      "requested_start": "2017-07-08",
+      "requested_end": "2017-07-08",
+      "returned_latitude": 2.131,
+      "returned_longitude": 32.546,
+      "returned_elevation": 1057.8,
+      "api_sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "time_standard": "LST",
+      "parameter_units": {
+        "T2M": "C",
+        "PRECTOTCORR": "mm/day",
+        "RH2M": "%"
+      },
+      "fill_values_treated_as_missing": [
+        -999.0
+      ]
+    }
+  ],
+  "failures": [],
+  "input_column_mapping": {
+    "id": "id",
+    "date": "date",
+    "latitude": "latitude",
+    "longitude": "longitude"
+  },
+  "notes": [
+    "Raw response cache is separate from weather_matches.csv.",
+    "No disease outcomes are inferred from weather.",
+    "Point values represent source-grid data, not exact field measurements."
+  ]
+}

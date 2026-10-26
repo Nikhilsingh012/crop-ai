@@ -27,6 +27,8 @@ def resolve_crop(value):
         "methi": ["fenugreek_leaves", "fenugreek_seed"],
         "chilli": ["green_chilli", "dry_chilli"],
         "chili": ["green_chilli", "dry_chilli"],
+        "pea": ["field_pea", "garden_pea"],
+        "peas": ["field_pea", "garden_pea"],
     }
     if key in ambiguous:
         return None, [crop_by_id(crop_id)["canonical_name"] for crop_id in ambiguous[key] if crop_by_id(crop_id)]

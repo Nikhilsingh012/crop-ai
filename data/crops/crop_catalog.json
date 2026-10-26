@@ -14,7 +14,7 @@
   {
     "crop_id": "wheat",
     "canonical_name": "Wheat",
-    "aliases": [],
+    "aliases": ["Gehu", "Gehun"],
     "scientific_name": null,
     "category": "cereal",
     "knowledge_status": "LIMITED",
@@ -23,7 +23,7 @@
   {
     "crop_id": "maize",
     "canonical_name": "Maize",
-    "aliases": [],
+    "aliases": ["corn", "Makka"],
     "scientific_name": null,
     "category": "cereal",
     "knowledge_status": "LIMITED",
@@ -67,7 +67,8 @@
     "canonical_name": "Finger Millet",
     "aliases": [
       "Ragi",
-      "ragi"
+      "ragi",
+      "Mandua"
     ],
     "scientific_name": null,
     "category": "cereal",
@@ -212,7 +213,11 @@
     "crop_id": "lentil",
     "canonical_name": "Lentil",
     "aliases": [
-      "Masoor"
+      "Masoor",
+      "Masoor Dal",
+      "Red Lentil",
+      "Red Lentils",
+      "Lentils"
     ],
     "scientific_name": null,
     "category": "pulse",
@@ -222,7 +227,7 @@
   {
     "crop_id": "field_pea",
     "canonical_name": "Field Pea",
-    "aliases": [],
+    "aliases": ["Dry Pea"],
     "scientific_name": null,
     "category": "pulse",
     "knowledge_status": "LIMITED",
@@ -231,7 +236,7 @@
   {
     "crop_id": "garden_pea",
     "canonical_name": "Garden Pea",
-    "aliases": [],
+    "aliases": ["Green Pea", "Matar"],
     "scientific_name": null,
     "category": "pulse",
     "knowledge_status": "LIMITED",
@@ -322,7 +327,7 @@
   {
     "crop_id": "soybean",
     "canonical_name": "Soybean",
-    "aliases": [],
+    "aliases": ["Soya"],
     "scientific_name": null,
     "category": "pulse",
     "knowledge_status": "LIMITED",
@@ -523,7 +528,7 @@
   {
     "crop_id": "tomato",
     "canonical_name": "Tomato",
-    "aliases": [],
+    "aliases": ["Tamatar"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -532,7 +537,7 @@
   {
     "crop_id": "potato",
     "canonical_name": "Potato",
-    "aliases": [],
+    "aliases": ["Aloo"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -550,7 +555,7 @@
   {
     "crop_id": "onion",
     "canonical_name": "Onion",
-    "aliases": [],
+    "aliases": ["Pyaz"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -602,7 +607,7 @@
   {
     "crop_id": "cauliflower",
     "canonical_name": "Cauliflower",
-    "aliases": [],
+    "aliases": ["Gobi"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -629,7 +634,7 @@
   {
     "crop_id": "carrot",
     "canonical_name": "Carrot",
-    "aliases": [],
+    "aliases": ["Gajar"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -665,7 +670,7 @@
   {
     "crop_id": "spinach",
     "canonical_name": "Spinach",
-    "aliases": [],
+    "aliases": ["Palak"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -752,7 +757,7 @@
   {
     "crop_id": "bitter_gourd",
     "canonical_name": "Bitter Gourd",
-    "aliases": [],
+    "aliases": ["Karela"],
     "scientific_name": null,
     "category": "vegetable",
     "knowledge_status": "LIMITED",
@@ -980,7 +985,7 @@
   {
     "crop_id": "banana",
     "canonical_name": "Banana",
-    "aliases": [],
+    "aliases": ["Kela"],
     "scientific_name": null,
     "category": "fruit",
     "knowledge_status": "LIMITED",
@@ -1016,7 +1021,7 @@
   {
     "crop_id": "grapes",
     "canonical_name": "Grapes",
-    "aliases": [],
+    "aliases": ["Angur"],
     "scientific_name": null,
     "category": "fruit",
     "knowledge_status": "LIMITED",
@@ -1025,7 +1030,7 @@
   {
     "crop_id": "apple",
     "canonical_name": "Apple",
-    "aliases": [],
+    "aliases": ["Seb"],
     "scientific_name": null,
     "category": "fruit",
     "knowledge_status": "LIMITED",

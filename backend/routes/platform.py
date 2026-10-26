@@ -317,6 +317,21 @@ def update_task(task_id):
     except Exception as exc: return _db_error(exc)
 
 
+@platform_bp.delete("/tasks/<int:task_id>")
+def delete_task(task_id):
+    user_id, error = _user()
+    if error:
+        return error
+    try:
+        with connection() as conn:
+            deleted = conn.execute("DELETE FROM farm_tasks WHERE id=%s AND user_id=%s RETURNING id", (task_id, user_id)).fetchone()
+        if not deleted:
+            return jsonify({"error": "Task not found."}), 404
+        return jsonify({"deleted": True, "id": task_id})
+    except Exception as exc:
+        return _db_error(exc)
+
+
 ECONOMICS = {
     "expenses": ("farm_expenses", {"category", "description", "amount", "incurred_on", "farm_id", "crop_id", "season", "quantity", "quantity_unit"}),
     "sales": ("farm_sales", {"quantity", "quantity_unit", "price_unit", "unit_price", "sold_on", "farm_id", "crop_id", "season", "selling_cost", "notes"}),

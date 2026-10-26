@@ -195,8 +195,12 @@ def create_crop_route():
             return jsonify({"error": "'crop_name' is required."}), 400
         resolved, candidates = resolve_crop(payload["crop_name"])
         if not resolved:
-            return jsonify({"error": "Crop name is ambiguous." if candidates else "Crop is not in the crop catalog.", "candidates": candidates}), 400
-        values = {key: payload[key] for key in ("crop_name", "variety", "city", "state", "country", "planting_date", "growth_stage") if key in payload}
+            error = f"Choose a specific crop: {', '.join(candidates)}." if candidates else "Crop is not in the crop catalog."
+            return jsonify({"error": error, "candidates": candidates}), 400
+        values = {key: payload[key] for key in ("crop_name", "variety", "city", "district", "state", "country", "planting_date", "growth_stage", "soil_type", "drainage_condition", "irrigation_availability") if key in payload}
+        # Do not let the database's India-oriented default turn unknown device
+        # coordinates into a geographic applicability claim.
+        values.setdefault("country", None)
         values["user_id"] = user["id"]
         values["mode"] = user.get("user_type", "farmer")
         values["crop_name"] = resolved["canonical_name"]
@@ -209,7 +213,8 @@ def create_crop_route():
         return jsonify({"error": "Field not found."}), 404
     resolved, candidates = resolve_crop(payload["crop_name"])
     if not resolved:
-        return jsonify({"error": "Crop name is ambiguous." if candidates else "Crop is not in the crop catalog.", "candidates": candidates}), 400
+        error = f"Choose a specific crop: {', '.join(candidates)}." if candidates else "Crop is not in the crop catalog."
+        return jsonify({"error": error, "candidates": candidates}), 400
     keys = ("field_id", "crop_name", "variety", "season", "sowing_date", "expected_harvest_date", "current_stage", "status", "notes")
     values = {key: payload[key] for key in keys if key in payload}
     values["crop_name"] = resolved["canonical_name"]

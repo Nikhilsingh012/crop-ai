@@ -2,6 +2,8 @@
 
 Files are applied in numeric filename order by `backend/db.py` and recorded in the `schema_migrations` table. The base application schema is created before numbered migrations run. Migrations are forward-only and must be safe to run once; startup serialization uses a PostgreSQL advisory transaction lock.
 
+Migration 010 adds optional district, soil type, drainage condition, and irrigation availability fields to `user_crops` for location-aware crop-risk context. Existing records remain valid; missing context is reported as a limitation and is never silently inferred.
+
 Before production rollout, take and verify a PostgreSQL backup, review the migration SQL, and deploy to a staging database first. Do not delete or edit an applied migration. Make a new numbered migration for corrections. Current migrations add profile/ownership fields and platform tables, then seed only official scheme names/URLs with unknown application status. No historical records are removed.
 
 Migration `009_verified_pm_kisan_scheme_record.sql` adds the application procedure field and records the reviewed PM-KISAN criteria, documents, benefit and portal links. Other seeded schemes remain unverified. The scheme matcher requires fresh verified source data, labels self-reported screening as non-final, and does not persist eligibility answers. The official application status and deadline remain unknown; there are currently no verified upcoming deadlines.
