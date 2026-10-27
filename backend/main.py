@@ -1,5 +1,6 @@
 import os
 import secrets
+import threading
 from pathlib import Path
 
 try:
@@ -56,10 +57,36 @@ app.register_blueprint(weather_bp, url_prefix="/api")
 app.register_blueprint(platform_bp, url_prefix="/api")
 app.register_blueprint(markets_bp, url_prefix="/api")
 
+def _auto_ingest_market_data():
+    """Keep the mandi table stocked without a manual shell command.
+
+    Runs once at startup in a background thread: imports official data.gov.in
+    prices when the table is empty, and refreshes them when older than 24 hours.
+    """
+    if not os.getenv("DATA_GOV_IN_API_KEY", "").strip():
+        return
+    try:
+        from db import connection
+        from services.market_ingest import refresh
+        with connection() as conn:
+            fresh = conn.execute(
+                "SELECT 1 FROM market_prices WHERE provider='data.gov.in/AGMARKNET' "
+                "AND fetched_at > NOW() - INTERVAL '24 hours' LIMIT 1"
+            ).fetchone()
+        if fresh:
+            return
+        result = refresh()
+        app.logger.info("Market data auto-ingested: %s", result)
+    except Exception as error:
+        app.logger.warning("Market data auto-ingest skipped: %s", error)
+
+
 try:
     init_db()
 except Exception as error:
     app.logger.warning("Database initialization deferred: %s", error)
+else:
+    threading.Thread(target=_auto_ingest_market_data, daemon=True, name="market-ingest").start()
 
 
 @app.get("/")
