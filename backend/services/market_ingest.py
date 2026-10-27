@@ -14,8 +14,10 @@ def refresh():
     try:
         records = fetch_records(max_records=int(os.getenv("MARKET_REFRESH_MAX_RECORDS", "10000")))
         with connection() as conn:
-            for record in records:
-                conn.execute("""
+            # executemany pipelines all rows in a few round trips instead of one
+            # network round trip per record (10k records over a WAN link).
+            with conn.cursor() as cur:
+                cur.executemany("""
                     INSERT INTO market_prices (provider,source_record_key,commodity,variety,grade,state,district,mandi,observed_on,
                       minimum_price,modal_price,maximum_price,arrival_quantity,arrival_unit,price_unit,source_url,
                       source_updated_at,fetched_at,freshness,raw_metadata)
@@ -25,7 +27,7 @@ def refresh():
                     ON CONFLICT (provider,source_record_key) DO UPDATE SET minimum_price=EXCLUDED.minimum_price, modal_price=EXCLUDED.modal_price,
                       maximum_price=EXCLUDED.maximum_price, fetched_at=EXCLUDED.fetched_at, freshness=EXCLUDED.freshness,
                       source_url=EXCLUDED.source_url, raw_metadata=EXCLUDED.raw_metadata
-                """, {**record, "raw_metadata": Jsonb(record["raw_metadata"])})
+                """, [{**record, "raw_metadata": Jsonb(record["raw_metadata"])} for record in records])
             latest = max((r["observed_on"] for r in records), default=None)
             conn.execute("UPDATE market_ingestion_runs SET status='succeeded',completed_at=NOW(),pages_fetched=%s,records_fetched=%s,records_upserted=%s,latest_observed_on=%s WHERE id=%s", ((len(records) + 999) // 1000, len(records), len(records), latest, run_id))
         return {"status": "succeeded", "records_fetched": len(records), "latest_observed_on": latest}
